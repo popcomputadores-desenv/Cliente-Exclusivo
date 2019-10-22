@@ -400,9 +400,10 @@ document.addEventListener('init', function (event) {
          break;
 
       case "login":
+		   translatePage();
          document.getElementById("username_field")._input.focus();
-         placeholder(".username_field", 'Mobile number or email');
-         placeholder(".password_field", 'Password');
+		 $("#username_field").attr("placeholder", t("Mobile number or email"));
+		 $("#password_field").attr("placeholder", t("Password"));  
 
          $(".social_login_wrap").hide();
          $(".fb_wrap").hide();
@@ -422,6 +423,13 @@ document.addEventListener('init', function (event) {
 
          break;
 
+      case "change_password":
+		   translatePage();
+		 $("#current_password").attr("placeholder", t("Enter current password"));  
+		 $("#password_field").attr("placeholder", t("Enter new password"));  
+		 $("#confirm_password").attr("placeholder", t("Confirm new password"));  
+         break;
+		   
       case "enter_phone":
          old_phone = $(".contact_phone").val();
          $(".mobile_number").attr("placeholder", t("Mobile no."));

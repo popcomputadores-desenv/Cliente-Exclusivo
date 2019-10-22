@@ -752,7 +752,7 @@
                            <ons-icon icon="key" size="20px"></ons-icon>
                         </div>
                         <div class="center pd10">
-                           <ons-input type="password" name="current_password" required class="stic-field full_width" modifier="material" placeholder="Enter current password" float></ons-input>
+                           <ons-input type="password" name="current_password" id="current_password" required class="stic-field full_width" modifier="material" placeholder="Enter current password" float></ons-input>
                         </div>
                      </ons-list-item>
                      <ons-list-item modifier="nodivider">
@@ -760,13 +760,13 @@
                            <ons-icon icon="unlock-alt" size="20px"></ons-icon>
                         </div>
                         <div class="center pd10">
-                           <ons-input type="password" name="password" required class="stic-field full_width" modifier="material" placeholder="Enter new password" float></ons-input>
+                           <ons-input type="password" name="password" id="password_field" required class="stic-field full_width" modifier="material" placeholder="Enter new password" float></ons-input>
                         </div>
                      </ons-list-item>
                      <ons-list-item modifier="nodivider">
                         <div class="left">&nbsp;</div>
                         <div class="center pd10">
-                           <ons-input type="password" name="cpassword" required class="stic-field full_width" modifier="material" placeholder="Confirm new password" float></ons-input>
+                           <ons-input type="password" name="cpassword" id="confirm_password" required class="stic-field full_width" modifier="material" placeholder="Confirm new password" float></ons-input>
                         </div>
                      </ons-list-item>
                   </ons-list>
@@ -828,7 +828,7 @@
                      <ons-input class="stic-field" name="username" id="username_field" autoFocus required class="full_width username_field" modifier="material" placeholder="Mobile number or email" float></ons-input>
                   </div>
                   <div class="field_wrap password">
-                     <ons-input class="stic-field" type="password" name="password" required class="full_width password_field" modifier="underbar" placeholder="Password" float></ons-input>
+                     <ons-input class="stic-field" type="password" id="password_field" name="password" required class="full_width password_field" modifier="underbar" placeholder="Password" float></ons-input>
                   </div>
                   <div class="full_width wrap">
                      <ons-button modifier="quiet " class="pd10" onclick="showPage('forgot_pass.html')" >

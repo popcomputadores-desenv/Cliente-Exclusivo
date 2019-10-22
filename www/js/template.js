@@ -329,7 +329,7 @@ var displayItemDetails = function (data, cart_data) {
 	if (!website_hide_foodprice) {
 		if (data.multiple_price == 1) {
 			html += '<ons-list modifier="list_grey">';
-			html += '<ons-list-header>Price</ons-list-header>';
+			html += '<ons-list-header>Valor</ons-list-header>';
 			if ($.isArray(data.prices)) {
 				$.each(data.prices, function (price_key, price_val) {
 					//html+='<ons-list-item>'+ price_val.formatted_price +'</ons-list-item>';	 
