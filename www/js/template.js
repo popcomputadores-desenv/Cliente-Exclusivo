@@ -1162,6 +1162,7 @@ tipColumn = function (data) {
 	html += '<div class="left relative">' + tip_list + '</div>';
 	html += '<div class="right"><ons-button class="stic-small-button p1" modifier="quiet" onclick="applyTips()">' + t("Add Tips") + '</ons-button></div>';
 	html += '</ons-list-item>';
+	html += '<div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: 0px 5px 0px 5px; text-align: center; color: darkviolet;" class="trn">' + t("Description Tips") + '</div>';
 	return html;
 }
 
