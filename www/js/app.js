@@ -5116,6 +5116,10 @@ confirmClearCart = function () {
       ons.createElement('clear_cart_dialog.html', {
          append: true
       }).then(function (dialog) {
+		  $(".clear_cart").html(t("Clear cart?"));
+		  $(".are_you_sure").html(t("Are you sure you want to remove all items in your cart?"));
+		  $(".yes_cart").html(t("Yes"));
+		  $(".cancel_cart").html(t("Cancel"));		  
          dialog.show();
       });
    }

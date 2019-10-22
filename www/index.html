@@ -1732,13 +1732,13 @@
       </template>
       <template id="clear_cart_dialog.html">
          <ons-alert-dialog id="clear_cart_dialog" modifier="rowfooter" cancelable>
-            <div class="alert-dialog-title">Clear cart?</div>
-            <div class="alert-dialog-content">
+            <div class="alert-dialog-title clear_cart trn clear_cart">Clear cart?</div>
+            <div class="alert-dialog-content are_you_sure">
                Are you sure you want to remove all items in your cart?
             </div>
             <div class="alert-dialog-footer">
-               <ons-alert-dialog-button onclick="hideDialog('clear_cart_dialog')">Cancel</ons-alert-dialog-button>
-               <ons-alert-dialog-button onclick="clearCart();">Yes</ons-alert-dialog-button>
+               <ons-alert-dialog-button onclick="hideDialog('clear_cart_dialog')" class="cancel_cart">Cancel</ons-alert-dialog-button>
+               <ons-alert-dialog-button onclick="clearCart();" class="yes_cart">Yes</ons-alert-dialog-button>
             </div>
             <!--dialog_wrapper--> 
          </ons-alert-dialog>
