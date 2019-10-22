@@ -48,9 +48,8 @@
 	margin: 0 2.5px;
 	height: 100%;
 	background-size: cover;
-	background-color: #f9f9f9;
-	background-position: center;
-	z-index: -10;
+	/* background-color: #f9f9f9;
+	background-position: center; */
 }
 
 .stic-carousel-item:first-child .stic-carousel-img {
@@ -177,13 +176,12 @@
 
 .stic-cat-img {
 	background-size: cover;
-	background-color: #f9f9f9;
+	/* background-color: #f9f9f9; */
 	background-position: center;
 	margin: 0 2.5px;
 	border-radius: 10px;
 	height: 12vh;
 	min-height: 70px;
-	z-index: -10;
 }
 
 .stic-cat-item:first-child .stic-cat-img {
