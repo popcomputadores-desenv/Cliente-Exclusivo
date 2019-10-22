@@ -201,9 +201,9 @@
 .stic-cat-row.list .stic-cat-name {
 	position: absolute;
 	padding: 0;
-	top: 10px;
+	top: 75px;
 	left: 10px;
-	color: white;
+	/* color: white;*/
 	font-weight: bold;
 	letter-spacing: 0.5px;
 }
@@ -892,6 +892,7 @@ ons-select {
 .stic-cat-row {
 	width: 50%;
 	display: inline-block;
+	height: 110px;
 }
 
 .stic-cat-row .stic-cat-img {
