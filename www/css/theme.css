@@ -900,7 +900,7 @@ ons-select {
 }
 
 .stic-cat-row.list .stic-cat-img {
-	filter: brightness(0.8);
+	/* filter: brightness(0.8);*/
 	margin-bottom: 5px;
 }
 
