@@ -2713,6 +2713,156 @@ var checkout = function () {
 
          break;
 
+      case "coleta":
+         var street = $(".delivery_address").val();
+         if (empty(street)) {
+            showAlert(t("Please enter delivery address"));
+            return;
+         }
+
+         required_delivery_time = $(".required_delivery_time").val();
+         if (required_delivery_time == 1 && delivery_asap_val == false) {
+            delivery_time_set = getStorage("delivery_time_set");
+            if (empty(delivery_time_set)) {
+               showAlert(t("Delivery time is required"));
+               return;
+            }
+         }
+
+         /*CHECK MINIMUM ORDER TABLE*/
+         min_delivery_order = parseFloat($(".min_delivery_order").val());
+         //alert(min_delivery_order);
+         if (min_delivery_order > 0.0001) {
+            cart_sub_total = parseFloat($(".cart_sub_total").val());
+            // alert(cart_sub_total);
+            if (min_delivery_order > cart_sub_total) {
+               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
+               return;
+            }
+         }
+
+         break;
+
+      case "coleta_retorno":
+         var street = $(".delivery_address").val();
+         if (empty(street)) {
+            showAlert(t("Please enter delivery address"));
+            return;
+         }
+
+         required_delivery_time = $(".required_delivery_time").val();
+         if (required_delivery_time == 1 && delivery_asap_val == false) {
+            delivery_time_set = getStorage("delivery_time_set");
+            if (empty(delivery_time_set)) {
+               showAlert(t("Delivery time is required"));
+               return;
+            }
+         }
+
+         /*CHECK MINIMUM ORDER TABLE*/
+         min_delivery_order = parseFloat($(".min_delivery_order").val());
+         //alert(min_delivery_order);
+         if (min_delivery_order > 0.0001) {
+            cart_sub_total = parseFloat($(".cart_sub_total").val());
+            // alert(cart_sub_total);
+            if (min_delivery_order > cart_sub_total) {
+               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
+               return;
+            }
+         }
+
+         break;
+
+      case "pre_coleta":
+         var street = $(".delivery_address").val();
+         if (empty(street)) {
+            showAlert(t("Please enter delivery address"));
+            return;
+         }
+
+         required_delivery_time = $(".required_delivery_time").val();
+         if (required_delivery_time == 1 && delivery_asap_val == false) {
+            delivery_time_set = getStorage("delivery_time_set");
+            if (empty(delivery_time_set)) {
+               showAlert(t("Delivery time is required"));
+               return;
+            }
+         }
+
+         /*CHECK MINIMUM ORDER TABLE*/
+         min_delivery_order = parseFloat($(".min_delivery_order").val());
+         //alert(min_delivery_order);
+         if (min_delivery_order > 0.0001) {
+            cart_sub_total = parseFloat($(".cart_sub_total").val());
+            // alert(cart_sub_total);
+            if (min_delivery_order > cart_sub_total) {
+               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
+               return;
+            }
+         }
+
+         break;
+
+      case "pre_coleta_retorno":
+         var street = $(".delivery_address").val();
+         if (empty(street)) {
+            showAlert(t("Please enter delivery address"));
+            return;
+         }
+
+         required_delivery_time = $(".required_delivery_time").val();
+         if (required_delivery_time == 1 && delivery_asap_val == false) {
+            delivery_time_set = getStorage("delivery_time_set");
+            if (empty(delivery_time_set)) {
+               showAlert(t("Delivery time is required"));
+               return;
+            }
+         }
+
+         /*CHECK MINIMUM ORDER TABLE*/
+         min_delivery_order = parseFloat($(".min_delivery_order").val());
+         //alert(min_delivery_order);
+         if (min_delivery_order > 0.0001) {
+            cart_sub_total = parseFloat($(".cart_sub_total").val());
+            // alert(cart_sub_total);
+            if (min_delivery_order > cart_sub_total) {
+               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
+               return;
+            }
+         }
+
+         break;
+
+      case "prestacao_servico":
+         var street = $(".delivery_address").val();
+         if (empty(street)) {
+            showAlert(t("Please enter delivery address"));
+            return;
+         }
+
+         required_delivery_time = $(".required_delivery_time").val();
+         if (required_delivery_time == 1 && delivery_asap_val == false) {
+            delivery_time_set = getStorage("delivery_time_set");
+            if (empty(delivery_time_set)) {
+               showAlert(t("Delivery time is required"));
+               return;
+            }
+         }
+
+         /*CHECK MINIMUM ORDER TABLE*/
+         min_delivery_order = parseFloat($(".min_delivery_order").val());
+         //alert(min_delivery_order);
+         if (min_delivery_order > 0.0001) {
+            cart_sub_total = parseFloat($(".cart_sub_total").val());
+            // alert(cart_sub_total);
+            if (min_delivery_order > cart_sub_total) {
+               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
+               return;
+            }
+         }
+
+         break;
+
       case "pickup":
          delivery_time_set = getStorage("delivery_time_set");
          if (empty(delivery_time_set)) {
@@ -2905,7 +3055,7 @@ var initPayment = function () {
          } else if ( transaction_type=="dinein" ) {
             showPage("dinein_forms.html");
          }*/
-         if (transaction_type == "delivery") {
+         if (transaction_type == "delivery" || transaction_type == "coleta" || transaction_type == "coleta_retorno" || transaction_type == "pre_coleta" || transaction_type == "pre_coleta_retorno" || transaction_type == "prestacao_servico") {
             showPage("cod_forms.html");
          } else {
             payNow();
@@ -2964,7 +3114,7 @@ var payNow = function (payment_params) {
    switch (payment_provider) {
       case "cod":
       case "obd":
-         if (transaction_type == "delivery") {
+         if (transaction_type == "delivery" || transaction_type == "coleta" || transaction_type == "coleta_retorno" || transaction_type == "pre_coleta" || transaction_type == "pre_coleta_retorno" || transaction_type == "prestacao_servico") {
             params += '&order_change=' + $("#order_change").val();
          }
          /*if (transaction_type=="dinein"){

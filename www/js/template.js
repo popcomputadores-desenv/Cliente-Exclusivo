@@ -955,6 +955,31 @@ var displayCartDetails = function (datas) {
 			delivery_time_list_label = t('Delivery Time');
 			break;
 
+		case "coleta":
+			delivery_date_list_label = t('Coleta Date');
+			delivery_time_list_label = t('Coleta Time');
+			break;
+
+		case "coleta_retorno":
+			delivery_date_list_label = t('Coleta Date');
+			delivery_time_list_label = t('Coleta Time');
+			break;
+
+		case "pre_coleta":
+			delivery_date_list_label = t('Pre Coleta Date');
+			delivery_time_list_label = t('Pre Coleta Time');
+			break;
+
+		case "pre_coleta_retorno":
+			delivery_date_list_label = t('Pre Coleta Date');
+			delivery_time_list_label = t('Pre Coleta Time');
+			break;
+
+		case "prestacao_servico":
+			delivery_date_list_label = t('Servico Date');
+			delivery_time_list_label = t('Servico Time');
+			break;
+
 		case "pickup":
 			delivery_date_list_label = t('Pickup Date');
 			delivery_time_list_label = t('Pickup Time');
@@ -1015,7 +1040,68 @@ var displayCartDetails = function (datas) {
 		html += '<div class="left">' + t("Delivery Address") + '</div>';
 		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
 		html += '</ons-list-item>';
+	} else 	if (datas.transaction_type == "coleta" || datas.transaction_type == "coleta_retorno") {
+
+		if (!empty(datas.cart_details)) {
+			if (!empty(datas.cart_details.street)) {
+				selected_delivery_address = datas.cart_details.street;
+				selected_delivery_address += " ";
+				selected_delivery_address += datas.cart_details.city;
+				selected_delivery_address += " ";
+				selected_delivery_address += datas.cart_details.state;
+				selected_delivery_address += " ";
+				selected_delivery_address += datas.cart_details.zipcode;
+				$(".delivery_address").val(selected_delivery_address);
+			}
+		}
+
+		//html+='<ons-list-item tappable modifier="chevron longdivider" onclick="showPage(\'address_form.html\')" >';	
+		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="initAddress()" >';
+		html += '<div class="left">' + t("Coleta Address") + '</div>';
+		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
+		html += '</ons-list-item>';
+	} else 	if (datas.transaction_type == "pre_coleta" || datas.transaction_type == "pre_coleta_retorno") {
+
+		if (!empty(datas.cart_details)) {
+			if (!empty(datas.cart_details.street)) {
+				selected_delivery_address = datas.cart_details.street;
+				selected_delivery_address += " ";
+				selected_delivery_address += datas.cart_details.city;
+				selected_delivery_address += " ";
+				selected_delivery_address += datas.cart_details.state;
+				selected_delivery_address += " ";
+				selected_delivery_address += datas.cart_details.zipcode;
+				$(".delivery_address").val(selected_delivery_address);
+			}
+		}
+
+		//html+='<ons-list-item tappable modifier="chevron longdivider" onclick="showPage(\'address_form.html\')" >';	
+		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="initAddress()" >';
+		html += '<div class="left">' + t("Pre Coleta Address") + '</div>';
+		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
+		html += '</ons-list-item>';
+	} else 	if (datas.transaction_type == "prestacao_servico") {
+
+		if (!empty(datas.cart_details)) {
+			if (!empty(datas.cart_details.street)) {
+				selected_delivery_address = datas.cart_details.street;
+				selected_delivery_address += " ";
+				selected_delivery_address += datas.cart_details.city;
+				selected_delivery_address += " ";
+				selected_delivery_address += datas.cart_details.state;
+				selected_delivery_address += " ";
+				selected_delivery_address += datas.cart_details.zipcode;
+				$(".delivery_address").val(selected_delivery_address);
+			}
+		}
+
+		//html+='<ons-list-item tappable modifier="chevron longdivider" onclick="showPage(\'address_form.html\')" >';	
+		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="initAddress()" >';
+		html += '<div class="left">' + t("Servico Address") + '</div>';
+		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
+		html += '</ons-list-item>';
 	}
+
 
 	html += '</ons-list>';
 	return html;
