@@ -48,8 +48,9 @@
 	margin: 0 2.5px;
 	height: 100%;
 	background-size: cover;
-	/* background-color: #f9f9f9; */
+	background-color: #f9f9f9;
 	background-position: center;
+	z-index: -10;
 }
 
 .stic-carousel-item:first-child .stic-carousel-img {
@@ -143,7 +144,7 @@
 }
 
 .stic-cat-last .back {
-	/* background-color: #f9f9f9; */
+	background-color: #f9f9f9;
 	margin: 0 2.5px;
 	border-radius: 10px;
 	width: 135px;
@@ -151,6 +152,7 @@
 	min-height: 70px;
 	line-height: 12vh;
 	border: 0.5px solid #eee;
+	z-index: -10;
 }
 
 .name-box {
@@ -175,12 +177,13 @@
 
 .stic-cat-img {
 	background-size: cover;
-	/* background-color: #f9f9f9; */
+	background-color: #f9f9f9;
 	background-position: center;
 	margin: 0 2.5px;
 	border-radius: 10px;
 	height: 12vh;
 	min-height: 70px;
+	z-index: -10;
 }
 
 .stic-cat-item:first-child .stic-cat-img {
