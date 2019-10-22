@@ -48,7 +48,7 @@
 	margin: 0 2.5px;
 	height: 100%;
 	background-size: cover;
-	background-color: #f9f9f9;
+	/* background-color: #f9f9f9; */
 	background-position: center;
 }
 
@@ -143,7 +143,7 @@
 }
 
 .stic-cat-last .back {
-	background-color: #f9f9f9;
+	/* background-color: #f9f9f9; */
 	margin: 0 2.5px;
 	border-radius: 10px;
 	width: 135px;
@@ -175,7 +175,7 @@
 
 .stic-cat-img {
 	background-size: cover;
-	background-color: #f9f9f9;
+	/* background-color: #f9f9f9; */
 	background-position: center;
 	margin: 0 2.5px;
 	border-radius: 10px;
