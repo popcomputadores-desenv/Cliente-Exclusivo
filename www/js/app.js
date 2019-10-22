@@ -162,7 +162,7 @@ ons.ready(function () {
       //dump(onsenNavigator.topPage);      
       exit_cout++;
       if (exit_cout <= 1) {
-         showToast("Press once again to exit!");
+         showToast(t("Press once again to exit!"));
          setTimeout(function () {
             exit_cout = 0;
          }, 3000);
@@ -980,7 +980,7 @@ var infiniteCategory = function (done) {
    /*FAIL*/
    ajax_request.fail(function (jqXHR, textStatus) {
       clearTimeout(timer);
-      showToast("Failed" + ": " + textStatus);
+      showToast(t("Failed" + ": " + textStatus));
       setStorage("infinite_category", 1);
    });
 
