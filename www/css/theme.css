@@ -649,10 +649,19 @@
 
 #order_details .list-item--longdivider__right {
 	text-align: right;
+	font-size: 10px;
+}
+
+#order_details .list-item--longdivider {
+	padding: 0 6px 0 6px;
+    height: 38px;
+    margin-top: -8px;
 }
 
 #order_details .list-item--material__left {
 	font-weight: bold;
+	font-size: 11px;
+	color:#000864;
 }
 
 #history_list .list-item__title {
