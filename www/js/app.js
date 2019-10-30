@@ -162,7 +162,9 @@ ons.ready(function () {
       //dump(onsenNavigator.topPage);      
       exit_cout++;
       if (exit_cout <= 1) {
+/** Atualização Master Hub (Correção de Tradução) **/
          showToast(t("Press once again to exit!"));
+/** Fim da atualização **/
          setTimeout(function () {
             exit_cout = 0;
          }, 3000);
@@ -240,8 +242,9 @@ document.addEventListener('init', function (event) {
          ajaxCall('loadCategory', '');
          ajaxCall('loadPromo', '');
          FillBanner();
+/** Atualização Master Hub (Correção de Tradução) **/
 		 $("#search").attr("placeholder", t("What are you looking for?"));  
-		   
+/** Fim da atualização **/
          if (logoStyle == '1') {
             $(".stic-rest-logo").addClass("block_important");
          }
@@ -252,8 +255,10 @@ document.addEventListener('init', function (event) {
       case "page_item":
          paginate_count = 0;
          page.querySelector('ons-toolbar .cat-name').innerHTML = page.data.cat_name;
+/** Atualização Master Hub (Correção de Tradução) **/
 		 $("#search").attr("placeholder", t("Search for item"));
 		 $(".search-input").attr("placeholder", t("Search for item"));
+/** Fim da atualização **/
          $(".search-input ").removeClass("search-input--material");
 
          ajaxCall('loadItemByCategory', "cat_id=" + page.data.cat_id);
@@ -333,8 +338,25 @@ document.addEventListener('init', function (event) {
          } else {
             $(".show_if_login").hide();
          }
-
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+		   location_area = $("#address_form .area_name").val();
+			if (!empty(location_area)) {
+				$("#address_form .area_name").val(location_area);
+			}
+		   location_city = $("#address_form .city").val();
+			if (!empty(location_city)) {
+				$("#address_form .city").val(location_city);
+			}
+		   location_state = $("#address_form .state").val();
+			if (!empty(location_state)) {
+				$("#address_form .state").val(location_state);
+			}
+/** Fim da atualização **/
          $(".street").attr("placeholder", t("Street"));
+/** Atualização Master Hub (Número e Bairro no Endereço) **/
+         $(".numero").attr("placeholder", t("Numero"));
+         $(".area_name").attr("placeholder", t("Area Name"));
+/** Fim da atualização **/
          $(".city").attr("placeholder", t("City"));
          $(".state").attr("placeholder", t("State"));
          $(".zipcode").attr("placeholder", t("Zip Code"));
@@ -400,10 +422,12 @@ document.addEventListener('init', function (event) {
          break;
 
       case "login":
+/** Atualização Master Hub (Correção de Tradução) **/
 		   translatePage();
          document.getElementById("username_field")._input.focus();
 		 $("#username_field").attr("placeholder", t("Mobile number or email"));
 		 $("#password_field").attr("placeholder", t("Password"));  
+/** Fim da atualização **/
 
          $(".social_login_wrap").hide();
          $(".fb_wrap").hide();
@@ -423,13 +447,14 @@ document.addEventListener('init', function (event) {
 
          break;
 
+/** Atualização Master Hub (Correção de Tradução) **/
       case "change_password":
 		   translatePage();
 		 $("#current_password").attr("placeholder", t("Enter current password"));  
 		 $("#password_field").attr("placeholder", t("Enter new password"));  
 		 $("#confirm_password").attr("placeholder", t("Confirm new password"));  
          break;
-		   
+/** Fim da atualização **/
       case "enter_phone":
          old_phone = $(".contact_phone").val();
          $(".mobile_number").attr("placeholder", t("Mobile no."));
@@ -474,8 +499,26 @@ document.addEventListener('init', function (event) {
          break;
 
       case "addressbook":
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+		   location_area = $("#addressbook .area_name").val();
+			if (!empty(location_area)) {
+				$("#addressbook .area_name").val(location_area);
+			}
+		   location_city = $("#addressbook .city").val();
+			if (!empty(location_city)) {
+				$("#addressbook .city").val(location_city);
+			}
+		   location_state = $("#addressbook .state").val();
+			if (!empty(location_state)) {
+				$("#addressbook .state").val(location_state);
+			}
+/** Fim da atualização **/
 
          placeholder(".street", 'Street');
+/** Atualização Master Hub (Número e Bairro no Endereço) **/
+         placeholder(".numero", 'Numero');
+         placeholder(".area_name", 'Area Name');
+/** Fim da atualização **/
          placeholder(".city", 'City');
          placeholder(".state", 'State');
          placeholder(".zipcode", 'Zip Code');
@@ -652,8 +695,10 @@ document.addEventListener('init', function (event) {
 
          $(".search-input ").removeClass("search-input--material");
          setFocus('input_search_category');
+/** Atualização Master Hub (Correção de Tradução) **/
 		 $(".search-input").attr("placeholder", t("Search for category"));
 		 $("#input_search_category").attr("placeholder", t("Search for category"));
+/** Fim da atualização **/
 
          $("#input_search_category").keyup(function (event) {
             if (event.which == 13) {
@@ -680,7 +725,9 @@ document.addEventListener('init', function (event) {
          $(".search-input ").removeClass("search-input--material");
 
          setFocus('input_search_item');
+/** Atualização Master Hub (Correção de Tradução) **/
 		 $("#input_search_item").attr("placeholder", t("Search for item"));  
+/** Fim da atualização **/
          $("#input_search_item").keyup(function (event) {
             if (event.which == 13) {
                event.preventDefault();
@@ -726,8 +773,10 @@ document.addEventListener('init', function (event) {
 
       case "add_review":
          $(".review_order_id").val(page.data.order_id);
+/** Atualização Master Hub (Correção de Tradução) **/
 		 $(".review").attr("placeholder", t("Write your comments..."));
 		 $(".rating_title").html(t("Please select rating"));
+/** Fim da atualização **/
          break;
 
    } /*end switch*/
@@ -778,6 +827,22 @@ document.addEventListener('preshow', function (event) {
          $(".dialog_error_title").html(getStorage("dialog_error_title"));
          $(".dialog_error_msg").html(getStorage("dialog_error_msg"));
          break;
+		   
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+      case "dialog_locationState":
+         ajaxCall('locationState', '');
+         break;
+		   
+      case "dialog_locationCity":
+	var params="state_id="+$(".state_id").val();
+         ajaxCall('locationCity', params);
+         break;
+		   
+      case "dialog_locationArea":
+	var params="city_id="+$(".city_id").val( );
+         ajaxCall('locationArea', params);
+         break;
+/** Fim da atualização **/
    }
 });
 
@@ -980,7 +1045,9 @@ var infiniteCategory = function (done) {
    /*FAIL*/
    ajax_request.fail(function (jqXHR, textStatus) {
       clearTimeout(timer);
+/** Atualização Master Hub (Correção de Tradução) **/
       showToast(t("Failed" + ": " + textStatus));
+/** Fim da atualização **/
       setStorage("infinite_category", 1);
    });
 
@@ -1118,6 +1185,23 @@ function ajaxCall(action, data) {
                tpl = displayList(data.details.data, 'transaction_type');
                $(".services_wrap").html(tpl);
                break;
+				 
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+	    case "locationState":
+	    tpl = displayStateList(data.details, 'state_list'); 
+	    $(".location_state_wrap").html(tpl);
+               break;
+				 
+	    case "locationCity":
+	    tpl = displayCityList(data.details, 'city_list'); 
+	    $(".location_city_wrap").html(tpl);
+               break;
+				 
+	    case "locationArea":
+	    tpl = displayAreaList(data.details, 'area_list'); 
+	    $(".location_area_wrap").html(tpl);
+               break;
+/** Fim da atualização **/
 
             case "deliveryDateList":
                tpl = displayList(data.details.data, 'delivery_date');
@@ -1214,6 +1298,10 @@ function ajaxCall(action, data) {
 
             case "GetAddressFromCart":
                $(".street").val(data.details.street);
+/** Atualização Master Hub (Número e Bairro no Endereço) **/
+               $(".numero").val(data.details.numero);
+               $(".area_name").val(data.details.area_name);
+/** Fim da atualização **/
                $(".city").val(data.details.city);
                $(".state").val(data.details.state);
                $(".zipcode").val(data.details.zipcode);
@@ -1316,6 +1404,10 @@ function ajaxCall(action, data) {
             case "getAddressBook":
                $(".book_id").val(data.details.id);
                $(".street").val(data.details.street);
+/** Atualização Master Hub (Número e Bairro no Endereço) **/
+               $(".numero").val(data.details.numero);
+               $(".area_name").val(data.details.area_name);
+/** Fim da atualização **/
                $(".city").val(data.details.city);
                $(".state").val(data.details.state);
                $(".zipcode").val(data.details.zipcode);
@@ -1416,7 +1508,9 @@ function ajaxCall(action, data) {
 
                info += '<ons-list-item class="stic-info-menu" modifier="chevron">';
                info += '<div class="left"><ons-icon icon="images" size="20px"></ons-icon></div>';
+/** Atualização Master Hub (Correção de Tradução) **/
                info += '<div class="center"><span class="trn">Photos</span></div>';
+/** Fim da atualização **/
                info += '</ons-list-item>';
 
                info += '</ons-list>';
@@ -1472,7 +1566,9 @@ function ajaxCall(action, data) {
                   $(".promo_wrap").html('');
                   showToast(data.msg);
                }
+/** Atualização Master Hub (Correção de Tradução) **/
 				 translatePage();
+/** Fim da atualização **/
                break;
 
             case "loadBooking":
@@ -1594,15 +1690,56 @@ function ajaxCall(action, data) {
                   animation: "none",
                   callback: function () {
                      $(".street").val(data.details.address);
+/** Atualização Master Hub (Número e Bairro no Endereço) **/
+                     $(".numero").val(data.details.numero);
+                     $(".area_name").val(data.details.area_name);
+/** Fim da atualização **/
                      $(".city").val(data.details.city);
                      $(".state").val(data.details.state);
                      $(".zipcode").val(data.details.zip);
                      if (!empty(data.details.country)) {
-                        $(".country_code").val(data.details.country);
+                     $(".country_code").val(data.details.country);
                      }
                   }
                });
                break;
+				 
+/*Atualização Master Hub (Preenchimento dos dados no Catálogo de Endereços adquiridos pelo CEP)*/
+				case "IdsDoCEP":
+					 
+					if(!empty(data.details)){
+						
+				showAlert( t("Preencha o numero da sua residencia ou de onde voce esta!") );		
+					//$(".location_area").html(data.details.bairro);
+					//$(".location_city").html(data.details.cidade);
+					//$(".location_state").html(data.details.estado);
+					$(".location_name").val('');
+					$(".delivery_instruction").val('');
+					$(".state_id").val(data.details.state_id);
+					$(".city_id").val(data.details.city_id);
+					$(".area_id").val(data.details.area_id);
+					$(".state").val(data.details.estado);
+					$(".city").val(data.details.cidade);
+					$(".area_name").val(data.details.bairro);
+					} 
+					break;
+					
+				case "IdsDoBairro":
+					if(!empty(data.details)){
+					//$(".location_area").html(data.details.area_name);
+					//$(".location_city").html(data.details.city);
+					//$(".location_state").html(data.details.state);
+					$(".location_name").val('');
+					$(".delivery_instruction").val('');
+					$(".state_id").val(data.details.state_id);
+					$(".city_id").val(data.details.city_id);
+					$(".area_id").val(data.details.area_id);
+					$(".state").val(data.details.state);
+					$(".city").val(data.details.city);
+					$(".area_name").val(data.details.area_name);
+					} 
+					break;
+/*Fim da atualização*/
 
             case "pointsSummary":
                $(".pts_total_earn").html(data.details.total_available);
@@ -1965,6 +2102,19 @@ ons.ready(function () {
    $(document).on("keyup", ".numeric_only", function () {
       this.value = this.value.replace(/[^0-9\.]/g, '');
    });
+	
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+	var typingTimer; //identificador de tempo
+	var doneTypingInterval = 1000; //o tempo está em ms, 1 segundo por exemplo
+
+		//no keyup, inicie o contador
+	$(document).on("keyup", ".search_area", function() {
+		 clearTimeout(typingTimer);
+		 if (this.value) {
+		typingTimer = setTimeout(searchArea, doneTypingInterval);
+		 }
+	});	
+/** Fim da atualização **/
 
    $(document).on("click", ".subitem_custom", function () {
       object = $(this);
@@ -2409,6 +2559,46 @@ var showTransactionList = function () {
    }
 };
 
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+var showState = function () {
+   var dialog = document.getElementById('dialog_locationState');
+   if (dialog) {
+      dialog.show();
+   } else {
+      ons.createElement('dialog_locationState.html', {
+         append: true
+      }).then(function (dialog) {
+         dialog.show();
+      });
+   }
+};
+
+var showCity = function () {
+   var dialog = document.getElementById('dialog_locationCity');
+   if (dialog) {
+      dialog.show();
+   } else {
+      ons.createElement('dialog_locationCity.html', {
+         append: true
+      }).then(function (dialog) {
+         dialog.show();
+      });
+   }
+};
+
+var showArea = function () {
+   var dialog = document.getElementById('dialog_locationArea');
+   if (dialog) {
+      dialog.show();
+   } else {
+      ons.createElement('dialog_locationArea.html', {
+         append: true
+      }).then(function (dialog) {
+         dialog.show();
+      });
+   }
+};
+/** Fim da atualização **/
 var showDeliveryDateList = function () {
    var dialog = document.getElementById('dialog_delivery_date');
    if (dialog) {
@@ -2449,6 +2639,23 @@ var setFieldValue = function (class_name, value, label) {
          loadCart(value);
          break;
 
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+      case "state_list":
+		   $(".state_id").val( value );
+		   $(".state").val( label );
+		   
+         var dialog = document.getElementById('dialog_locationState');
+         dialog.hide();
+         break;
+		   
+      case "city_list":
+		   $(".city_id").val( value );
+		   $(".city").val( label );
+		   
+         var dialog = document.getElementById('dialog_locationCity');
+         dialog.hide();
+         break;
+/** Fim da atualização **/
       case "delivery_date":
          setStorage("delivery_date_set", value);
          setStorage("delivery_date_set_pretty", label);
@@ -2474,6 +2681,27 @@ var setFieldValue = function (class_name, value, label) {
    }
 };
 
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+var setFieldValueBairro = function (class_name, value_area, label_area, value_city, label_city, value_state, label_state) {
+
+   $("." + class_name).val(value_area);
+
+   switch (class_name) {
+		   
+      case "area_list":
+		   $(".area_id").val( value_area );
+		   $(".area_name").val( label_area );
+		   $(".city_id").val( value_city );
+		   $(".city").val( label_city );
+		   $(".state_id").val( value_state );
+		   $(".state").val( label_state );
+		   
+         var dialog = document.getElementById('dialog_locationArea');
+         dialog.hide();
+         break;
+   }
+};
+/** Fim da atualização **/
 var loadCart = function (transaction_type) {
    if (!empty(transaction_type)) {
       ajaxCall2('loadCart', 'transaction_type=' + transaction_type);
@@ -2713,156 +2941,6 @@ var checkout = function () {
 
          break;
 
-      case "coleta":
-         var street = $(".delivery_address").val();
-         if (empty(street)) {
-            showAlert(t("Please enter delivery address"));
-            return;
-         }
-
-         required_delivery_time = $(".required_delivery_time").val();
-         if (required_delivery_time == 1 && delivery_asap_val == false) {
-            delivery_time_set = getStorage("delivery_time_set");
-            if (empty(delivery_time_set)) {
-               showAlert(t("Delivery time is required"));
-               return;
-            }
-         }
-
-         /*CHECK MINIMUM ORDER TABLE*/
-         min_delivery_order = parseFloat($(".min_delivery_order").val());
-         //alert(min_delivery_order);
-         if (min_delivery_order > 0.0001) {
-            cart_sub_total = parseFloat($(".cart_sub_total").val());
-            // alert(cart_sub_total);
-            if (min_delivery_order > cart_sub_total) {
-               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
-               return;
-            }
-         }
-
-         break;
-
-      case "coleta_retorno":
-         var street = $(".delivery_address").val();
-         if (empty(street)) {
-            showAlert(t("Please enter delivery address"));
-            return;
-         }
-
-         required_delivery_time = $(".required_delivery_time").val();
-         if (required_delivery_time == 1 && delivery_asap_val == false) {
-            delivery_time_set = getStorage("delivery_time_set");
-            if (empty(delivery_time_set)) {
-               showAlert(t("Delivery time is required"));
-               return;
-            }
-         }
-
-         /*CHECK MINIMUM ORDER TABLE*/
-         min_delivery_order = parseFloat($(".min_delivery_order").val());
-         //alert(min_delivery_order);
-         if (min_delivery_order > 0.0001) {
-            cart_sub_total = parseFloat($(".cart_sub_total").val());
-            // alert(cart_sub_total);
-            if (min_delivery_order > cart_sub_total) {
-               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
-               return;
-            }
-         }
-
-         break;
-
-      case "pre_coleta":
-         var street = $(".delivery_address").val();
-         if (empty(street)) {
-            showAlert(t("Please enter delivery address"));
-            return;
-         }
-
-         required_delivery_time = $(".required_delivery_time").val();
-         if (required_delivery_time == 1 && delivery_asap_val == false) {
-            delivery_time_set = getStorage("delivery_time_set");
-            if (empty(delivery_time_set)) {
-               showAlert(t("Delivery time is required"));
-               return;
-            }
-         }
-
-         /*CHECK MINIMUM ORDER TABLE*/
-         min_delivery_order = parseFloat($(".min_delivery_order").val());
-         //alert(min_delivery_order);
-         if (min_delivery_order > 0.0001) {
-            cart_sub_total = parseFloat($(".cart_sub_total").val());
-            // alert(cart_sub_total);
-            if (min_delivery_order > cart_sub_total) {
-               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
-               return;
-            }
-         }
-
-         break;
-
-      case "pre_coleta_retorno":
-         var street = $(".delivery_address").val();
-         if (empty(street)) {
-            showAlert(t("Please enter delivery address"));
-            return;
-         }
-
-         required_delivery_time = $(".required_delivery_time").val();
-         if (required_delivery_time == 1 && delivery_asap_val == false) {
-            delivery_time_set = getStorage("delivery_time_set");
-            if (empty(delivery_time_set)) {
-               showAlert(t("Delivery time is required"));
-               return;
-            }
-         }
-
-         /*CHECK MINIMUM ORDER TABLE*/
-         min_delivery_order = parseFloat($(".min_delivery_order").val());
-         //alert(min_delivery_order);
-         if (min_delivery_order > 0.0001) {
-            cart_sub_total = parseFloat($(".cart_sub_total").val());
-            // alert(cart_sub_total);
-            if (min_delivery_order > cart_sub_total) {
-               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
-               return;
-            }
-         }
-
-         break;
-
-      case "prestacao_servico":
-         var street = $(".delivery_address").val();
-         if (empty(street)) {
-            showAlert(t("Please enter delivery address"));
-            return;
-         }
-
-         required_delivery_time = $(".required_delivery_time").val();
-         if (required_delivery_time == 1 && delivery_asap_val == false) {
-            delivery_time_set = getStorage("delivery_time_set");
-            if (empty(delivery_time_set)) {
-               showAlert(t("Delivery time is required"));
-               return;
-            }
-         }
-
-         /*CHECK MINIMUM ORDER TABLE*/
-         min_delivery_order = parseFloat($(".min_delivery_order").val());
-         //alert(min_delivery_order);
-         if (min_delivery_order > 0.0001) {
-            cart_sub_total = parseFloat($(".cart_sub_total").val());
-            // alert(cart_sub_total);
-            if (min_delivery_order > cart_sub_total) {
-               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
-               return;
-            }
-         }
-
-         break;
-
       case "pickup":
          delivery_time_set = getStorage("delivery_time_set");
          if (empty(delivery_time_set)) {
@@ -3055,7 +3133,7 @@ var initPayment = function () {
          } else if ( transaction_type=="dinein" ) {
             showPage("dinein_forms.html");
          }*/
-         if (transaction_type == "delivery" || transaction_type == "coleta" || transaction_type == "coleta_retorno" || transaction_type == "pre_coleta" || transaction_type == "pre_coleta_retorno" || transaction_type == "prestacao_servico") {
+         if (transaction_type == "delivery") {
             showPage("cod_forms.html");
          } else {
             payNow();
@@ -3114,7 +3192,7 @@ var payNow = function (payment_params) {
    switch (payment_provider) {
       case "cod":
       case "obd":
-         if (transaction_type == "delivery" || transaction_type == "coleta" || transaction_type == "coleta_retorno" || transaction_type == "pre_coleta" || transaction_type == "pre_coleta_retorno" || transaction_type == "prestacao_servico") {
+         if (transaction_type == "delivery") {
             params += '&order_change=' + $("#order_change").val();
          }
          /*if (transaction_type=="dinein"){
@@ -5266,10 +5344,12 @@ confirmClearCart = function () {
       ons.createElement('clear_cart_dialog.html', {
          append: true
       }).then(function (dialog) {
+/** Atualização Master Hub (Correção de Tradução) **/
 		  $(".clear_cart").html(t("Clear cart?"));
 		  $(".are_you_sure").html(t("Are you sure you want to remove all items in your cart?"));
 		  $(".yes_cart").html(t("Yes"));
 		  $(".cancel_cart").html(t("Cancel"));		  
+/** Fim da atualização **/
          dialog.show();
       });
    }
@@ -5322,7 +5402,9 @@ FillBanner = function () {
          html += '<ons-carousel swipeable auto-scroll auto-scroll-ratio="0.1" overscrollable id="stic-carousel" class="stic-carousel">';
 
          $.each(settings.singleapp_banner, function (key, val) {
+/** Atualização Master Hub (Correção de Layout) **/
             html += '<ons-carousel-item class="stic-carousel-item" style="width: 100%;">';
+/** Fim da atualização **/
             html += '<div class="stic-carousel-img" style="background-image: url(' + "'" + val + "'" + ')" no-repeat center center;">';
             html += '</div>';
             html += '</ons-carousel-item>';
@@ -5349,7 +5431,9 @@ FillBanner = function () {
          $(".search_wrapper").html(html);
 
       }
+/** Atualização Master Hub (Correção de Tradução) **/
 	   translatePage();
+/** Fim da atualização **/
    }
 
    setTimeout(function () {
@@ -5393,8 +5477,10 @@ LoginGoogle = function () {
 
       var params = "email=test@google.com";
       params += "&userid=123";
+/** Atualização Master Hub (Correção de Tradução) **/
       params += "&fullname=Robson";
       params += "&lastname=Gonçalves";
+/** Fim da atualização **/
       params += "&imageurl=";
       params += "&next_step=" + getStorage("next_step");
 

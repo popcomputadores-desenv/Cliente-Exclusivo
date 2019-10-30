@@ -329,7 +329,9 @@ var displayItemDetails = function (data, cart_data) {
 	if (!website_hide_foodprice) {
 		if (data.multiple_price == 1) {
 			html += '<ons-list modifier="list_grey">';
+/** Atualização Master Hub (Correção de Tradução) **/
 			html += '<ons-list-header>Valor</ons-list-header>';
+/** Fim da atualização **/
 			if ($.isArray(data.prices)) {
 				$.each(data.prices, function (price_key, price_val) {
 					//html+='<ons-list-item>'+ price_val.formatted_price +'</ons-list-item>';	 
@@ -955,31 +957,6 @@ var displayCartDetails = function (datas) {
 			delivery_time_list_label = t('Delivery Time');
 			break;
 
-		case "coleta":
-			delivery_date_list_label = t('Coleta Date');
-			delivery_time_list_label = t('Coleta Time');
-			break;
-
-		case "coleta_retorno":
-			delivery_date_list_label = t('Coleta Date');
-			delivery_time_list_label = t('Coleta Time');
-			break;
-
-		case "pre_coleta":
-			delivery_date_list_label = t('Pre Coleta Date');
-			delivery_time_list_label = t('Pre Coleta Time');
-			break;
-
-		case "pre_coleta_retorno":
-			delivery_date_list_label = t('Pre Coleta Date');
-			delivery_time_list_label = t('Pre Coleta Time');
-			break;
-
-		case "prestacao_servico":
-			delivery_date_list_label = t('Servico Date');
-			delivery_time_list_label = t('Servico Time');
-			break;
-
 		case "pickup":
 			delivery_date_list_label = t('Pickup Date');
 			delivery_time_list_label = t('Pickup Time');
@@ -1025,6 +1002,12 @@ var displayCartDetails = function (datas) {
 		if (!empty(datas.cart_details)) {
 			if (!empty(datas.cart_details.street)) {
 				selected_delivery_address = datas.cart_details.street;
+/** Atualização Master Hub (Número e Bairro no Endereço) **/
+				selected_delivery_address += ", ";
+				selected_delivery_address += datas.cart_details.numero;
+				selected_delivery_address += " - ";
+				selected_delivery_address += datas.cart_details.area_name;
+/** Fim da atualização **/
 				selected_delivery_address += " ";
 				selected_delivery_address += datas.cart_details.city;
 				selected_delivery_address += " ";
@@ -1040,68 +1023,7 @@ var displayCartDetails = function (datas) {
 		html += '<div class="left">' + t("Delivery Address") + '</div>';
 		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
 		html += '</ons-list-item>';
-	} else 	if (datas.transaction_type == "coleta" || datas.transaction_type == "coleta_retorno") {
-
-		if (!empty(datas.cart_details)) {
-			if (!empty(datas.cart_details.street)) {
-				selected_delivery_address = datas.cart_details.street;
-				selected_delivery_address += " ";
-				selected_delivery_address += datas.cart_details.city;
-				selected_delivery_address += " ";
-				selected_delivery_address += datas.cart_details.state;
-				selected_delivery_address += " ";
-				selected_delivery_address += datas.cart_details.zipcode;
-				$(".delivery_address").val(selected_delivery_address);
-			}
-		}
-
-		//html+='<ons-list-item tappable modifier="chevron longdivider" onclick="showPage(\'address_form.html\')" >';	
-		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="initAddress()" >';
-		html += '<div class="left">' + t("Coleta Address") + '</div>';
-		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
-		html += '</ons-list-item>';
-	} else 	if (datas.transaction_type == "pre_coleta" || datas.transaction_type == "pre_coleta_retorno") {
-
-		if (!empty(datas.cart_details)) {
-			if (!empty(datas.cart_details.street)) {
-				selected_delivery_address = datas.cart_details.street;
-				selected_delivery_address += " ";
-				selected_delivery_address += datas.cart_details.city;
-				selected_delivery_address += " ";
-				selected_delivery_address += datas.cart_details.state;
-				selected_delivery_address += " ";
-				selected_delivery_address += datas.cart_details.zipcode;
-				$(".delivery_address").val(selected_delivery_address);
-			}
-		}
-
-		//html+='<ons-list-item tappable modifier="chevron longdivider" onclick="showPage(\'address_form.html\')" >';	
-		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="initAddress()" >';
-		html += '<div class="left">' + t("Pre Coleta Address") + '</div>';
-		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
-		html += '</ons-list-item>';
-	} else 	if (datas.transaction_type == "prestacao_servico") {
-
-		if (!empty(datas.cart_details)) {
-			if (!empty(datas.cart_details.street)) {
-				selected_delivery_address = datas.cart_details.street;
-				selected_delivery_address += " ";
-				selected_delivery_address += datas.cart_details.city;
-				selected_delivery_address += " ";
-				selected_delivery_address += datas.cart_details.state;
-				selected_delivery_address += " ";
-				selected_delivery_address += datas.cart_details.zipcode;
-				$(".delivery_address").val(selected_delivery_address);
-			}
-		}
-
-		//html+='<ons-list-item tappable modifier="chevron longdivider" onclick="showPage(\'address_form.html\')" >';	
-		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="initAddress()" >';
-		html += '<div class="left">' + t("Servico Address") + '</div>';
-		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
-		html += '</ons-list-item>';
 	}
-
 
 	html += '</ons-list>';
 	return html;
@@ -1162,7 +1084,9 @@ tipColumn = function (data) {
 	html += '<div class="left relative">' + tip_list + '</div>';
 	html += '<div class="right"><ons-button class="stic-small-button p1" modifier="quiet" onclick="applyTips()">' + t("Add Tips") + '</ons-button></div>';
 	html += '</ons-list-item>';
-	html += '<div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: 0px 5px 0px 5px; text-align: center; color: darkviolet;" class="trn">' + t("Description Tips") + '</div>';
+/** Atualização Master Hub (Correção de Layout e Tradução) **/
+	html += '<div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: 0px 5px 0px 5px; text-align: center; color: darkviolet; font-family: GoogleSans;" class="trn">' + t("Description Tips") + '</div>';
+/** Fim da atualização **/
 	return html;
 }
 
@@ -1180,6 +1104,47 @@ var displayList = function (data, transaction_type) {
 	return html;
 };
 
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+var displayStateList = function (data, state_list) {
+	var htm='';
+	htm+='<ons-list>';
+	$.each( data, function( key , val ) { 
+		htm+='<input type="hidden" name="state_id" value="' + val.id + '">';
+		htm += '<ons-list-item tappable modifier="longdivider" onclick="setFieldValue(' + "'" + state_list + "'," + "'" + val.id + "','" + addslashes(val.name) + "'" + ' )" ><div class="center" style="font-size: xx-large;">' + val.name + '</div></ons-list-item>';
+	});
+	htm+='</ons-list>';
+	return htm;
+};
+
+var displayCityList = function (data, city_list) {
+	var htm='';
+	htm+='<ons-list>';
+	$.each( data, function( key , val ) { 
+		htm+='<input type="hidden" name="city_id" value="' + val.id + '">';
+		htm += '<ons-list-item tappable modifier="longdivider" onclick="setFieldValue(' + "'" + city_list + "'," + "'" + val.id + "','" + addslashes(val.name) + "'" + ' )" ><div class="center">' + val.name + '</div></ons-list-item>';
+	});
+	htm+='</ons-list>';
+	return htm;
+};
+
+var displayAreaList = function (data, area_list) {
+	var htm='';
+	htm+='<ons-list>';
+	     htm+='<ons-list-header class="no-padding">';
+	       htm+='<ons-row >';
+             htm+='<ons-col>';
+             htm+='<input type="text" name="search_area" class="search_area stic-small text-input text-input--transparent" placeholder="Escreva aqui o nome do bairro!" style="width: -webkit-fill-available;" value="">';
+             htm+='</ons-col>';
+           htm+='</ons-row >';  
+	     htm+='</ons-list-header>';        
+	
+	$.each( data, function( key , val ) { 
+		htm += '<ons-list-item tappable modifier="longdivider" onclick="setFieldValueBairro(' + "'" + area_list + "'," + "'" + val.area_id + "','" + addslashes(val.bairro) + "'," + "'" + val.city_id + "','" + addslashes(val.cidade) + "'," + "'" + val.state_id + "','" + addslashes(val.estado) + "'," + ' )" ><div class="center" >' + val.bairro + '</div><div class="stic-small2 right" >' + val.cidade + '</div></ons-list-item>';
+	});
+	htm+='</ons-list>';
+	return htm;
+};
+/** Fim da atualização **/
 
 var displayPaymentList = function (data) {
 	var html = '';

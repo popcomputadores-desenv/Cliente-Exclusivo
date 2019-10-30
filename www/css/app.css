@@ -71,7 +71,20 @@
 .toolbar--transparent_toolbar .toolbar-button {
   color: #000;
 }
+/** Atualização Master Hub (Rastreio do Entregador) **/
+#tracking_map .toolbar__title {
+  font-size: 15px;
+}
 
+#tracking_map .driver-name{
+  font-size: 12px;
+}
+
+#tracking_map .track_header img{
+  height: 70px;
+  width: 70px;
+}
+/** Fim da atualização **/
 .line-yellow {
   height: 6px;
   background: #FFCA00;

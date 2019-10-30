@@ -1,3 +1,4 @@
+/** Atualização Master Hub (No documento todo tem alteração de cores e tamanho de logo) **/
 @font-face {
 	font-family: "GoogleSans";
 	src: url('../fonts/GoogleSans-Regular.ttf');
@@ -361,6 +362,12 @@
 
 .stic-small {
 	font-size: 14px;
+	color: #999;
+	margin: 0;
+}
+
+.stic-small2 {
+	font-size: 10px;
 	color: #999;
 	margin: 0;
 }

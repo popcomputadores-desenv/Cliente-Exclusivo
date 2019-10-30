@@ -9,7 +9,9 @@
       <link rel="stylesheet" href="css/theme.css?ver=1.0">
       <link rel="stylesheet" href="css/app.css?ver=1.0">
       <script src="lib/onsen/js/onsenui.min.js"></script>
+<!-- Atualização Master Hub (Atualização do JQUERY) -->
       <script src="lib/jquery-3.4.1.min.js"></script>  
+<!-- Fim da atualização -->
       <script type="text/javascript" src="cordova.js"></script> 
       <script type="text/javascript" src="push.js"></script> 
       <script src="lib/jquery.validate.min.js"></script>
@@ -31,6 +33,9 @@
       <script src="js/layout.js?version=1.0.0"></script>
       <script src="js/template.js?version=1.0.0"></script>    
       <script src="js/app.js?version=1.0.0"></script>
+<!-- Atualização Master Hub (Arquivos Personalizados) -->
+      <script src="js/masterhub.js?version=1.0.0"></script>
+<!-- Fim da atualização -->
       <script src="js/mapbox_wrapper.js?version=1.0.0"></script>  
    </head>
    <body>
@@ -201,7 +206,9 @@
             <p class="small">
                <ons-icon icon="md-spinner" size="28px" spin></ons-icon>
                <br/>
+<!-- Atualização Master Hub (Correção de Tradução) -->
                <span class="trn">Carregando as configurações</span>...
+<!-- Fim da atualização -->
             </p>
          </div>
       </ons-modal>
@@ -263,7 +270,7 @@
             <ons-bottom-toolbar modifier="bottom_toolbar">
                <div class="wrap">
                   <ons-row class="quantity_wrap">
-					  <!-- Modificação para não pode modificar a quantidade de item pedido -->
+<!-- Modificação para não modificar a quantidade de item pedido -->
                      <!-- <ons-col width="80px">
                         <ons-button modifier="quiet" class="full_width" onclick="minusQty( $(this) )" >
                            <ons-icon icon="md-minus" class="hatake" size="25px" ></ons-icon>
@@ -277,6 +284,7 @@
                            <ons-icon icon="md-plus" size="25px"></ons-icon>
                         </ons-button>
                      </ons-col>-->
+<!-- Fim da atualização -->
                   </ons-row>
                   <ons-button class="stic-bottom-button add_to_cart" onclick="addToCart()" >
                      <span class="trn">ADD TO CART</span>
@@ -314,7 +322,9 @@
             <div class="no_order_wrap stic-float-wrap">
                <div class="center" style="margin-top: 30px;">
                   <h2 class="trn">Make your first order</h2>
+<!-- Atualização Master Hub (Correção de Tradução) -->
                   <p class="stic-booking-text trn">Voce pede e nos entregamos!</p>
+<!-- Fim da atualização -->
                   <ons-icon icon="magic" size="45px" class="hatake-grey"></ons-icon>
                   <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="setPageMenu()" >
                      <span class="trn">Let's Go</span>
@@ -415,6 +425,32 @@
                </ons-bottom-toolbar> -->
          </ons-page>
       </template>
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+      <template id="dialog_locationState.html">
+         <ons-dialog id="dialog_locationState" cancelable modifier="medium_dialog">
+            <ons-page id="dialog_locationState">
+               <div class="location_state_wrap"></div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+	   
+      <template id="dialog_locationCity.html">
+         <ons-dialog id="dialog_locationCity" cancelable modifier="large_dialog">
+            <ons-page id="dialog_locationCity">
+               <div class="location_city_wrap"></div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+	   
+	   
+      <template id="dialog_locationArea.html">
+         <ons-dialog id="dialog_locationArea" cancelable modifier="large_dialog">
+            <ons-page id="dialog_locationArea">
+               <div class="location_area_wrap"></div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+<!-- Fim da atualização -->
       <template id="address_form.html">
          <ons-page id="address_form" modifier="white_background" >
             <ons-toolbar modifier="no_shadow">
@@ -426,28 +462,44 @@
                </div>
             </ons-toolbar>
             <form method="POST" id="frm_address" class="frm_address">
-               <div class="wrap">
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+               <input type="hidden" name="area_id" id="area_id" class="area_id">
+               <input type="hidden" name="city_id" id="city_id" class="city_id">
+               <input type="hidden" name="state_id" id="state_id" class="state_id">
+			   
+               <div class="wrap" style="margin-bottom: 85px;">
                   <div class="field_wrap">
-                     <ons-input type="text" name="street" required  class="stic-field full_width street" modifier="underbar" placeholder="Street" float></ons-input>
+                  <ons-input type="text" id="cep" name="zipcode"  class="stic-field full_width zipcode" modifier="underbar" placeholder="Zip Code" float onblur="pesquisacep(this.value);"></ons-input>
+                  </div>
+				  <div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: -8px 5px 15px 5px; text-align: center; color: darkviolet; font-family: GoogleSans;" class="trn">Digite o CEP para preencher automaticamente o endereco.</div>
+				  <div class="field_wrap">
+                     <ons-input type="text" id="street" name="street" required  class="stic-field full_width street" modifier="underbar" placeholder="Street" float></ons-input>
                   </div>
                   <div class="field_wrap">
-                     <ons-input type="text" name="city" required  class="stic-field full_width city" modifier="underbar" placeholder="City" float></ons-input>
+                     <ons-input type="text" id="numero" name="numero" required  class="stic-field full_width numero" modifier="underbar" placeholder="Numero" float></ons-input>
                   </div>
-                  <div class="field_wrap stic-date-time">
-                     <ons-input type="text" name="state"  required class="stic-field full_width state" modifier="underbar" placeholder="State" float></ons-input>
+				   
+                <div class="field_wrap">
+<ons-input type="text" id="area_name" name="area_name" class="stic-field full_width location_area area_name" modifier="chevron"  float onclick="showArea()"></ons-input>
+                  </div>
+                   <div class="field_wrap stic-date-time">
+<ons-input type="text" id="state" name="state" class="stic-field full_width location_state state" float modifier="chevron" onclick="showState()"></ons-input>
                   </div>
                   <div class="field_wrap stic-date-time stic-right">
-                     <ons-input type="text" name="zipcode"  class="stic-field full_width zipcode" modifier="underbar" placeholder="Zip Code" float></ons-input>
-                  </div>
-                  <div class="field_wrap country_list_wrap">
-                     <!--
+<ons-input type="text" id="city" name="city" class="stic-field full_width location_city city" float modifier="chevron" onclick="showCity()"></ons-input>
+                   </div>
+<!-- Fim da atualização -->
+<!-- Atualização Master Hub (Correção de Layout) -->
+                 <!-- <div class="field_wrap country_list_wrap">
+                     
                         <ons-select id="country_code" name="country_code" >
                         <option value="basic">Basic</option>
                         <option value="material">Material</option>
                         <option value="underbar">Underbar</option>
                         </ons-select>
-                        -->
-                  </div>
+                        
+                  </div>-->
+<!-- Fim da atualização -->
                   <div class="field_wrap stic-date-time">
                      <ons-input type="text" name="location_name"  class="stic-field full_width location_name" modifier="underbar" placeholder="Floor/unit/Room #" float></ons-input>
                   </div>
@@ -490,7 +542,9 @@
             </ons-toolbar>
             <div class="wrap">
                <form id="frm_address_form_select" class="frm_address_form_select" method="POST">
+<!-- Atualização Master Hub (Correção de Layout) -->
                   <h3 class="trn" style="margin:0 0 25px 0; font-size: 13px; width: 100%;text-align: center;">Select from the address book</h3>
+<!-- Fim da atualização -->
                   <div class="address_book_wrap"></div>
                   <div class="field_wrap">
                      <ons-input name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
@@ -498,7 +552,9 @@
                </form>
             </div>
             <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('address_form.html');">
+<!-- Atualização Master Hub (Correção de Layout) -->
                <span style="font-size: 13px;" class="trn">ADD NEW DELIVERY ADDRESS</span>
+<!-- Fim da atualização -->
             </ons-button>
             <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="setAddressBook()" >
                <span class="trn">APPLY</span>
@@ -598,12 +654,14 @@
                   </div>
                   <div class="center"><span class="trn">Change password</span></div>
                </ons-list-item>
+<!-- Atualização Master Hub (Correção de Layout) -->
                <!-- <ons-list-item modifier="chevron" tappable onclick="showPage('creditcard_list.html')">
                   <div class="left">
                      <ons-icon icon="credit-card" size="20px"></ons-icon>
                   </div>
                   <div class="center trn">Your credit cards</div>
                </ons-list-item> -->
+<!-- Fim da atualização -->
                <ons-list-item modifier="chevron" tappable  onclick="showPage('addressbook_list.html')" >
                   <div class="left">
                      <ons-icon icon="address-book" size="20px"></ons-icon>
@@ -752,7 +810,9 @@
                            <ons-icon icon="key" size="20px"></ons-icon>
                         </div>
                         <div class="center pd10">
+<!-- Atualização Master Hub (Correção de Tradução) -->
                            <ons-input type="password" name="current_password" id="current_password" required class="stic-field full_width" modifier="material" placeholder="Enter current password" float></ons-input>
+<!-- Fim da atualização -->
                         </div>
                      </ons-list-item>
                      <ons-list-item modifier="nodivider">
@@ -760,13 +820,17 @@
                            <ons-icon icon="unlock-alt" size="20px"></ons-icon>
                         </div>
                         <div class="center pd10">
+<!-- Atualização Master Hub (Correção de Tradução) -->
                            <ons-input type="password" name="password" id="password_field" required class="stic-field full_width" modifier="material" placeholder="Enter new password" float></ons-input>
+<!-- Fim da atualização -->
                         </div>
                      </ons-list-item>
                      <ons-list-item modifier="nodivider">
                         <div class="left">&nbsp;</div>
                         <div class="center pd10">
+<!-- Atualização Master Hub (Correção de Tradução) -->
                            <ons-input type="password" name="cpassword" id="confirm_password" required class="stic-field full_width" modifier="material" placeholder="Confirm new password" float></ons-input>
+<!-- Fim da atualização -->
                         </div>
                      </ons-list-item>
                   </ons-list>
@@ -828,7 +892,9 @@
                      <ons-input class="stic-field" name="username" id="username_field" autoFocus required class="full_width username_field" modifier="material" placeholder="Mobile number or email" float></ons-input>
                   </div>
                   <div class="field_wrap password">
+<!-- Atualização Master Hub (Correção de Tradução) -->
                      <ons-input class="stic-field" type="password" id="password_field" name="password" required class="full_width password_field" modifier="underbar" placeholder="Password" float></ons-input>
+<!-- Fim da atualização -->
                   </div>
                   <div class="full_width wrap">
                      <ons-button modifier="quiet " class="pd10" onclick="showPage('forgot_pass.html')" >
@@ -976,27 +1042,47 @@
                <div class="left">
                   <ons-back-button>Back</ons-back-button>
                </div>
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+				<div class="center">
+                  <spam class="trn">Address</spam>
+               </div>
             </ons-toolbar>
-            <div class="wrap">
+            <div class="wrap" style="margin-bottom: 85px;">
                <form id="frm_addressbook" class="frm_addressbook" method="POST">
                   <input type="hidden" class="book_id" name="book_id" id="book_id">
-                  <h3 class="trn" style="margin:0 0 15px 0;">Address</h3>
+				   <input type="hidden" name="area_id" id="area_id" class="area_id">
+				   <input type="hidden" name="city_id" id="city_id" class="city_id">
+				   <input type="hidden" name="state_id" id="state_id" class="state_id">
+				   
                   <div class="field_wrap">
-                     <ons-input type="text" name="street" required class="stic-field full_width street" modifier="underbar"  placeholder="Street" float></ons-input>
+                  <ons-input type="text" id="cep" name="zipcode"  class="stic-field full_width zipcode" modifier="underbar" placeholder="Zip Code" float onblur="pesquisacep(this.value);"></ons-input>
                   </div>
+				  <div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: -8px 5px 15px 5px; text-align: center; color: darkviolet; font-family: GoogleSans;" class="trn">Digite o CEP para preencher automaticamente o endereco.</div>
                   <div class="field_wrap">
-                     <ons-input type="text" name="city" required class="stic-field full_width city" modifier="underbar"  placeholder="City" float></ons-input>
+                     <ons-input type="text" id="street" name="street" required class="stic-field full_width street" modifier="underbar"  placeholder="Street" float></ons-input>
                   </div>
-                  <div class="field_wrap">
-                     <ons-input type="text" name="state" required class="stic-field full_width state" modifier="underbar"  placeholder="State" float></ons-input>
+<div class="field_wrap">
+                     <ons-input type="text" id="numero" name="numero" required  class="stic-field full_width numero" modifier="underbar" placeholder="Numero" float></ons-input>
                   </div>
-                  <div class="field_wrap">
-                     <ons-input type="text" name="zipcode" required class="stic-field full_width zipcode" modifier="underbar"  placeholder="Zip code" float></ons-input>
-                  </div>
-                  <div class="field_wrap country_list_wrap">      
-                  </div>
-                  <div class="field_wrap">
+				   
+				<div class="field_wrap">
+<ons-input type="text" id="area_name" name="area_name" required class="stic-field full_width location_area area_name" float modifier="chevron" onclick="showArea()"></ons-input>
+				</div>
+				   
+				<div class="field_wrap stic-date-time">
+<ons-input type="text" id="state" name="state" class="stic-field full_width location_state state" float modifier="chevron" onclick="showState()" ></ons-input>
+				</div>
+				   
+				<div class="field_wrap stic-date-time stic-right">
+<ons-input type="text" id="city" name="city" class="stic-field full_width location_city city" float modifier="chevron" onclick="showCity()" ></ons-input>
+				</div>       
+				   
+				   <div class="field_wrap">
                      <ons-input type="text" name="location_name" required class="stic-field full_width location_name" modifier="underbar"  placeholder="Location name" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="delivery_instruction"  class="stic-field full_width delivery_instruction" modifier="underbar" placeholder="Delivery instructions" float></ons-input>
+<!-- Fim da atualização -->
                   </div>
                   <div class="field_wrap">
                      <label class="left">
@@ -1008,6 +1094,11 @@
                   </div>
                </form>
             </div>
+<!-- Atualização Master Hub (Mapa no Catálogo de Endereços) -->
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('map_select.html')">
+               <span class="mt3 trn">Select address from map</span>
+            </ons-button>
+<!-- Fim da atualização -->
             <!--wrap-->
             <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="saveAddressBook()" >     
                <span class="addressbook_action">SAVE</span>
@@ -1075,7 +1166,9 @@
                <div class="no_order_wrap">
                   <div class="center">
                      <p class="trn">Make your first order</p>
+<!-- Atualização Master Hub (Correção de Tradução) -->
                      <p class="small trn">Voce pede e nos entregamos!</p>
+<!-- Fim da atualização -->
                      <br/>
                      <ons-button modifier="green_button big_button" onclick="setPageMenu()" >
                         <span class="trn">lets_go</span>
@@ -1196,7 +1289,9 @@
                   <ons-back-button>Back</ons-back-button>
                </div>
                <div class="stic-page-name center">
+<!-- Atualização Master Hub (Correção de Tradução) -->
                   <span class="custom_page_title trn">Book a table</span>
+<!-- Fim da atualização -->
                </div>
             </ons-toolbar>
             <ons-list-title modifier="list_title_grey">
@@ -1732,6 +1827,7 @@
       </template>
       <template id="clear_cart_dialog.html">
          <ons-alert-dialog id="clear_cart_dialog" modifier="rowfooter" cancelable>
+<!-- Atualização Master Hub (Correção de Tradução) -->
             <div class="alert-dialog-title clear_cart trn clear_cart">Clear cart?</div>
             <div class="alert-dialog-content are_you_sure">
                Are you sure you want to remove all items in your cart?
@@ -1739,6 +1835,7 @@
             <div class="alert-dialog-footer">
                <ons-alert-dialog-button onclick="hideDialog('clear_cart_dialog')" class="cancel_cart">Cancel</ons-alert-dialog-button>
                <ons-alert-dialog-button onclick="clearCart();" class="yes_cart">Yes</ons-alert-dialog-button>
+<!-- Fim da atualização -->
             </div>
             <!--dialog_wrapper--> 
          </ons-alert-dialog>
@@ -1772,7 +1869,9 @@
                   <ons-back-button>Back</ons-back-button>
                </div>
                <div class="stic-page-name center">
+<!-- Atualização Master Hub (Correção de Tradução) -->
                   <span class="custom_page_title trn">Search for category</span>
+<!-- Fim da atualização -->
                </div>
             </ons-toolbar>
             <div class="search_wrapper">
@@ -1810,7 +1909,9 @@
                         <ons-icon icon="fa-search" class="hatake"></ons-icon>
                      </ons-col>
                      <ons-col vertical-align="center" >
+<!-- Atualização Master Hub (Correção de Tradução) -->
                         <ons-search-input id="input_search_item" placeholder="Search for item"></ons-search-input>
+<!-- Fim da atualização -->
                      </ons-col>
                   </ons-row>
                </div>
@@ -1972,6 +2073,7 @@
             <div class="wrap">
                <form id="frm_add_review" class="frm_add_review" method="POST">
                   <input type="hidden" class="review_order_id" name="review_order_id" id="review_order_id">
+<!-- Atualização Master Hub (Correção de Layout) -->
                   <div class="field_wrap relative" style="width:280px;">
                      <ons-icon icon="caret-down" size="20px" class="stic-drop-down"></ons-icon>
                      <ons-select id="rating" name="rating" required >
@@ -1983,6 +2085,7 @@
                         <option value="3" class="trn">nota 3</option>
                         <option value="4" class="trn">nota 4</option>
                         <option value="5" class="trn">nota 5</option>
+<!-- Fim da atualização -->
                      </ons-select>
                   </div>
                   <div class="field_wrap">
