@@ -311,6 +311,8 @@
                <input type="hidden" name="delivery_date" id="delivery_date" class="delivery_date">
                <input type="hidden" name="delivery_time" id="delivery_time" class="delivery_time">
                <input type="hidden" name="delivery_address" id="delivery_address" class="delivery_address">
+               <input type="hidden" name="coleta_address" id="coleta_address" class="coleta_address">
+               <input type="hidden" name="pre_coleta_address" id="pre_coleta_address" class="pre_coleta_address">
                <input type="hidden" name="cart_total_value" id="cart_total_value" class="cart_total_value">
                <input type="hidden" name="cart_total_value_raw" id="cart_total_value_raw" class="cart_total_value_raw">
                <input type="hidden" name="required_delivery_time" id="required_delivery_time" class="required_delivery_time">
@@ -530,6 +532,243 @@
             </ons-button>
          </ons-page>
       </template>
+      <template id="address_coleta_form.html">
+         <ons-page id="address_coleta_form" modifier="white_background" >
+            <ons-toolbar modifier="no_shadow">
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">Enter Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <form method="POST" id="frm_address_coleta" class="frm_address_coleta">
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+               <input type="hidden" name="area_id" id="area_id" class="area_id">
+               <input type="hidden" name="city_id" id="city_id" class="city_id">
+               <input type="hidden" name="state_id" id="state_id" class="state_id">
+			   
+               <div class="wrap" style="margin-bottom: 85px;">
+                  <div class="field_wrap">
+                  <ons-input type="text" id="cep" name="zipcode"  class="stic-field full_width zipcode" modifier="underbar" placeholder="Zip Code" float onblur="pesquisacep(this.value);"></ons-input>
+                  </div>
+				  <div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: -8px 5px 15px 5px; text-align: center; color: darkviolet; font-family: GoogleSans;" class="trn">Digite o CEP para preencher automaticamente o endereco.</div>
+				  <div class="field_wrap">
+                     <ons-input type="text" id="street" name="street" required  class="stic-field full_width street" modifier="underbar" placeholder="Street" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" id="numero" name="numero" required  class="stic-field full_width numero" modifier="underbar" placeholder="Numero" float></ons-input>
+                  </div>
+				   
+                <div class="field_wrap">
+<ons-input type="text" id="area_name" name="area_name" class="stic-field full_width location_area area_name" modifier="chevron"  float onclick="showArea()"></ons-input>
+                  </div>
+                   <div class="field_wrap stic-date-time">
+<ons-input type="text" id="state" name="state" class="stic-field full_width location_state state" float modifier="chevron" onclick="showState()"></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time stic-right">
+<ons-input type="text" id="city" name="city" class="stic-field full_width location_city city" float modifier="chevron" onclick="showCity()"></ons-input>
+                   </div>
+<!-- Fim da atualização -->
+<!-- Atualização Master Hub (Correção de Layout) -->
+                 <!-- <div class="field_wrap country_list_wrap">
+                     
+                        <ons-select id="country_code" name="country_code" >
+                        <option value="basic">Basic</option>
+                        <option value="material">Material</option>
+                        <option value="underbar">Underbar</option>
+                        </ons-select>
+                        
+                  </div>-->
+<!-- Fim da atualização -->
+                  <div class="field_wrap stic-date-time">
+                     <ons-input type="text" name="location_name"  class="stic-field full_width location_name" modifier="underbar" placeholder="Floor/unit/Room #" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time stic-right">
+                     <ons-input type="text" name="contact_phone" required  class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="delivery_instruction"  class="stic-field full_width delivery_instruction" modifier="underbar" placeholder="Delivery instructions" float></ons-input>
+                  </div>
+                  <ons-list class="show_if_login">
+                     <ons-list-item tappable class="pl0">
+                        <label class="left">
+                           <ons-checkbox name="save_address" class="save_address"  input-id="save_address" value="1"></ons-checkbox>
+                        </label>
+                        <label for="save_address" class="center">
+                        <span class="trn">Save to my address book</span> 
+                        </label>
+                     </ons-list-item>
+                  </ons-list>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="setColetaAddress()">
+                     <span class="trn">APPLY</span>
+                  </ons-button>
+               </div>
+               <!--wrap-->
+            </form>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('map_select.html')">
+               <span class="mt3 trn">Select address from map</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="address_1_coleta_form.html">
+         <ons-page id="address_1_coleta_form" modifier="white_background" >
+            <ons-toolbar modifier="no_shadow">
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">Enter 1 Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <form method="POST" id="frm_address_1_coleta" class="frm_address_1_coleta">
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+               <input type="hidden" name="area_id" id="area_id" class="area_id">
+               <input type="hidden" name="city_id" id="city_id" class="city_id">
+               <input type="hidden" name="state_id" id="state_id" class="state_id">
+			   
+               <div class="wrap" style="margin-bottom: 85px;">
+                  <div class="field_wrap">
+                  <ons-input type="text" id="cep" name="zipcode"  class="stic-field full_width zipcode" modifier="underbar" placeholder="Zip Code" float onblur="pesquisacep(this.value);"></ons-input>
+                  </div>
+				  <div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: -8px 5px 15px 5px; text-align: center; color: darkviolet; font-family: GoogleSans;" class="trn">Digite o CEP para preencher automaticamente o endereco.</div>
+				  <div class="field_wrap">
+                     <ons-input type="text" id="street" name="street" required  class="stic-field full_width street" modifier="underbar" placeholder="Street" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" id="numero" name="numero" required  class="stic-field full_width numero" modifier="underbar" placeholder="Numero" float></ons-input>
+                  </div>
+				   
+                <div class="field_wrap">
+<ons-input type="text" id="area_name" name="area_name" class="stic-field full_width location_area area_name" modifier="chevron"  float onclick="showArea()"></ons-input>
+                  </div>
+                   <div class="field_wrap stic-date-time">
+<ons-input type="text" id="state" name="state" class="stic-field full_width location_state state" float modifier="chevron" onclick="showState()"></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time stic-right">
+<ons-input type="text" id="city" name="city" class="stic-field full_width location_city city" float modifier="chevron" onclick="showCity()"></ons-input>
+                   </div>
+<!-- Fim da atualização -->
+<!-- Atualização Master Hub (Correção de Layout) -->
+                 <!-- <div class="field_wrap country_list_wrap">
+                     
+                        <ons-select id="country_code" name="country_code" >
+                        <option value="basic">Basic</option>
+                        <option value="material">Material</option>
+                        <option value="underbar">Underbar</option>
+                        </ons-select>
+                        
+                  </div>-->
+<!-- Fim da atualização -->
+                  <div class="field_wrap stic-date-time">
+                     <ons-input type="text" name="location_name"  class="stic-field full_width location_name" modifier="underbar" placeholder="Floor/unit/Room #" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time stic-right">
+                     <ons-input type="text" name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="delivery_instruction"  class="stic-field full_width delivery_instruction" modifier="underbar" placeholder="Delivery instructions" float></ons-input>
+                  </div>
+                  <ons-list class="show_if_login">
+                     <ons-list-item tappable class="pl0">
+                        <label class="left">
+                           <ons-checkbox name="save_address" class="save_address"  input-id="save_address" value="1"></ons-checkbox>
+                        </label>
+                        <label for="save_address" class="center">
+                        <span class="trn">Save to my address book</span> 
+                        </label>
+                     </ons-list-item>
+                  </ons-list>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="set1ColetaAddress()">
+                     <span class="trn">APPLY</span>
+                  </ons-button>
+               </div>
+               <!--wrap-->
+            </form>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('map_select.html')">
+               <span class="mt3 trn">Select address from map</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="address_2_coleta_form.html">
+         <ons-page id="address_2_coleta_form" modifier="white_background" >
+            <ons-toolbar modifier="no_shadow">
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">Enter 2 Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <form method="POST" id="frm_address_2_coleta" class="frm_address_2_coleta">
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+               <input type="hidden" name="area_id" id="area_id" class="area_id">
+               <input type="hidden" name="city_id" id="city_id" class="city_id">
+               <input type="hidden" name="state_id" id="state_id" class="state_id">
+			   
+               <div class="wrap" style="margin-bottom: 85px;">
+                  <div class="field_wrap">
+                  <ons-input type="text" id="cep" name="zipcode"  class="stic-field full_width zipcode" modifier="underbar" placeholder="Zip Code" float onblur="pesquisacep(this.value);"></ons-input>
+                  </div>
+				  <div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: -8px 5px 15px 5px; text-align: center; color: darkviolet; font-family: GoogleSans;" class="trn">Digite o CEP para preencher automaticamente o endereco.</div>
+				  <div class="field_wrap">
+                     <ons-input type="text" id="street" name="street" required  class="stic-field full_width street" modifier="underbar" placeholder="Street" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" id="numero" name="numero" required  class="stic-field full_width numero" modifier="underbar" placeholder="Numero" float></ons-input>
+                  </div>
+				   
+                <div class="field_wrap">
+<ons-input type="text" id="area_name" name="area_name" class="stic-field full_width location_area area_name" modifier="chevron"  float onclick="showArea()"></ons-input>
+                  </div>
+                   <div class="field_wrap stic-date-time">
+<ons-input type="text" id="state" name="state" class="stic-field full_width location_state state" float modifier="chevron" onclick="showState()"></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time stic-right">
+<ons-input type="text" id="city" name="city" class="stic-field full_width location_city city" float modifier="chevron" onclick="showCity()"></ons-input>
+                   </div>
+<!-- Fim da atualização -->
+<!-- Atualização Master Hub (Correção de Layout) -->
+                 <!-- <div class="field_wrap country_list_wrap">
+                     
+                        <ons-select id="country_code" name="country_code" >
+                        <option value="basic">Basic</option>
+                        <option value="material">Material</option>
+                        <option value="underbar">Underbar</option>
+                        </ons-select>
+                        
+                  </div>-->
+<!-- Fim da atualização -->
+                  <div class="field_wrap stic-date-time">
+                     <ons-input type="text" name="location_name"  class="stic-field full_width location_name" modifier="underbar" placeholder="Floor/unit/Room #" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time stic-right">
+                     <ons-input type="text" name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="delivery_instruction"  class="stic-field full_width delivery_instruction" modifier="underbar" placeholder="Delivery instructions" float></ons-input>
+                  </div>
+                  <ons-list class="show_if_login">
+                     <ons-list-item tappable class="pl0">
+                        <label class="left">
+                           <ons-checkbox name="save_address" class="save_address"  input-id="save_address" value="1"></ons-checkbox>
+                        </label>
+                        <label for="save_address" class="center">
+                        <span class="trn">Save to my address book</span> 
+                        </label>
+                     </ons-list-item>
+                  </ons-list>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="set2ColetaAddress()">
+                     <span class="trn">APPLY</span>
+                  </ons-button>
+               </div>
+               <!--wrap-->
+            </form>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('map_select.html')">
+               <span class="mt3 trn">Select address from map</span>
+            </ons-button>
+         </ons-page>
+      </template>
       <template id="address_form_select.html">
          <ons-page id="address_form_select" modifier="white_background" >
             <ons-toolbar>
@@ -561,7 +800,99 @@
             </ons-button>
          </ons-page>
       </template>
-      <template id="payment_option.html">
+      <template id="address_coleta_form_select.html">
+         <ons-page id="address_coleta_form_select" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <div class="wrap">
+               <form id="frm_address_coleta_form_select" class="frm_address_coleta_form_select" method="POST">
+<!-- Atualização Master Hub (Correção de Layout) -->
+                  <h3 class="trn" style="margin:0 0 25px 0; font-size: 13px; width: 100%;text-align: center;">Select from the address book</h3>
+<!-- Fim da atualização -->
+                  <div class="address_book_wrap"></div>
+                  <div class="field_wrap">
+                     <ons-input name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+               </form>
+            </div>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('address_coleta_form.html');">
+<!-- Atualização Master Hub (Correção de Layout) -->
+               <span style="font-size: 13px;" class="trn">ADD NEW DELIVERY ADDRESS</span>
+<!-- Fim da atualização -->
+            </ons-button>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="setColetaAddressBook()" >
+               <span class="trn">APPLY</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="address_1_coleta_form_select.html">
+         <ons-page id="address_1_coleta_form_select" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">1 Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <div class="wrap">
+               <form id="frm_address_1_coleta_form_select" class="frm_address_1_coleta_form_select" method="POST">
+<!-- Atualização Master Hub (Correção de Layout) -->
+                  <h3 class="trn" style="margin:0 0 25px 0; font-size: 13px; width: 100%;text-align: center;">Select from the address book</h3>
+<!-- Fim da atualização -->
+                  <div class="address_book_wrap"></div>
+                  <div class="field_wrap">
+                     <ons-input name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+               </form>
+            </div>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('address_1_coleta_form.html');">
+<!-- Atualização Master Hub (Correção de Layout) -->
+               <span style="font-size: 13px;" class="trn">ADD NEW DELIVERY ADDRESS</span>
+<!-- Fim da atualização -->
+            </ons-button>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="set1ColetaAddressBook()" >
+               <span class="trn">APPLY</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="address_2_coleta_form_select.html">
+         <ons-page id="address_2_coleta_form_select" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">2 Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <div class="wrap">
+               <form id="frm_address_2_coleta_form_select" class="frm_address_2_coleta_form_select" method="POST">
+<!-- Atualização Master Hub (Correção de Layout) -->
+                  <h3 class="trn" style="margin:0 0 25px 0; font-size: 13px; width: 100%;text-align: center;">Select from the address book</h3>
+<!-- Fim da atualização -->
+                  <div class="address_book_wrap"></div>
+                  <div class="field_wrap">
+                     <ons-input name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+               </form>
+            </div>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('address_2_coleta_form.html');">
+<!-- Atualização Master Hub (Correção de Layout) -->
+               <span style="font-size: 13px;" class="trn">ADD NEW DELIVERY ADDRESS</span>
+<!-- Fim da atualização -->
+            </ons-button>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="set2ColetaAddressBook()" >
+               <span class="trn">APPLY</span>
+            </ons-button>
+         </ons-page>
+      </template>      <template id="payment_option.html">
          <ons-page id="payment_option" modifier="white_background" >
             <ons-toolbar >
                <div class="left stic-above">

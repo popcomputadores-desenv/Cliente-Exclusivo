@@ -357,9 +357,9 @@ var displayItemDetails = function (data, cart_data) {
 					html += '</label>';
 
 					if (price_val.discount_price > 0.0001) {
-						html += '<label for="price-' + price_key + '" class="center"><span class="stic-capitalize">' + price_val.size + '</span><div class="stic-div-right"><span class="stic-price">' + price_val.formatted_price + '</span><span class="stic-price-final">' + price_val.formatted_discount_price + '</span></div></label>';
+						html += '<label for="price-' + price_key + '" class="center"><span class="stic-capitalize">' + t(price_val.size) + '</span><div class="stic-div-right"><span class="stic-price">' + price_val.formatted_price + '</span><span class="stic-price-final">' + price_val.formatted_discount_price + '</span></div></label>';
 					} else {
-						html += '<label for="price-' + price_key + '" class="center"><span class="stic-capitalize">' + price_val.size + '</span><span class="stic-price-final stic-div-right">' + price_val.formatted_price + '</span></label>';
+						html += '<label for="price-' + price_key + '" class="center"><span class="stic-capitalize">' + t(price_val.size) + '</span><span class="stic-price-final stic-div-right">' + price_val.formatted_price + '</span></label>';
 					}
 
 
@@ -616,6 +616,7 @@ var priceCheckbox = function (cat_id, data, cart_data) {
 var displayCartDetails = function (datas) {
 	data = datas.data;
 	dump(data);
+	var tipo_servico = data.item[0].size_words;
 	var html = '<ons-list class="stic-float-wrap">';
 
 	html += '<div class="stic-order">';
@@ -632,10 +633,10 @@ var displayCartDetails = function (datas) {
 			html += '<span class="full_width">' + item_val.item_name + '</span>';
 			if (item_val.discount > 0) {
 				price_used = item_val.discounted_price;
-				html += '<div class="left stic-small"><span class="stic-capitalize">' + item_val.size_words + ' </span><span class="line_tru">' + prettyPrice(item_val.normal_price) + ' </span><span class="stic-black">' + prettyPrice(item_val.discounted_price) + '</span></div>';
+				html += '<div class="left stic-small"><span class="stic-capitalize">' + t(item_val.size_words) + ' </span><span class="line_tru">' + prettyPrice(item_val.normal_price) + ' </span><span class="stic-black">' + prettyPrice(item_val.discounted_price) + '</span></div>';
 			} else {
 				price_used = number_format(item_val.normal_price, 2, '.', '');
-				html += '<div class="left stic-small"><span class="stic-capitalize">' + item_val.size_words + ' </span><span class="stic-black">' + prettyPrice(item_val.normal_price) + '</span></div>';
+				html += '<div class="left stic-small"><span class="stic-capitalize">' + t(item_val.size_words) + ' </span><span class="stic-black">' + prettyPrice(item_val.normal_price) + '</span></div>';
 			}
 			html += '</div>';
 
@@ -919,11 +920,19 @@ var displayCartDetails = function (datas) {
 	services = datas.services;
 
 	dump(services);
-	selected_services = datas.transaction_type;
+	if (tipo_servico=='coleta' || tipo_servico=='coleta_retorno' || tipo_servico=='pre_coleta' || tipo_servico=='pre_coleta_retorno' || tipo_servico=='prestacao_servico'){
+		selected_services = tipo_servico;
+	} else {
+		selected_services = datas.transaction_type;
+	}
+	
 	selected_delivery_date = '';
 	selected_delivery_time = '';
 
 	selected_delivery_address = t('Enter address');
+	selected_coleta_address = t('Enter coleta address');
+	selected_1_coleta_address = t('Enter pre coleta address');
+	selected_2_coleta_address = t('Enter coleta address');
 
 	selected_delivery_date = datas.default_delivery_date;
 	default_delivery_date_pretty = datas.default_delivery_date_pretty;
@@ -951,12 +960,29 @@ var displayCartDetails = function (datas) {
 	var delivery_date_list_label = '';
 	var delivery_time_list_label = '';
 
-	switch (datas.transaction_type) {
+	switch (selected_services) {
 		case "delivery":
 			delivery_date_list_label = t('Delivery Date');
 			delivery_time_list_label = t('Delivery Time');
 			break;
 
+		case "coleta":
+		case "coleta_retorno":
+			delivery_date_list_label = t('Coleta Date');
+			delivery_time_list_label = t('Coleta Time');
+			break;
+			
+		case "pre_coleta":
+		case "pre_coleta_retorno":
+			delivery_date_list_label = t('1 Coleta Date');
+			delivery_time_list_label = t('1 Coleta Time');
+			break;
+						
+		case "prestacao_servico":
+			delivery_date_list_label = t('Servico Date');
+			delivery_time_list_label = t('Servico Time');
+			break;
+			
 		case "pickup":
 			delivery_date_list_label = t('Pickup Date');
 			delivery_time_list_label = t('Pickup Time');
@@ -986,9 +1012,9 @@ var displayCartDetails = function (datas) {
 	html += '<div class="right"><span class="stic-small-upper list-item__subtitle delivery_time_label">' + selected_delivery_time + '</span></div>';
 	html += '</ons-list-item>';
 
-	if (datas.transaction_type == "delivery") {
+	if (selected_services == "delivery" || selected_services == "coleta" || selected_services == "coleta_retorno" || selected_services == "pre_coleta" || selected_services == "pre_coleta_retorno" || selected_services == "prestacao_servico") {
 
-		if (datas.checkout_stats.is_pre_order != 1) {
+		if (datas.checkout_stats.is_pre_order != 1 && selected_services == "delivery" ) {
 			html += '<ons-list-item>';
 			html += '<div class="center">';
 			html += t("Delivery Asap");
@@ -1017,12 +1043,72 @@ var displayCartDetails = function (datas) {
 				$(".delivery_address").val(selected_delivery_address);
 			}
 		}
-
-		//html+='<ons-list-item tappable modifier="chevron longdivider" onclick="showPage(\'address_form.html\')" >';	
+		if (!empty(datas.cart_details)) {
+			if (!empty(datas.cart_details.coleta_address)) {
+				selected_coleta_address = datas.cart_details.coleta_address;
+				$(".coleta_address").val(selected_coleta_address);
+			}
+		}	
+		if (!empty(datas.cart_details)) {
+			if (!empty(datas.cart_details.pre_coleta_address)) {
+				selected_1_coleta_address = datas.cart_details.pre_coleta_address;
+				$(".pre_coleta_address").val(selected_1_coleta_address);
+			}
+		}
+		if (!empty(datas.cart_details)) {
+			if (!empty(datas.cart_details.coleta_address)) {
+				selected_2_coleta_address = datas.cart_details.coleta_address;
+				$(".coleta_address").val(selected_2_coleta_address);
+			}
+		}		
+if (selected_services == "delivery") {
+/** Atualização Master Hub (Correção de Layout e Tradução) **/
+		html += '<div style="margin-top: 10px"></div>';
+/** Fim da atualização **/
 		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="initAddress()" >';
 		html += '<div class="left">' + t("Delivery Address") + '</div>';
 		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
 		html += '</ons-list-item>';
+	
+} else if (selected_services == "coleta" || selected_services == "coleta_retorno") {
+/** Atualização Master Hub (Correção de Layout e Tradução) **/
+		html += '<div style="margin-top: 10px"></div>';
+/** Fim da atualização **/
+		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="initColetaAddress()" >';
+		html += '<div class="left">' + t("Coleta Address") + '</div>';
+		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle coleta_address_label concat-text">' + selected_coleta_address + '</span></div>';
+		html += '</ons-list-item>';
+		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="initAddress()" >';
+		html += '<div class="left">' + t("Delivery Address") + '</div>';
+		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
+		html += '</ons-list-item>';
+	
+} else if (selected_services == "pre_coleta" || selected_services == "pre_coleta_retorno") {
+/** Atualização Master Hub (Correção de Layout e Tradução) **/
+		html += '<div style="margin-top: 10px"></div>';
+/** Fim da atualização **/
+		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="init1ColetaAddress()" >';
+		html += '<div class="left">' + t("1 Coleta Address") + '</div>';
+		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle 1_coleta_address_label concat-text">' + selected_1_coleta_address + '</span></div>';
+		html += '</ons-list-item>';
+		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="init2ColetaAddress()" >';
+		html += '<div class="left">' + t("2 Coleta Address") + '</div>';
+		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle 2_coleta_address_label concat-text">' + selected_2_coleta_address + '</span></div>';
+		html += '</ons-list-item>';
+		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="initAddress()" >';
+		html += '<div class="left">' + t("Delivery Address") + '</div>';
+		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
+		html += '</ons-list-item>';
+	
+} else if (selected_services == "prestacao_servico") {
+/** Atualização Master Hub (Correção de Layout e Tradução) **/
+		html += '<div style="margin-top: 10px"></div>';
+/** Fim da atualização **/
+		html += '<ons-list-item tappable modifier="chevron longdivider" class="stic-delivery" onclick="initAddress()" >';
+		html += '<div class="left">' + t("Servico Address") + '</div>';
+		html += '<div class="right text-right"><span class="stic-small-upper list-item__subtitle delivery_address_label concat-text">' + selected_delivery_address + '</span></div>';
+		html += '</ons-list-item>';
+}
 	}
 
 	html += '</ons-list>';

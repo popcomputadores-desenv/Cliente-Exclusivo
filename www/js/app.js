@@ -272,6 +272,8 @@ document.addEventListener('init', function (event) {
             params = "item_id=" + page.data.item_id + "&cat_id=" + page.data.cat_id;
          }
          ajaxCall('loadItemDetails', params);
+		   clearCartSilent();
+		   getCartCount();
          break;
 
       case "page_cart":
@@ -367,6 +369,111 @@ document.addEventListener('init', function (event) {
          ajaxCall('GetAddressFromCart', '');
          break;
 
+      case "address_coleta_form":
+         if (isLogin()) {
+            $(".show_if_login").show();
+         } else {
+            $(".show_if_login").hide();
+         }
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+		   location_area = $("#address_coleta_form .area_name").val();
+			if (!empty(location_area)) {
+				$("#address_coleta_form .area_name").val(location_area);
+			}
+		   location_city = $("#address_coleta_form .city").val();
+			if (!empty(location_city)) {
+				$("#address_coleta_form .city").val(location_city);
+			}
+		   location_state = $("#address_coleta_form .state").val();
+			if (!empty(location_state)) {
+				$("#address_coleta_form .state").val(location_state);
+			}
+/** Fim da atualização **/
+         $(".street").attr("placeholder", t("Street"));
+/** Atualização Master Hub (Número e Bairro no Endereço) **/
+         $(".numero").attr("placeholder", t("Numero"));
+         $(".area_name").attr("placeholder", t("Area Name"));
+/** Fim da atualização **/
+         $(".city").attr("placeholder", t("City"));
+         $(".state").attr("placeholder", t("State"));
+         $(".zipcode").attr("placeholder", t("Zip Code"));
+         $(".location_name").attr("placeholder", t("Floor/unit/Room #"));
+         $(".contact_phone").attr("placeholder", t("Contact number"));
+         $(".delivery_instruction").attr("placeholder", t("Delivery instructions"));
+
+         ajaxCall('GetAddressFromCart', '');
+         break;
+		   
+      case "address_1_coleta_form":
+         if (isLogin()) {
+            $(".show_if_login").show();
+         } else {
+            $(".show_if_login").hide();
+         }
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+		   location_area = $("#address_1_coleta_form .area_name").val();
+			if (!empty(location_area)) {
+				$("#address_1_coleta_form .area_name").val(location_area);
+			}
+		   location_city = $("#address_1_coleta_form .city").val();
+			if (!empty(location_city)) {
+				$("#address_1_coleta_form .city").val(location_city);
+			}
+		   location_state = $("#address_1_coleta_form .state").val();
+			if (!empty(location_state)) {
+				$("#address_1_coleta_form .state").val(location_state);
+			}
+/** Fim da atualização **/
+         $(".street").attr("placeholder", t("Street"));
+/** Atualização Master Hub (Número e Bairro no Endereço) **/
+         $(".numero").attr("placeholder", t("Numero"));
+         $(".area_name").attr("placeholder", t("Area Name"));
+/** Fim da atualização **/
+         $(".city").attr("placeholder", t("City"));
+         $(".state").attr("placeholder", t("State"));
+         $(".zipcode").attr("placeholder", t("Zip Code"));
+         $(".location_name").attr("placeholder", t("Floor/unit/Room #"));
+         $(".contact_phone").attr("placeholder", t("Contact number"));
+         $(".delivery_instruction").attr("placeholder", t("Delivery instructions"));
+
+         ajaxCall('GetAddressFromCart', '');
+         break;
+		   
+      case "address_2_coleta_form":
+         if (isLogin()) {
+            $(".show_if_login").show();
+         } else {
+            $(".show_if_login").hide();
+         }
+/** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
+		   location_area = $("#address_2_coleta_form .area_name").val();
+			if (!empty(location_area)) {
+				$("#address_2_coleta_form .area_name").val(location_area);
+			}
+		   location_city = $("#address_2_coleta_form .city").val();
+			if (!empty(location_city)) {
+				$("#address_2_coleta_form .city").val(location_city);
+			}
+		   location_state = $("#address_2_coleta_form .state").val();
+			if (!empty(location_state)) {
+				$("#address_2_coleta_form .state").val(location_state);
+			}
+/** Fim da atualização **/
+         $(".street").attr("placeholder", t("Street"));
+/** Atualização Master Hub (Número e Bairro no Endereço) **/
+         $(".numero").attr("placeholder", t("Numero"));
+         $(".area_name").attr("placeholder", t("Area Name"));
+/** Fim da atualização **/
+         $(".city").attr("placeholder", t("City"));
+         $(".state").attr("placeholder", t("State"));
+         $(".zipcode").attr("placeholder", t("Zip Code"));
+         $(".location_name").attr("placeholder", t("Floor/unit/Room #"));
+         $(".contact_phone").attr("placeholder", t("Contact number"));
+         $(".delivery_instruction").attr("placeholder", t("Delivery instructions"));
+
+         ajaxCall('GetAddressFromCart', '');
+         break;
+		   
       case "receipt":
          $(".order_place_label").html(page.data.message);
          var page = onsenNavigator.topPage;
@@ -584,6 +691,9 @@ document.addEventListener('init', function (event) {
          break;
 
       case "address_form_select":
+      case "address_coleta_form_select":
+      case "address_1_coleta_form_select":
+      case "address_2_coleta_form_select":
          ajaxCall('getAddressBookDropDown', '');
 
          $(".contact_phone").attr("placeholder", t("Contact number"));
@@ -1275,8 +1385,56 @@ function ajaxCall(action, data) {
                   removeStorage('save_address');
                }
                break;
+				 
+            case "setColetaAddress":
+            case "setColetaAddressBook":
+               //popPage();               
+               onsenNavigator.resetToPage('cart.html', {
+                  animation: "slide"
+               });
 
-            case "setAddressBook_OLD":
+               $(".coleta_address").val(data.details.complete_coleta_address);
+               printColetaAddress(data.details.complete_coleta_address);
+               if (data.details.save_address == 1) {
+                  setStorage("save_address", 1);
+               } else {
+                  removeStorage('save_address');
+               }
+               break;
+				 
+            case "set1ColetaAddress":
+            case "set1ColetaAddressBook":
+               //popPage();               
+               onsenNavigator.resetToPage('cart.html', {
+                  animation: "slide"
+               });
+
+               $(".pre_coleta_address").val(data.details.complete_pre_coleta_address);
+               print1ColetaAddress(data.details.complete_pre_coleta_address);
+               if (data.details.save_address == 1) {
+                  setStorage("save_address", 1);
+               } else {
+                  removeStorage('save_address');
+               }
+               break;
+
+             case "set2ColetaAddress":
+             case "set2ColetaAddressBook":
+               //popPage();               
+               onsenNavigator.resetToPage('cart.html', {
+                  animation: "slide"
+               });
+
+               $(".coleta_address").val(data.details.complete_coleta_address);
+               print2ColetaAddress(data.details.complete_coleta_address);
+               if (data.details.save_address == 1) {
+                  setStorage("save_address", 1);
+               } else {
+                  removeStorage('save_address');
+               }
+               break;
+
+           case "setAddressBook_OLD":
                /*popPage();
                $(".delivery_address").val( data.details.complete_address );
                printDeliveryAddress(data.details.complete_address);
@@ -2371,14 +2529,15 @@ var addToCart = function () {
 
    ajax_cart.done(function (data) {
       dump(data);
+	   showCart();
       if (data.code == 1) {
 
          showToast(data.msg);
 
-         onsenNavigator.popPage({
+        /* onsenNavigator.popPage({
             animation: "none"
-         });
-         getCartCount();
+         });*/
+         //getCartCount();
          /*REFRESH CARD*/
          if (data.details.refresh == 1) {
             loadCart();
@@ -2904,6 +3063,7 @@ var checkout = function () {
 
    switch (transaction_type) {
       case "delivery":
+		   
          var street = $(".delivery_address").val();
          if (empty(street)) {
             showAlert(t("Please enter delivery address"));
@@ -2940,7 +3100,199 @@ var checkout = function () {
          }
 
          break;
+		   
+      case "coleta":
+		   
+         var coleta = $(".coleta_address").val();
+         if (empty(coleta)) {
+            showAlert(t("Please enter 2 coleta address"));
+            return;
+         }
+		   
+         var street = $(".delivery_address").val();
+         if (empty(street)) {
+            showAlert(t("Please enter delivery address"));
+            return;
+         }
 
+         required_delivery_time = $(".required_delivery_time").val();
+         if (required_delivery_time == 1 && delivery_asap_val == false) {
+            delivery_time_set = getStorage("delivery_time_set");
+            if (empty(delivery_time_set)) {
+               showAlert(t("Delivery time is required"));
+               return;
+            }
+         }
+
+         /*CHECK MINIMUM ORDER TABLE*/
+         min_delivery_order = parseFloat($(".min_delivery_order").val());
+         //alert(min_delivery_order);
+         if (min_delivery_order > 0.0001) {
+            cart_sub_total = parseFloat($(".cart_sub_total").val());
+            // alert(cart_sub_total);
+            if (min_delivery_order > cart_sub_total) {
+               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
+               return;
+            }
+         }
+
+         break;
+
+      case "coleta_retorno":
+		   
+         var coleta = $(".coleta_address").val();
+         if (empty(coleta)) {
+            showAlert(t("Please enter 2 coleta address"));
+            return;
+         }
+		   
+         var street = $(".delivery_address").val();
+         if (empty(street)) {
+            showAlert(t("Please enter delivery address"));
+            return;
+         }
+
+         required_delivery_time = $(".required_delivery_time").val();
+         if (required_delivery_time == 1 && delivery_asap_val == false) {
+            delivery_time_set = getStorage("delivery_time_set");
+            if (empty(delivery_time_set)) {
+               showAlert(t("Delivery time is required"));
+               return;
+            }
+         }
+
+         /*CHECK MINIMUM ORDER TABLE*/
+         min_delivery_order = parseFloat($(".min_delivery_order").val());
+         //alert(min_delivery_order);
+         if (min_delivery_order > 0.0001) {
+            cart_sub_total = parseFloat($(".cart_sub_total").val());
+            // alert(cart_sub_total);
+            if (min_delivery_order > cart_sub_total) {
+               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
+               return;
+            }
+         }
+
+         break;
+		   
+      case "pre_coleta":
+		   
+         var pre_coleta = $(".pre_coleta_address").val();
+         if (empty(pre_coleta)) {
+            showAlert(t("Please enter 1 coleta address"));
+            return;
+         }
+		   
+         var coleta = $(".coleta_address").val();
+         if (empty(coleta)) {
+            showAlert(t("Please enter 2 coleta address"));
+            return;
+         }
+		   
+         var street = $(".delivery_address").val();
+         if (empty(street)) {
+            showAlert(t("Please enter delivery address"));
+            return;
+         }
+
+         required_delivery_time = $(".required_delivery_time").val();
+         if (required_delivery_time == 1 && delivery_asap_val == false) {
+            delivery_time_set = getStorage("delivery_time_set");
+            if (empty(delivery_time_set)) {
+               showAlert(t("Delivery time is required"));
+               return;
+            }
+         }
+
+         /*CHECK MINIMUM ORDER TABLE*/
+         min_delivery_order = parseFloat($(".min_delivery_order").val());
+         //alert(min_delivery_order);
+         if (min_delivery_order > 0.0001) {
+            cart_sub_total = parseFloat($(".cart_sub_total").val());
+            // alert(cart_sub_total);
+            if (min_delivery_order > cart_sub_total) {
+               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
+               return;
+            }
+         }
+
+         break;
+		   
+      case "pre_coleta_retorno":
+		   
+         var pre_coleta = $(".pre_coleta_address").val();
+         if (empty(pre_coleta)) {
+            showAlert(t("Please enter 1 coleta address"));
+            return;
+         }
+		   
+         var coleta = $(".coleta_address").val();
+         if (empty(coleta)) {
+            showAlert(t("Please enter 2 coleta address"));
+            return;
+         }
+		   
+         var street = $(".delivery_address").val();
+         if (empty(street)) {
+            showAlert(t("Please enter delivery address"));
+            return;
+         }
+
+         required_delivery_time = $(".required_delivery_time").val();
+         if (required_delivery_time == 1 && delivery_asap_val == false) {
+            delivery_time_set = getStorage("delivery_time_set");
+            if (empty(delivery_time_set)) {
+               showAlert(t("Delivery time is required"));
+               return;
+            }
+         }
+
+         /*CHECK MINIMUM ORDER TABLE*/
+         min_delivery_order = parseFloat($(".min_delivery_order").val());
+         //alert(min_delivery_order);
+         if (min_delivery_order > 0.0001) {
+            cart_sub_total = parseFloat($(".cart_sub_total").val());
+            // alert(cart_sub_total);
+            if (min_delivery_order > cart_sub_total) {
+               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
+               return;
+            }
+         }
+
+         break;
+		   
+      case "prestacao_servico":
+		   
+         var street = $(".delivery_address").val();
+         if (empty(street)) {
+            showAlert(t("Please enter servico address"));
+            return;
+         }
+
+
+         required_delivery_time = $(".required_delivery_time").val();
+         if (required_delivery_time == 1 && delivery_asap_val == false) {
+            delivery_time_set = getStorage("delivery_time_set");
+            if (empty(delivery_time_set)) {
+               showAlert(t("Delivery time is required"));
+               return;
+            }
+         }
+
+         /*CHECK MINIMUM ORDER TABLE*/
+         min_delivery_order = parseFloat($(".min_delivery_order").val());
+         //alert(min_delivery_order);
+         if (min_delivery_order > 0.0001) {
+            cart_sub_total = parseFloat($(".cart_sub_total").val());
+            // alert(cart_sub_total);
+            if (min_delivery_order > cart_sub_total) {
+               showAlert(t("Sorry but Minimum order is") + " " + prettyPrice(min_delivery_order));
+               return;
+            }
+         }
+
+         break;
+		   
       case "pickup":
          delivery_time_set = getStorage("delivery_time_set");
          if (empty(delivery_time_set)) {
@@ -3005,6 +3357,27 @@ var checkout = function () {
                if (settings.enabled_map_selection_delivery == 1 && transaction_type == "delivery") {
                   setStorage("next_forms", 'map_delivery.html');
                }
+				
+               if (settings.enabled_map_selection_delivery == 1 && transaction_type == "coleta") {
+                  setStorage("next_forms", 'map_delivery.html');
+               }
+				
+               if (settings.enabled_map_selection_delivery == 1 && transaction_type == "coleta_retorno") {
+                  setStorage("next_forms", 'map_delivery.html');
+               }
+				
+               if (settings.enabled_map_selection_delivery == 1 && transaction_type == "pre_coleta") {
+                  setStorage("next_forms", 'map_delivery.html');
+               }
+				
+               if (settings.enabled_map_selection_delivery == 1 && transaction_type == "pre_coleta_retorno") {
+                  setStorage("next_forms", 'map_delivery.html');
+               }
+				
+               if (settings.enabled_map_selection_delivery == 1 && transaction_type == "prestacao_servico") {
+                  setStorage("next_forms", 'map_delivery.html');
+               }
+				
                return;
             }
 
@@ -3013,6 +3386,38 @@ var checkout = function () {
                setStorage("next_forms", 'payment_option.html');
                return;
             }
+			 
+            if (settings.enabled_map_selection_delivery == 1 && transaction_type == "coleta") {
+               showPage('map_delivery.html');
+               setStorage("next_forms", 'payment_option.html');
+               return;
+            }
+			 
+            if (settings.enabled_map_selection_delivery == 1 && transaction_type == "coleta_retorno") {
+               showPage('map_delivery.html');
+               setStorage("next_forms", 'payment_option.html');
+               return;
+            }
+			 
+            if (settings.enabled_map_selection_delivery == 1 && transaction_type == "pre_coleta") {
+               showPage('map_delivery.html');
+               setStorage("next_forms", 'payment_option.html');
+               return;
+            }
+			 
+            if (settings.enabled_map_selection_delivery == 1 && transaction_type == "pre_coleta_retorno") {
+               showPage('map_delivery.html');
+               setStorage("next_forms", 'payment_option.html');
+               return;
+            }
+			 
+            if (settings.enabled_map_selection_delivery == 1 && transaction_type == "prestacao_servico") {
+               showPage('map_delivery.html');
+               setStorage("next_forms", 'payment_option.html');
+               return;
+            }
+			 
+			 
          }
          showPage('payment_option.html');
       }
@@ -3075,6 +3480,48 @@ var printDeliveryAddress = function (address) {
    $(".delivery_address_label").html(address);
 };
 
+var setColetaAddress = function () {
+   $(".frm_address_coleta").validate({
+      submitHandler: function (form) {
+         var params = $(".frm_address_coleta").serialize();
+         ajaxCall('setColetaAddress', params);
+      }
+   });
+   $(".frm_address_coleta").submit();
+};
+
+var printColetaAddress = function (address) {
+   $(".coleta_address_label").html(address);
+};
+
+var set1ColetaAddress = function () {
+   $(".frm_address_1_coleta").validate({
+      submitHandler: function (form) {
+         var params = $(".frm_address_1_coleta").serialize();
+         ajaxCall('set1ColetaAddress', params);
+      }
+   });
+   $(".frm_address_1_coleta").submit();
+};
+
+var print1ColetaAddress = function (address) {
+   $(".1_coleta_address_label").html(address);
+};
+
+var set2ColetaAddress = function () {
+   $(".frm_address_2_coleta").validate({
+      submitHandler: function (form) {
+         var params = $(".frm_address_2_coleta").serialize();
+         ajaxCall('set2ColetaAddress', params);
+      }
+   });
+   $(".frm_address_2_coleta").submit();
+};
+
+var print2ColetaAddress = function (address) {
+   $(".2_coleta_address_label").html(address);
+};
+
 var verifyCustomerToken = function () {
 
    var token = getStorage("token");
@@ -3133,7 +3580,7 @@ var initPayment = function () {
          } else if ( transaction_type=="dinein" ) {
             showPage("dinein_forms.html");
          }*/
-         if (transaction_type == "delivery") {
+         if (transaction_type == "delivery" || transaction_type == "coleta" || transaction_type == "coleta_retorno" || transaction_type == "pre_coleta" || transaction_type == "pre_coleta_retorno" || transaction_type == "prestacao_servico") {
             showPage("cod_forms.html");
          } else {
             payNow();
@@ -3192,7 +3639,7 @@ var payNow = function (payment_params) {
    switch (payment_provider) {
       case "cod":
       case "obd":
-         if (transaction_type == "delivery") {
+         if (transaction_type == "delivery" || transaction_type == "coleta" || transaction_type == "coleta_retorno" || transaction_type == "pre_coleta" || transaction_type == "pre_coleta_retorno" || transaction_type == "prestacao_servico") {
             params += '&order_change=' + $("#order_change").val();
          }
          /*if (transaction_type=="dinein"){
@@ -3903,6 +4350,33 @@ initAddress = function () {
    }
 };
 
+initColetaAddress = function () {
+   has_addressbook = $(".has_addressbook").val();
+   if (has_addressbook == 1) {
+      showPage('address_coleta_form_select.html');
+   } else {
+      showPage('address_coleta_form.html');
+   }
+};
+
+init1ColetaAddress = function () {
+   has_addressbook = $(".has_addressbook").val();
+   if (has_addressbook == 1) {
+      showPage('address_1_coleta_form_select.html');
+   } else {
+      showPage('address_1_coleta_form.html');
+   }
+};
+
+init2ColetaAddress = function () {
+   has_addressbook = $(".has_addressbook").val();
+   if (has_addressbook == 1) {
+      showPage('address_2_coleta_form_select.html');
+   } else {
+      showPage('address_2_coleta_form.html');
+   }
+};
+
 setAddressBook = function () {
    $(".frm_address_form_select").validate({
       submitHandler: function (form) {
@@ -3914,6 +4388,45 @@ setAddressBook = function () {
       }
    });
    $(".frm_address_form_select").submit();
+};
+
+setColetaAddressBook = function () {
+   $(".frm_address_coleta_form_select").validate({
+      submitHandler: function (form) {
+
+         setStorage("customer_number", $(".contact_phone").val());
+
+         var params = $(".frm_address_coleta_form_select").serialize();
+         ajaxCall('setColetaAddressBook', params);
+      }
+   });
+   $(".frm_address_coleta_form_select").submit();
+};
+
+set1ColetaAddressBook = function () {
+   $(".frm_address_1_coleta_form_select").validate({
+      submitHandler: function (form) {
+
+         setStorage("customer_number", $(".contact_phone").val());
+
+         var params = $(".frm_address_1_coleta_form_select").serialize();
+         ajaxCall('set1ColetaAddressBook', params);
+      }
+   });
+   $(".frm_address_1_coleta_form_select").submit();
+};
+
+set2ColetaAddressBook = function () {
+   $(".frm_address_2_coleta_form_select").validate({
+      submitHandler: function (form) {
+
+         setStorage("customer_number", $(".contact_phone").val());
+
+         var params = $(".frm_address_2_coleta_form_select").serialize();
+         ajaxCall('set2ColetaAddressBook', params);
+      }
+   });
+   $(".frm_address_2_coleta_form_select").submit();
 };
 
 initPaypal = function (resp) {
@@ -5361,6 +5874,10 @@ hideDialog = function (id) {
 
 clearCart = function () {
    hideDialog('clear_cart_dialog');
+   ajaxCall("clearCart", '');
+};
+
+clearCartSilent = function () {
    ajaxCall("clearCart", '');
 };
 
