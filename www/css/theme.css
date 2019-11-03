@@ -393,6 +393,23 @@
 	display: inline-block;
 }
 
+.stic-date-time2 {
+	width: 74%;
+	display: inline-block;
+}
+.stic-date-time3 {
+	width: 24%;
+	display: inline-block;
+}
+.stic-date-time4 {
+	width: 38%;
+	display: inline-block;
+}
+.stic-date-time5 {
+	width: 60%;
+	display: inline-block;
+}
+
 .expiration_month_wrap select,
 .expiration_yr_wrap select {
 	background: #f9f9f9;

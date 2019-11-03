@@ -1,0 +1,2439 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+      <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+      <link rel="stylesheet" href="lib/onsen/css/onsenui.min.css">
+      <link rel="stylesheet" href="lib/onsen/css/onsen-css-components.min.css">
+      <link rel="stylesheet" href="lib/skeleton/jquery.skeleton.css">
+      <link rel="stylesheet" href="css/theme.css?ver=1.0">
+      <link rel="stylesheet" href="css/app.css?ver=1.0">
+      <script src="lib/onsen/js/onsenui.min.js"></script>
+<!-- Atualização Master Hub (Atualização do JQUERY) -->
+      <script src="lib/jquery-3.4.1.min.js"></script>  
+<!-- Fim da atualização -->
+      <script type="text/javascript" src="cordova.js"></script> 
+      <script type="text/javascript" src="push.js"></script> 
+      <script src="lib/jquery.validate.min.js"></script>
+      <!--<script src="https://js.stripe.com/v3/"></script>
+         <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+         <script src="https://js.braintreegateway.com/web/dropin/1.11.0/js/dropin.min.js"></script>-->
+      <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyCjgZJOBT5K3Ms5ns20Q3lbopscSoGt3aI"></script>
+      <script src="lib/gmaps.js?version=1.0.0"></script>
+      <script src="lib/jquery.translate.js?version=1.0.0"></script>
+      <!--<script src="lib/skeleton/jquery.scheletrone.js?version=1.0.0"></script>-->
+      <script src="lib/imagesloaded.pkgd.min.js?version=1.0.0"></script>
+      <script src="lib/leaflet/leaflet.js"></script>
+      <link href="lib/leaflet/leaflet.css" rel="stylesheet" type="text/css" />
+      <script src="lib/leaflet/plugin/routing/leaflet-routing-machine.min.js"></script>
+      <link href="lib/leaflet/plugin/routing/leaflet-routing-machine.css" rel="stylesheet" type="text/css" />
+      <script src="lib/leaflet/plugin/geocoder/mapbox-gl-geocoder.min.js"></script>
+      <link href="lib/leaflet/plugin/geocoder/mapbox-gl-geocoder.css" rel="stylesheet" type="text/css" />
+      <script src="js/config.js?version=1.0.0"></script>
+      <script src="js/layout.js?version=1.0.0"></script>
+      <script src="js/template.js?version=1.0.0"></script>    
+      <script src="js/app.js?version=1.0.0"></script>
+<!-- Atualização Master Hub (Arquivos Personalizados) -->
+      <script src="js/masterhub.js?version=1.0.0"></script>
+<!-- Fim da atualização -->
+      <script src="js/mapbox_wrapper.js?version=1.0.0"></script>  
+   </head>
+   <body>
+      <ons-navigator swipeable id="onsenNavigator" page="page_settings.html"></ons-navigator>
+      <template id="page_settings.html">
+         <ons-page id="page_settings" modifier="infinite_background" >
+            <!--<div class="cart_header"></div> 
+               <div class="line-yellow"></div>-->
+            <div class="wrap" id="settings_error">
+               <p class="make_center trn">Looks like we are having issue loading the app, try to refresh.</p>
+               <ons-button modifier="quiet" onclick="getAppSettings()" class="full_width">
+                  <ons-icon class="color_green" size="30px" icon="md-refresh"></ons-icon>
+                  <span class="color_green trn">try again</span>          
+               </ons-button>
+            </div>
+            <div class="floating_logo_wrap grey_bg"></div>
+         </ons-page>
+      </template>
+      <template id="page_home.html">
+         <ons-page id="page_home" modifier="white_background">
+            <ons-tabbar id="tabbar_bottom"  position="bottom">
+               <ons-tab page="splitter.html" onclick="disableInfo();">
+                  <input type="radio" style="display: none">
+                  <button class="tabbar__button">
+                     <div class="tabbar__icon">
+                        <ons-icon class="stic-bottom-icon" icon="fa-home"></ons-icon>
+                     </div>
+                     <div class="tabbar__label trn">Home</div>
+                  </button>
+               </ons-tab>
+               <ons-tab page="reviews.html" id="stic-kakashi">
+                  <input type="radio" style="display: none">
+               </ons-tab>
+               <ons-tab page="info.html" onclick="enableInfo();">
+                  <input type="radio" style="display: none">
+                  <button class="tabbar__button">
+                     <div class="tabbar__icon">
+                        <ons-icon class="stic-bottom-icon" icon="laugh-wink"></ons-icon>
+                     </div>
+                     <div class="tabbar__label trn">About us</div>
+                  </button>
+               </ons-tab>
+               <ons-tab page="orders.html" onclick="disableInfo();">
+                  <input type="radio" style="display: none">
+                  <button class="tabbar__button">
+                     <div class="tabbar__icon">
+                        <ons-icon class="stic-bottom-icon" icon="list"></ons-icon>
+                     </div>
+                     <div class="tabbar__label trn">Orders</div>
+                  </button>
+               </ons-tab>
+               <ons-tab onclick="showCart()" >
+                  <input type="radio" style="display: none">
+                  <button class="tabbar__button">
+                     <div class="tabbar__icon">
+                        <ons-icon class="stic-bottom-icon" icon="fa-shopping-cart"></ons-icon>
+                     </div>
+                     <div class="tabbar__label trn">Cart</div>
+                     <div class="tabbar__badge notification"></div>
+                  </button>
+               </ons-tab>
+            </ons-tabbar>
+            <div class="home_tabbar"></div>
+         </ons-page>
+      </template>
+      <template id="splitter.html">
+         <ons-splitter>
+            <ons-splitter-side id="menu" side="left" width="180px" collapse >
+               <ons-page>
+                  <div class="left_panel image_loaded show_if_login">
+                     <ons-button modifier="quiet" onclick="closePanel();">
+                        <ons-icon icon="ion-ios-close-empty" size="25px"></ons-icon>
+                     </ons-button>
+                     <div>
+                        <div class="pending_el" style="height:80px;width: 80px;color: #ccc;border-radius:50%;margin:auto;" ></div>
+                        <img src="images/avatar.jpg">      
+                        <h5>Ceazar Valencia</h5>
+                     </div>
+                  </div>
+                  <!--left_panel-->
+                  <ons-list>
+                     <ons-list-item onclick="loadPage('category.html')" tappable>
+                        <span class="trn">Home</span>
+                     </ons-list-item>
+                     <ons-list-item onclick="loadPage('info.html')" tappable>
+                        <span class="trn">Info</span>
+                     </ons-list-item>
+                     <!--<ons-list-item onclick="loadPage('temp.html')" tappable>
+                        Reviews
+                        </ons-list-item>-->
+                     <ons-list-item onclick="loadPage('map.html')" tappable>          
+                        <span class="trn">Location</span>
+                     </ons-list-item>
+                     <ons-list-item onclick="loadPage('book.html')" tappable class="menu_book">          
+                        <span class="trn">Book a table</span>
+                     </ons-list-item>
+                     <ons-list-item onclick="showPage('photo.html')" tappable class="menu_photo" >          
+                        <span class="trn">Photos</span>
+                     </ons-list-item>
+                     <ons-list-item onclick="loadPage('promos.html')" tappable class="menu_promo" >          
+                        <span class="trn">Promos</span>
+                     </ons-list-item>
+                     <ons-list-item  onclick="logout()" tappable class="show_if_login" >          
+                        <span class="trn">Log out</span>
+                     </ons-list-item>
+                     <ons-list-item  onclick="initLogin()" tappable class="show_if_not_login" >          
+                        <span class="trn">Log In</span>
+                     </ons-list-item>
+                  </ons-list>
+               </ons-page>
+            </ons-splitter-side>
+            <ons-splitter-content id="content" page="category.html"></ons-splitter-content>
+         </ons-splitter>
+      </template>
+      <template id="category.html">
+         <ons-page id="page_category" on-infinite-scroll="infiniteCategory" >
+            <!--   <ons-toolbar modifier="transparent_toolbar">
+               <div class="left">
+                   <ons-toolbar-button onclick="openMenu()">
+                     <ons-icon icon="md-menu" size="25px"></ons-icon>
+                   </ons-toolbar-button>
+               </div>
+               
+               <div class="center">
+                K-Restaurant
+               </div>
+               
+               <div class="right">
+                   
+                   <ons-toolbar-button onclick="showNotificationPage()">
+                     <div class="notification_count notification"></div>
+                     <ons-icon icon="md-notifications" size="25px"></ons-icon>
+                   </ons-toolbar-button>
+                   
+               </div>
+               </ons-toolbar> -->
+            <div class="stic-rest-logo">
+               <img src="./images/banner.png">
+            </div>
+            <div class="stic-header">
+               <span class="trn">Welcome</span><!-- 
+            --><span>, </span><!-- 
+            --><span id="stic-username"></span><!-- 
+            --><img onclick="showPage('settings_menu.html')" class="stic-user-img" src="images/user.svg">
+            </div>
+            <div class="search_wrapper stic-margin"></div>
+            <div class="banner_wrap"></div>
+            <div class="offer_wrap"></div>
+            <div class="stic-title" style="padding-top: 15px;">
+               <span class="trn">Categories</span>
+               <!-- <ons-icon icon="" class="hatake"></ons-icon> -->
+            </div>
+            <div class="stic-carousel-margin">
+               <div id="infinite_category"></div>
+               <ons-carousel overscrollable swipeable item-width="135px" class="stic-carousel" id="infinite_category_carousel"></ons-carousel>
+            </div>
+         </ons-page>
+      </template>
+      <ons-modal id="default_loader" direction="up">
+         <div style="text-align: center">
+            <p>
+               <ons-icon icon="md-spinner" size="28px" spin></ons-icon>
+            </p>
+         </div>
+      </ons-modal>
+      <ons-modal id="settings_loader" direction="up">
+         <div style="text-align: center">
+            <p class="small">
+               <ons-icon icon="md-spinner" size="28px" spin></ons-icon>
+               <br/>
+<!-- Atualização Master Hub (Correção de Tradução) -->
+               <span class="trn">Carregando as configurações</span>...
+<!-- Fim da atualização -->
+            </p>
+         </div>
+      </ons-modal>
+      <template id="temp.html">
+         <ons-page id="temp">
+            <p style="text-align: center;">
+               This is the temp page
+            </p>
+         </ons-page>
+      </template>
+      <template id="item.html"  >
+         <ons-page id="page_item" on-infinite-scroll="infiniteItem" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="cat-name"></span>
+               </div>
+            </ons-toolbar>
+            <div class="search_wrapper">
+               <div class="inner_wrap">
+                  <ons-row class="stic-grey-bg">
+                     <ons-col class="stic-icon-col" vertical-align="center" >
+                        <ons-icon icon="fa-search" class="hatake"></ons-icon>
+                     </ons-col>
+                     <ons-col vertical-align="center"  >
+                        <ons-search-input id="search" placeholder="Search for item" onclick="showPageNormal('search_item.html');" ></ons-search-input>
+                     </ons-col>
+                  </ons-row>
+               </div>
+            </div>
+            <input type="hidden" name="cat_id" id="cat_id" class="cat_id">   
+            <ons-list id="infinite_item" class="wrap image_loaded">    
+            </ons-list>
+            <div class="make_center loader_item">
+               <ons-progress-circular indeterminate></ons-progress-circular>
+            </div>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="showCart()" >
+               <div class="stic-count-position">
+                  <span class="cart_count"></span>
+               </div>
+               <span class="trn">View Order</span>
+               <!-- <span class="stic_order_value right"></span> -->
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="item_details.html" >
+         <ons-page id="page_item_details" modifier="white_background" >
+            <ons-toolbar class="transparent">
+               <div class="left">
+                  <ons-back-button class="stic-fill">Back</ons-back-button>
+               </div>
+            </ons-toolbar>
+            <form id="frm_item" class="frm_item" method="POST">
+               <input type="hidden" name="category_id" id="category_id" class="category_id">
+               <div class="item_details_wrap"></div>
+            </form>
+            <ons-bottom-toolbar modifier="bottom_toolbar">
+               <div class="wrap">
+                  <ons-row class="quantity_wrap">
+<!-- Modificação para não modificar a quantidade de item pedido -->
+                     <!-- <ons-col width="80px">
+                        <ons-button modifier="quiet" class="full_width" onclick="minusQty( $(this) )" >
+                           <ons-icon icon="md-minus" class="hatake" size="25px" ></ons-icon>
+                        </ons-button>
+                     </ons-col>-->
+                     <ons-col>
+                        <ons-input name="qty" id="qty" modifier="transparent" disabled value="1" class="numeric_only item_qty" ></ons-input>
+                     </ons-col>
+                    <!-- <ons-col width="80px">
+                        <ons-button modifier="quiet" class="full_width"  onclick="addQty( $(this) )"  >
+                           <ons-icon icon="md-plus" size="25px"></ons-icon>
+                        </ons-button>
+                     </ons-col>-->
+<!-- Fim da atualização -->
+                  </ons-row>
+                  <ons-button class="stic-bottom-button add_to_cart" onclick="addToCart()" >
+                     <span class="trn">ADD TO CART</span>
+                  </ons-button>
+               </div>
+               <!--wrap-->
+            </ons-bottom-toolbar>
+         </ons-page>
+      </template>
+      <template id="cart.html">
+         <ons-page id="page_cart" modifier="white_background" >
+            <div class="cart_header">
+               <div class="dim_background">
+                  <div class="close_page_wrapper">
+                     <ons-button modifier="quiet" onclick="setPageMenu()">
+                        <ons-icon class="color_white" size="30px" icon="md-close"></ons-icon>
+                     </ons-button>
+                  </div>
+               </div>
+            </div>
+            <!--cart_header-->
+            <form class="frm_cart" id="frm_cart" method="POST">
+               <input type="hidden" name="transaction_type" id="transaction_type" class="transaction_type">
+               <input type="hidden" name="delivery_date" id="delivery_date" class="delivery_date">
+               <input type="hidden" name="delivery_time" id="delivery_time" class="delivery_time">
+               <input type="hidden" name="delivery_address" id="delivery_address" class="delivery_address">
+               <input type="hidden" name="coleta_address" id="coleta_address" class="coleta_address">
+               <input type="hidden" name="pre_coleta_address" id="pre_coleta_address" class="pre_coleta_address">
+               <input type="hidden" name="cart_total_value" id="cart_total_value" class="cart_total_value">
+               <input type="hidden" name="cart_total_value_raw" id="cart_total_value_raw" class="cart_total_value_raw">
+               <input type="hidden" name="required_delivery_time" id="required_delivery_time" class="required_delivery_time">
+               <input type="hidden" name="has_addressbook" id="has_addressbook" class="has_addressbook">             
+               <input type="hidden" name="min_delivery_order" id="min_delivery_order" class="min_delivery_order">
+               <input type="hidden" name="cart_sub_total" id="cart_sub_total" class="cart_sub_total">
+               <div class="cart_details"></div>
+            </form>
+            <div class="no_order_wrap stic-float-wrap">
+               <div class="center" style="margin-top: 30px;">
+                  <h2 class="trn">Make your first order</h2>
+<!-- Atualização Master Hub (Correção de Tradução) -->
+                  <p class="stic-booking-text trn">Voce pede e nos entregamos!</p>
+<!-- Fim da atualização -->
+                  <ons-icon icon="magic" size="45px" class="hatake-grey"></ons-icon>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="setPageMenu()" >
+                     <span class="trn">Let's Go</span>
+                  </ons-button>
+               </div>
+            </div>
+            <ons-bottom-toolbar modifier="bottom_toolbar_normal" class="bottom_toolbar_checkout">
+               <ons-button class="stic-bottom-button checkout_action" onclick="checkout()" >
+                  <div class="equal_table">
+                     <span class="col col-1 trn">CONTINUE</span>
+                     <div class="col col-2 stic-order-total"><span class="cart_total"></span></div>
+                  </div>
+               </ons-button>
+            </ons-bottom-toolbar>
+         </ons-page>
+      </template>
+      <template id="dialog_transaction_type.html">
+         <ons-dialog id="dialog_transaction_type" cancelable modifier="medium_dialog">
+            <ons-page id="dialog_transaction_type" modifier="white_background" >
+               <div class="services_wrap"></div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+      <template id="dialog_delivery_date.html">
+         <ons-dialog id="dialog_delivery_date" cancelable modifier="large_dialog">
+            <ons-page id="dialog_delivery_date" modifier="white_background" >
+               <div class="delivery_date_wrap"></div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+      <template id="dialog_delivery_time.html">
+         <ons-dialog id="dialog_delivery_time" cancelable modifier="large_dialog">
+            <ons-page id="dialog_delivery_time" modifier="white_background" >
+               <div class="delivery_time_wrap"></div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+      <template id="signup.html">
+         <ons-page id="signup" modifier="white_background" >
+            <ons-toolbar modifier="no_shadow">
+               <div class="center">
+               </div>
+            </ons-toolbar>
+            <form method="POST" id="frm_register" class="frm_register">
+               <input type="hidden" name="next_step" id="next_step" class="next_step" >
+               <div class="wrap">
+                  <!-- <ons-icon icon="md-account-o" size="60px" ></ons-icon> -->
+                  <h3 class="trn">Sign up</h3>
+                  <span class="stic-back stic-uppercase trn" onclick="initLogin('1')" >Back to login</span>
+                  <div class="field_wrap">
+                     <ons-input name="first_name" id="first_name_field" required class="stic-field" modifier="material" placeholder="First name" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input name="last_name" required class="stic-field last_name" modifier="underbar" placeholder="Last name" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="contact_phone"  required class="stic-field contact_phone" modifier="underbar" placeholder="Mobile number" float  onfocus="showPage('enter_phone.html')" onclick="showPage('enter_phone.html')"></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="email" name="email_address" email required class="stic-field email_address" modifier="underbar" placeholder="Email address" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="password" name="password" required class="stic-field password" modifier="underbar" placeholder="Password" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="password" name="cpassword"  required class="stic-field cpassword" modifier="underbar" placeholder="Confirm Password" float></ons-input>
+                  </div>
+                  <!-- <p class="small trn">By creating an account, you agree to receive sms from vendor.</p> -->
+                  <div class="terms_condition_wrap hide">
+                     <ons-list>
+                        <ons-list-item tappable>
+                           <label class="left">
+                              <ons-checkbox name="check_terms_condition" input-id="check_terms_condition" class="check_terms_condition" value="1"></ons-checkbox>
+                           </label>
+                           <label for="check_terms_condition" class="center small ">
+                           <span class="trn">I agree to the </span> <a href="javascript:;" onclick="openTerms()"><span class="trn">terms_conditions</span></a>
+                           </label>
+                        </ons-list-item>
+                     </ons-list>
+                  </div>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="customerRegister()" >
+                     <span class="trn">NEXT</span>
+                  </ons-button>
+                  <div style="height:50px;"></div>
+               </div>
+               <!--wrap-->    
+            </form>
+            <!--   <ons-bottom-toolbar modifier="bottom_toolbar_reg" >
+               <div class="wrap">
+                 <span class="small trn">Already registered?</span><br/>
+                <ons-button modifier="quiet button_colorgreen" style="padding-left:0;" onclick="initLogin('1')">
+                   <div class="equal_table">
+                     <div class="col trn" style="vertical-align:top;">Log in to your account</div>
+                     <div class="col"><ons-icon icon="md-chevron-right" size="25px"></ons-icon></div>
+                   </div>  
+                </ons-button>       
+               </div>
+               </ons-bottom-toolbar> -->
+         </ons-page>
+      </template>
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+      <template id="dialog_locationState.html">
+         <ons-dialog id="dialog_locationState" cancelable modifier="medium_dialog">
+            <ons-page id="dialog_locationState">
+               <div class="location_state_wrap"></div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+	   
+      <template id="dialog_locationCity.html">
+         <ons-dialog id="dialog_locationCity" cancelable modifier="large_dialog">
+            <ons-page id="dialog_locationCity">
+               <div class="location_city_wrap"></div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+	   
+	   
+      <template id="dialog_locationArea.html">
+         <ons-dialog id="dialog_locationArea" cancelable modifier="large_dialog">
+            <ons-page id="dialog_locationArea">
+               <div class="location_area_wrap"></div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+<!-- Fim da atualização -->
+      <template id="address_form.html">
+         <ons-page id="address_form" modifier="white_background" >
+            <ons-toolbar modifier="no_shadow">
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">Enter Delivery Address</span>
+               </div>
+            </ons-toolbar>
+            <form method="POST" id="frm_address" class="frm_address">
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+               <input type="hidden" name="area_id" id="area_id" class="area_id">
+               <input type="hidden" name="city_id" id="city_id" class="city_id">
+               <input type="hidden" name="state_id" id="state_id" class="state_id">
+			   
+               <div class="wrap" style="margin-bottom: 85px;">
+                  <div class="field_wrap">
+                  <ons-input type="text" id="cep" name="zipcode"  class="stic-field full_width zipcode" modifier="underbar" placeholder="Zip Code" float onblur="pesquisacep(this.value);"></ons-input>
+                  </div>
+				  <div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: -8px 5px 15px 5px; text-align: center; color: darkviolet; font-family: GoogleSans;" class="trn">Digite o CEP para preencher automaticamente o endereco.</div>
+				  <div class="field_wrap stic-date-time2">
+                     <ons-input type="text" id="street" name="street" required  class="stic-field full_width street" modifier="underbar" placeholder="Street" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time3 stic-right">
+                     <ons-input type="text" id="numero" name="numero" required  class="stic-field full_width numero" modifier="underbar" placeholder="Numero" float></ons-input>
+                  </div>
+				   
+                <div class="field_wrap">
+<ons-input type="text" id="area_name" name="area_name" class="stic-field full_width location_area area_name" modifier="chevron"  float onclick="showArea()"></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time5">
+<ons-input type="text" id="city" name="city" class="stic-field full_width location_city city" float modifier="chevron" onclick="showCity()"></ons-input>
+                   </div>
+                   <div class="field_wrap stic-date-time4 stic-right">
+<ons-input type="text" id="state" name="state" class="stic-field full_width location_state state" float modifier="chevron" onclick="showState()"></ons-input>
+                  </div>
+<!-- Fim da atualização -->
+<!-- Atualização Master Hub (Correção de Layout) -->
+                 <!-- <div class="field_wrap country_list_wrap">
+                     
+                        <ons-select id="country_code" name="country_code" >
+                        <option value="basic">Basic</option>
+                        <option value="material">Material</option>
+                        <option value="underbar">Underbar</option>
+                        </ons-select>
+                        
+                  </div>-->
+<!-- Fim da atualização -->
+                  <div class="field_wrap">
+                     <ons-input type="text" name="delivery_instruction"  class="stic-field full_width delivery_instruction" modifier="underbar" placeholder="Delivery instructions" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time5">
+                     <ons-input type="text" name="location_name"  class="stic-field full_width location_name" modifier="underbar" placeholder="Floor/unit/Room #" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time4 stic-right">
+                     <ons-input type="text" name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+                  <ons-list class="show_if_login">
+                     <ons-list-item tappable class="pl0">
+                        <label class="left">
+                           <ons-checkbox name="save_address" class="save_address"  input-id="save_address" value="1"></ons-checkbox>
+                        </label>
+                        <label for="save_address" class="center">
+                        <span class="trn">Save to my address book</span> 
+                        </label>
+                     </ons-list-item>
+                  </ons-list>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="setDeliveryAddress()">
+                     <span class="trn">APPLY</span>
+                  </ons-button>
+               </div>
+               <!--wrap-->
+            </form>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('map_select.html')">
+               <span class="mt3 trn">Select address from map</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="address_coleta_form.html">
+         <ons-page id="address_coleta_form" modifier="white_background" >
+            <ons-toolbar modifier="no_shadow">
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">Enter Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <form method="POST" id="frm_address_coleta" class="frm_address_coleta">
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+               <input type="hidden" name="area_id" id="area_id" class="area_id">
+               <input type="hidden" name="city_id" id="city_id" class="city_id">
+               <input type="hidden" name="state_id" id="state_id" class="state_id">
+			   
+               <div class="wrap" style="margin-bottom: 85px;">
+                  <div class="field_wrap">
+                  <ons-input type="text" id="cep" name="zipcode"  class="stic-field full_width zipcode" modifier="underbar" placeholder="Zip Code" float onblur="pesquisacep(this.value);"></ons-input>
+                  </div>
+				  <div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: -8px 5px 15px 5px; text-align: center; color: darkviolet; font-family: GoogleSans;" class="trn">Digite o CEP para preencher automaticamente o endereco.</div>
+				  <div class="field_wrap stic-date-time2">
+                     <ons-input type="text" id="street" name="street" required  class="stic-field full_width street" modifier="underbar" placeholder="Street" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time3 stic-right">
+                     <ons-input type="text" id="numero" name="numero" required  class="stic-field full_width numero" modifier="underbar" placeholder="Numero" float></ons-input>
+                  </div>
+				   
+                <div class="field_wrap">
+<ons-input type="text" id="area_name" name="area_name" class="stic-field full_width location_area area_name" modifier="chevron"  float onclick="showArea()"></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time5">
+<ons-input type="text" id="city" name="city" class="stic-field full_width location_city city" float modifier="chevron" onclick="showCity()"></ons-input>
+                   </div>
+                   <div class="field_wrap stic-date-time4 stic-right">
+<ons-input type="text" id="state" name="state" class="stic-field full_width location_state state" float modifier="chevron" onclick="showState()"></ons-input>
+                  </div>
+<!-- Fim da atualização -->
+<!-- Atualização Master Hub (Correção de Layout) -->
+                 <!-- <div class="field_wrap country_list_wrap">
+                     
+                        <ons-select id="country_code" name="country_code" >
+                        <option value="basic">Basic</option>
+                        <option value="material">Material</option>
+                        <option value="underbar">Underbar</option>
+                        </ons-select>
+                        
+                  </div>-->
+<!-- Fim da atualização -->
+                  <div class="field_wrap">
+                     <ons-input type="text" name="delivery_instruction"  class="stic-field full_width delivery_instruction" modifier="underbar" placeholder="Delivery instructions" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time5">
+                     <ons-input type="text" name="location_name"  class="stic-field full_width location_name" modifier="underbar" placeholder="Floor/unit/Room #" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time4 stic-right">
+                     <ons-input type="text" name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+                  <ons-list class="show_if_login">
+                     <ons-list-item tappable class="pl0">
+                        <label class="left">
+                           <ons-checkbox name="save_address" class="save_address"  input-id="save_address" value="1"></ons-checkbox>
+                        </label>
+                        <label for="save_address" class="center">
+                        <span class="trn">Save to my address book</span> 
+                        </label>
+                     </ons-list-item>
+                  </ons-list>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="setColetaAddress()">
+                     <span class="trn">APPLY</span>
+                  </ons-button>
+               </div>
+               <!--wrap-->
+            </form>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('map_select.html')">
+               <span class="mt3 trn">Select address from map</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="address_1_coleta_form.html">
+         <ons-page id="address_1_coleta_form" modifier="white_background" >
+            <ons-toolbar modifier="no_shadow">
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">Enter 1 Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <form method="POST" id="frm_address_1_coleta" class="frm_address_1_coleta">
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+               <input type="hidden" name="area_id" id="area_id" class="area_id">
+               <input type="hidden" name="city_id" id="city_id" class="city_id">
+               <input type="hidden" name="state_id" id="state_id" class="state_id">
+			   
+               <div class="wrap" style="margin-bottom: 85px;">
+                  <div class="field_wrap">
+                  <ons-input type="text" id="cep" name="zipcode"  class="stic-field full_width zipcode" modifier="underbar" placeholder="Zip Code" float onblur="pesquisacep(this.value);"></ons-input>
+                  </div>
+				  <div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: -8px 5px 15px 5px; text-align: center; color: darkviolet; font-family: GoogleSans;" class="trn">Digite o CEP para preencher automaticamente o endereco.</div>
+				  <div class="field_wrap stic-date-time2">
+                     <ons-input type="text" id="street" name="street" required  class="stic-field full_width street" modifier="underbar" placeholder="Street" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time3 stic-right">
+                     <ons-input type="text" id="numero" name="numero" required  class="stic-field full_width numero" modifier="underbar" placeholder="Numero" float></ons-input>
+                  </div>
+				   
+                <div class="field_wrap">
+<ons-input type="text" id="area_name" name="area_name" class="stic-field full_width location_area area_name" modifier="chevron"  float onclick="showArea()"></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time5">
+<ons-input type="text" id="city" name="city" class="stic-field full_width location_city city" float modifier="chevron" onclick="showCity()"></ons-input>
+                   </div>
+                   <div class="field_wrap stic-date-time4 stic-right">
+<ons-input type="text" id="state" name="state" class="stic-field full_width location_state state" float modifier="chevron" onclick="showState()"></ons-input>
+                  </div>
+<!-- Fim da atualização -->
+<!-- Atualização Master Hub (Correção de Layout) -->
+                 <!-- <div class="field_wrap country_list_wrap">
+                     
+                        <ons-select id="country_code" name="country_code" >
+                        <option value="basic">Basic</option>
+                        <option value="material">Material</option>
+                        <option value="underbar">Underbar</option>
+                        </ons-select>
+                        
+                  </div>-->
+<!-- Fim da atualização -->
+                  <div class="field_wrap">
+                     <ons-input type="text" name="delivery_instruction"  class="stic-field full_width delivery_instruction" modifier="underbar" placeholder="Delivery instructions" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time5">
+                     <ons-input type="text" name="location_name"  class="stic-field full_width location_name" modifier="underbar" placeholder="Floor/unit/Room #" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time4 stic-right">
+                     <ons-input type="text" name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+                  <ons-list class="show_if_login">
+                     <ons-list-item tappable class="pl0">
+                        <label class="left">
+                           <ons-checkbox name="save_address" class="save_address"  input-id="save_address" value="1"></ons-checkbox>
+                        </label>
+                        <label for="save_address" class="center">
+                        <span class="trn">Save to my address book</span> 
+                        </label>
+                     </ons-list-item>
+                  </ons-list>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="set1ColetaAddress()">
+                     <span class="trn">APPLY</span>
+                  </ons-button>
+               </div>
+               <!--wrap-->
+            </form>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('map_select.html')">
+               <span class="mt3 trn">Select address from map</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="address_2_coleta_form.html">
+         <ons-page id="address_2_coleta_form" modifier="white_background" >
+            <ons-toolbar modifier="no_shadow">
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">Enter 2 Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <form method="POST" id="frm_address_2_coleta" class="frm_address_2_coleta">
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+               <input type="hidden" name="area_id" id="area_id" class="area_id">
+               <input type="hidden" name="city_id" id="city_id" class="city_id">
+               <input type="hidden" name="state_id" id="state_id" class="state_id">
+			   
+               <div class="wrap" style="margin-bottom: 85px;">
+                  <div class="field_wrap">
+                  <ons-input type="text" id="cep" name="zipcode"  class="stic-field full_width zipcode" modifier="underbar" placeholder="Zip Code" float onblur="pesquisacep(this.value);"></ons-input>
+                  </div>
+				  <div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: -8px 5px 15px 5px; text-align: center; color: darkviolet; font-family: GoogleSans;" class="trn">Digite o CEP para preencher automaticamente o endereco.</div>
+				  <div class="field_wrap stic-date-time2">
+                     <ons-input type="text" id="street" name="street" required  class="stic-field full_width street" modifier="underbar" placeholder="Street" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time3 stic-right">
+                     <ons-input type="text" id="numero" name="numero" required  class="stic-field full_width numero" modifier="underbar" placeholder="Numero" float></ons-input>
+                  </div>
+				   
+                <div class="field_wrap">
+<ons-input type="text" id="area_name" name="area_name" class="stic-field full_width location_area area_name" modifier="chevron"  float onclick="showArea()"></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time5">
+<ons-input type="text" id="city" name="city" class="stic-field full_width location_city city" float modifier="chevron" onclick="showCity()"></ons-input>
+                   </div>
+                   <div class="field_wrap stic-date-time4 stic-right">
+<ons-input type="text" id="state" name="state" class="stic-field full_width location_state state" float modifier="chevron" onclick="showState()"></ons-input>
+                  </div>
+<!-- Fim da atualização -->
+<!-- Atualização Master Hub (Correção de Layout) -->
+                 <!-- <div class="field_wrap country_list_wrap">
+                     
+                        <ons-select id="country_code" name="country_code" >
+                        <option value="basic">Basic</option>
+                        <option value="material">Material</option>
+                        <option value="underbar">Underbar</option>
+                        </ons-select>
+                        
+                  </div>-->
+<!-- Fim da atualização -->
+                  <div class="field_wrap">
+                     <ons-input type="text" name="delivery_instruction"  class="stic-field full_width delivery_instruction" modifier="underbar" placeholder="Delivery instructions" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time5">
+                     <ons-input type="text" name="location_name"  class="stic-field full_width location_name" modifier="underbar" placeholder="Floor/unit/Room #" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time4 stic-right">
+                     <ons-input type="text" name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+                  <ons-list class="show_if_login">
+                     <ons-list-item tappable class="pl0">
+                        <label class="left">
+                           <ons-checkbox name="save_address" class="save_address"  input-id="save_address" value="1"></ons-checkbox>
+                        </label>
+                        <label for="save_address" class="center">
+                        <span class="trn">Save to my address book</span> 
+                        </label>
+                     </ons-list-item>
+                  </ons-list>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="set2ColetaAddress()">
+                     <span class="trn">APPLY</span>
+                  </ons-button>
+               </div>
+               <!--wrap-->
+            </form>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('map_select.html')">
+               <span class="mt3 trn">Select address from map</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="address_form_select.html">
+         <ons-page id="address_form_select" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">Delivery Address</span>
+               </div>
+            </ons-toolbar>
+            <div class="wrap">
+               <form id="frm_address_form_select" class="frm_address_form_select" method="POST">
+<!-- Atualização Master Hub (Correção de Layout) -->
+                  <h3 class="trn" style="margin:0 0 25px 0; font-size: 13px; width: 100%;text-align: center;">Select from the address book</h3>
+<!-- Fim da atualização -->
+                  <div class="address_book_wrap"></div>
+                  <div class="field_wrap">
+                     <ons-input name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+               </form>
+            </div>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('address_form.html');">
+<!-- Atualização Master Hub (Correção de Layout) -->
+               <span style="font-size: 13px;" class="trn">ADD NEW DELIVERY ADDRESS</span>
+<!-- Fim da atualização -->
+            </ons-button>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="setAddressBook()" >
+               <span class="trn">APPLY</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="address_coleta_form_select.html">
+         <ons-page id="address_coleta_form_select" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <div class="wrap">
+               <form id="frm_address_coleta_form_select" class="frm_address_coleta_form_select" method="POST">
+<!-- Atualização Master Hub (Correção de Layout) -->
+                  <h3 class="trn" style="margin:0 0 25px 0; font-size: 13px; width: 100%;text-align: center;">Select from the address book</h3>
+<!-- Fim da atualização -->
+                  <div class="address_book_wrap"></div>
+                  <div class="field_wrap">
+                     <ons-input name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+               </form>
+            </div>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('address_coleta_form.html');">
+<!-- Atualização Master Hub (Correção de Layout) -->
+               <span style="font-size: 13px;" class="trn">ADD NEW DELIVERY ADDRESS</span>
+<!-- Fim da atualização -->
+            </ons-button>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="setColetaAddressBook()" >
+               <span class="trn">APPLY</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="address_1_coleta_form_select.html">
+         <ons-page id="address_1_coleta_form_select" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">1 Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <div class="wrap">
+               <form id="frm_address_1_coleta_form_select" class="frm_address_1_coleta_form_select" method="POST">
+<!-- Atualização Master Hub (Correção de Layout) -->
+                  <h3 class="trn" style="margin:0 0 25px 0; font-size: 13px; width: 100%;text-align: center;">Select from the address book</h3>
+<!-- Fim da atualização -->
+                  <div class="address_book_wrap"></div>
+                  <div class="field_wrap">
+                     <ons-input name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+               </form>
+            </div>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('address_1_coleta_form.html');">
+<!-- Atualização Master Hub (Correção de Layout) -->
+               <span style="font-size: 13px;" class="trn">ADD NEW DELIVERY ADDRESS</span>
+<!-- Fim da atualização -->
+            </ons-button>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="set1ColetaAddressBook()" >
+               <span class="trn">APPLY</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="address_2_coleta_form_select.html">
+         <ons-page id="address_2_coleta_form_select" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">
+                  <span class="trn">2 Coleta Address</span>
+               </div>
+            </ons-toolbar>
+            <div class="wrap">
+               <form id="frm_address_2_coleta_form_select" class="frm_address_2_coleta_form_select" method="POST">
+<!-- Atualização Master Hub (Correção de Layout) -->
+                  <h3 class="trn" style="margin:0 0 25px 0; font-size: 13px; width: 100%;text-align: center;">Select from the address book</h3>
+<!-- Fim da atualização -->
+                  <div class="address_book_wrap"></div>
+                  <div class="field_wrap">
+                     <ons-input name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+               </form>
+            </div>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('address_2_coleta_form.html');">
+<!-- Atualização Master Hub (Correção de Layout) -->
+               <span style="font-size: 13px;" class="trn">ADD NEW DELIVERY ADDRESS</span>
+<!-- Fim da atualização -->
+            </ons-button>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="set2ColetaAddressBook()" >
+               <span class="trn">APPLY</span>
+            </ons-button>
+         </ons-page>
+      </template>      <template id="payment_option.html">
+         <ons-page id="payment_option" modifier="white_background" >
+            <ons-toolbar >
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name"><span class="trn">PAYMENT</span></div>
+            </ons-toolbar>
+            <div class="wrap">
+               <h3 class="trn" style="margin:0 0 15px 0">Select payment</h3>
+               <div class="payment_list_wrap"></div>
+            </div>
+            <ons-button class="stic-bottom-button" onclick="initPayment()" >     
+               <span class="pay_now_label"></span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="cod_forms.html">
+         <ons-page id="cod_forms" modifier="white_background" >
+            <ons-toolbar >
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"></div>
+            </ons-toolbar>
+            <div class="wrap">
+               <h3 class="trn" style="margin:0 0 15px 0">Change? For how much?</h3>
+               <form id="frm_cod_forms" class="frm_cod_forms" method="POST">
+                  <ons-input type="number" name="order_change" id="order_change" class="stic-field order_change" modifier="transparent" ></ons-input>
+               </form>
+            </div>
+            <ons-button class="stic-bottom-button" onclick="submitCOD()" >     
+               <span class="pay_now_label"></span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="receipt.html">
+         <ons-page id="receipt" modifier="white_background" >
+            <div class="cart_header">
+               <div class="dim_background">
+                  <div class="close_page_wrapper">
+                     <ons-button modifier="quiet" onclick="backToHome(1)">
+                        <ons-icon class="color_white" size="30px" icon="md-close"></ons-icon>
+                     </ons-button>
+                  </div>
+               </div>
+            </div>
+            <!--cart_header-->
+            <div class="wrap2 stic-float-wrap" >
+               <div class="make_center" style="margin-top: 30px;">
+                  <h2 class="trn">Thank You!</h2>
+                  <p class="order_place_label stic-booking-text dim_text"></p>
+                  <ons-icon icon="check-circle" size="85px" class="color_green"></ons-icon>
+               </div>
+            </div>
+            <!--wrap-->
+            <ons-button modifier="quiet_green" class="stic-bottom-button hatake-green" onclick="backToHome(1)" >
+               <span class="trn">Back to Home</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="profile_menu.html">
+         <ons-page id="profile_menu" modifier="white_background" >
+            <div class="wrap2">
+               <h3 class="profile_name"></h3>
+            </div>
+            <ons-list modifier="list_menu" id="profile_menu_list"></ons-list>
+         </ons-page>
+      </template>
+      <template id="settings_menu.html">
+         <ons-page id="settings_menu" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="stic-page-name center">
+                  <span class="trn">Profile settings</span>
+               </div>
+            </ons-toolbar>
+            <ons-list-title modifier="list_title_grey"><span class="trn">Your profile</span></ons-list-title>
+            <ons-list modifier="list_menu">
+               <ons-list-item modifier="chevron" tappable onclick="showPage('customer_profile.html')" class="show_if_login" >
+                  <div class="left">
+                     <ons-icon icon="user-edit" size="20px"></ons-icon>
+                  </div>
+                  <div class="center"><span class="trn">Edit profile</span></div>
+               </ons-list-item>
+               <ons-list-item modifier="chevron" tappable onclick="showPage('change_password.html')" class="show_if_login" >
+                  <div class="left">
+                     <ons-icon icon="key" size="20px"></ons-icon>
+                  </div>
+                  <div class="center"><span class="trn">Change password</span></div>
+               </ons-list-item>
+<!-- Atualização Master Hub (Correção de Layout) -->
+               <!-- <ons-list-item modifier="chevron" tappable onclick="showPage('creditcard_list.html')">
+                  <div class="left">
+                     <ons-icon icon="credit-card" size="20px"></ons-icon>
+                  </div>
+                  <div class="center trn">Your credit cards</div>
+               </ons-list-item> -->
+<!-- Fim da atualização -->
+               <ons-list-item modifier="chevron" tappable  onclick="showPage('addressbook_list.html')" >
+                  <div class="left">
+                     <ons-icon icon="address-book" size="20px"></ons-icon>
+                  </div>
+                  <div class="center trn">Your address book</div>
+               </ons-list-item>
+               <ons-list-item modifier="chevron" tappable  onclick="showPage('booking_history.html')">
+                  <div class="left">
+                     <ons-icon icon="history" size="20px"></ons-icon>
+                  </div>
+                  <div class="center trn">Booking history</div>
+               </ons-list-item>
+               <ons-list-item modifier="chevron" tappable  onclick="showNotificationPage()">
+                  <div class="left">
+                     <ons-icon icon="comment" size="20px"></ons-icon>
+                  </div>
+                  <div class="center trn">Notifications</div>
+               </ons-list-item>
+               <ons-list-item modifier="chevron" tappable onclick="showPage('language.html')" >
+                  <div class="left">
+                     <ons-icon icon="language" size="20px"></ons-icon>
+                  </div>
+                  <div class="center"><span class="trn">Language</span></div>
+               </ons-list-item>
+               <ons-list-item modifier="chevron" tappable onclick="showPage('app-settings.html')" >
+                  <div class="left">
+                     <ons-icon icon="mobile-alt" size="20px"></ons-icon>
+                  </div>
+                  <div class="center"><span class="trn">App settings</span></div>
+               </ons-list-item>
+            </ons-list>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button show_if_login" onclick="logout()">
+               <span class="trn">Log out</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="app-settings.html">
+         <ons-page id="page_app-settings" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="stic-page-name center">
+                  <span class="trn">App settings</span>
+               </div>
+            </ons-toolbar>
+            <ons-list-title modifier="list_title_grey"><span class="trn">About the app</span></ons-list-title>
+            <ons-list modifier="list_menu" id="about_us_list" style="margin-bottom: 46px;">
+               <ons-list-item >
+                  <div class="left">
+                     <ons-icon icon="mobile-alt" size="20px"></ons-icon>
+                  </div>
+                  <div class="center"><span class="trn">App version</span></div>
+                  <div class="right app_version"></div>
+               </ons-list-item>
+               <ons-list-item>
+                  <div class="left">
+                     <ons-icon icon="id-badge" size="20px"></ons-icon>
+                  </div>
+                  <div class="center"><span class="trn">Device ID</span></div>
+                  <div class="right device_id concat_text lh48" style="width:auto"></div>
+               </ons-list-item>
+               <ons-list-item modifier="chevron" tappable class="menu_terms_condition" onclick="openLink(2)" >
+                  <div class="left">
+                     <ons-icon icon="file-alt" size="20px"></ons-icon>
+                  </div>
+                  <div class="center"><span class="trn">Terms and conditions</span></div>
+               </ons-list-item>
+               <ons-list-item modifier="chevron" tappable class="menu_privacy_policy" onclick="openLink(3)">
+                  <div class="left">
+                     <ons-icon icon="lock" size="20px"></ons-icon>
+                  </div>
+                  <div class="center"><span class="trn">Private policy</span></div>
+               </ons-list-item>
+               <ons-list-item class="show_if_login" >
+                  <div class="left">
+                     <ons-icon icon="bell" size="20px"></ons-icon>
+                  </div>
+                  <div class="center"><span class="trn">Enable/Disable push notification</span></div>
+                  <div class="right">
+                     <ons-switch name="enabled_push" id="enabled_push" class="enabled_push" value="1" onchange="receivePush()" ></ons-switch>
+                  </div>
+               </ons-list-item>
+            </ons-list>
+         </ons-page>
+      </template>
+      <template id="customer_profile.html">
+         <ons-page id="customer_profile" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="stic-page-name center">
+                  <span class="trn">Profile</span>
+               </div>
+            </ons-toolbar>
+            <div class="profile_header image_loaded">
+               <div>
+                  <div class="pending_el" style="height:100px;width: 100px;color: #ccc;border-radius:50%;margin:auto;" ></div>
+                  <img src="images/avatar.jpg">      
+               </div>
+               <h5></h5>
+            </div>
+            <ons-fab position="top right" onclick="browseCamera();" modifier="mini">
+               <ons-icon icon="camera" size="22px" class=""></ons-icon>
+            </ons-fab>
+            <div class="loading_wrap" >
+               <p class="trn" >Uploading...</p>
+               <ons-progress-bar value="0" secondary-value="100"></ons-progress-bar>
+            </div>
+            <form id="frm_profile" class="frm_profile" method="POST">
+               <div class="wrap" style="padding-top:40px;">
+                  <div class="field_wrap">
+                     <ons-input type="email" name="email_address" email  class="stic-field full_width email_address" modifier="underbar" disabled placeholder="Email address" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input name="first_name" required class="stic-field full_width first_name" modifier="material" placeholder="First name" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input name="last_name" required class="stic-field full_width last_name" modifier="underbar" placeholder="Last name" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input name="contact_phone" required class="stic-field full_width contact_phone" modifier="underbar" placeholder="Mobile no." float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+               </div>
+               <!--wrap-->
+            </form>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="saveProfile()" >     
+               <span class="trn">SAVE CHANGES</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="change_password.html">
+         <ons-page id="change_password" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+            </ons-toolbar>
+            <div class="wrap">
+               <form id="frm_changepassword" class="frm_changepassword" method="POST">
+                  <h3 class="trn" style="margin:0 0 15px 0">Change Password</h3>
+                  <ons-list modifier="list_menu">
+                     <ons-list-item modifier="nodivider">
+                        <div class="left">
+                           <ons-icon icon="key" size="20px"></ons-icon>
+                        </div>
+                        <div class="center pd10">
+<!-- Atualização Master Hub (Correção de Tradução) -->
+                           <ons-input type="password" name="current_password" id="current_password" required class="stic-field full_width" modifier="material" placeholder="Enter current password" float></ons-input>
+<!-- Fim da atualização -->
+                        </div>
+                     </ons-list-item>
+                     <ons-list-item modifier="nodivider">
+                        <div class="left">
+                           <ons-icon icon="unlock-alt" size="20px"></ons-icon>
+                        </div>
+                        <div class="center pd10">
+<!-- Atualização Master Hub (Correção de Tradução) -->
+                           <ons-input type="password" name="password" id="password_field" required class="stic-field full_width" modifier="material" placeholder="Enter new password" float></ons-input>
+<!-- Fim da atualização -->
+                        </div>
+                     </ons-list-item>
+                     <ons-list-item modifier="nodivider">
+                        <div class="left">&nbsp;</div>
+                        <div class="center pd10">
+<!-- Atualização Master Hub (Correção de Tradução) -->
+                           <ons-input type="password" name="cpassword" id="confirm_password" required class="stic-field full_width" modifier="material" placeholder="Confirm new password" float></ons-input>
+<!-- Fim da atualização -->
+                        </div>
+                     </ons-list-item>
+                  </ons-list>
+               </form>
+            </div>
+            <!--wrap-->
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="saveChangePassword()" >     
+               <span  class="trn">SAVE CHANGES</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="language.html">
+         <ons-page id="language" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <!-- <div class="center"><span class="trn">Language</span></div> -->
+            </ons-toolbar>
+            <ons-list-title modifier="list_title_grey">
+               <span class="trn">Select Language</span>
+            </ons-list-title>
+            <div class="language_list"></div>
+            <!--    
+               <ons-list modifier="list_menu" >      
+               <ons-list-item>
+                    <label class="left">
+                       <ons-radio name="color" input-id="radio-1"></ons-radio>
+                  </label>
+                  <label for="radio-1" class="center">
+                    English
+                  </label>
+                 </ons-list-item>              
+                 
+                 <ons-list-item>
+                    <label class="left">
+                       <ons-radio name="color" input-id="radio-2"></ons-radio>
+                  </label>
+                  <label for="radio-2" class="center">
+                    Tagalog
+                  </label>
+                 </ons-list-item>                          
+               </ons-list>
+               -->
+         </ons-page>
+      </template>
+      <template id="login.html">
+         <ons-page id="login" modifier="white_background" >
+            <ons-toolbar modifier="no_shadow">
+               <div class="center">
+               </div>
+            </ons-toolbar>
+            <div class="wrap">
+               <!-- <ons-icon icon="md-account-o" size="60px" ></ons-icon> -->
+               <h3 class="trn">Login</h3>
+               <span class="stic-back stic-uppercase trn" onclick="initSignup('1')">Create account</span>
+               <form id="frm_login" class="frm_login" method="POST">
+                  <div class="field_wrap">
+                     <ons-input class="stic-field" name="username" id="username_field" autoFocus required class="full_width username_field" modifier="material" placeholder="Mobile number or email" float></ons-input>
+                  </div>
+                  <div class="field_wrap password">
+<!-- Atualização Master Hub (Correção de Tradução) -->
+                     <ons-input class="stic-field" type="password" id="password_field" name="password" required class="full_width password_field" modifier="underbar" placeholder="Password" float></ons-input>
+<!-- Fim da atualização -->
+                  </div>
+                  <div class="full_width wrap">
+                     <ons-button modifier="quiet " class="pd10" onclick="showPage('forgot_pass.html')" >
+                        <span class="stic-small-button trn">Forgot Password?</span>
+                     </ons-button>
+                  </div>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="login()" >
+                     <span class="trn">NEXT</span>
+                  </ons-button>
+               </form>
+            </div>
+            <div class="make_center social_login_wrap">
+               <p  class="stic-bold trn" style="margin-bottom: 20px;">or sign in with</p>
+               <div class="field_wrap fb_wrap" style="padding-bottom:10px;padding-top:0;">
+                  <ons-button modifier="quiet quiet_green no_shadow" onclick="fbInit()" >
+                     <span class="trn">Facebook</span>
+                  </ons-button>
+               </div>
+               <div class="field_wrap google_wrap">
+                  <ons-button modifier="quiet quiet_green no_shadow" onclick="LoginGoogle()" >
+                     <span class="trn">Google</span>
+                  </ons-button>
+               </div>
+            </div>
+         </ons-page>
+      </template>
+      <template id="enter_phone.html">
+         <ons-page id="enter_phone" modifier="white_background" >
+            <ons-toolbar>
+               <div class="stic-page-name center">
+                  <span class="trn"></span>
+               </div>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+            </ons-toolbar>
+            <div class="wrap">
+               <!-- <ons-icon icon="md-smartphone-android" size="60px" ></ons-icon> -->
+               <h3 class="trn" style="margin: 0 0 15px 0;">Enter your mobile number</h3>
+               <p class="stic-small trn" style="margin-bottom: 10px;">We use it to make sure our deliveries reach you</p>
+               <form id="frm_setphone" class="frm_setphone" method="POST">
+                  <div class="field_wrap">
+                     <div class="equal_table full_width">
+                        <div class="col" style="width:80%;vertical-align:bottom;" >
+       <ons-input type="text" name="mobile_number" class="stic-field full_width mobile_number" modifier="underbar"></ons-input>
+		<input type="text" name="mobile_number_unmask" class="mobile_number_unmask" style="display:none;">
+                        </div>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <!--wrap-->
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="setMobileNuber()" >
+               <span class="trn">APPLY</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="creditcard_list.html">
+         <ons-page id="creditcard_list" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="stic-page-name center">
+                  <span class="trn">Credit cards</span>
+               </div>
+            </ons-toolbar>
+            <ons-list-title modifier="list_title_grey">
+               <span class="trn">Credit Card List</span>
+            </ons-list-title>
+            <div class="cc_list"></div>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="showPage('creditcards.html')">
+               <span class="trn">Add new card</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="creditcards.html">
+         <ons-page id="add_creditcards" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="stic-page-name center">
+                  <span class="trn"></span>
+               </div>
+            </ons-toolbar>
+            <div class="wrap">
+               <form id="frm_creditcard" class="frm_creditcard" method="POST">
+                  <input type="hidden" class="cc_id" name="cc_id" id="cc_id">
+                  <h3 class="trn" style="margin:0 0 15px 0;">Credit card</h3>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="card_name" required class="stic-field full_width card_name" modifier="underbar"  placeholder="Card name" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="number" maxlength="16" required name="credit_card_number"  class="stic-field full_width credit_card_number" modifier="underbar"  placeholder="Credit card number" float></ons-input>
+                  </div>
+                  <span class="stic-block trn">Expiration date</span>      
+                  <div class="stic-divided field_wrap expiration_month_wrap">         
+                  </div>
+                  <div class="stic-divided stic-right field_wrap expiration_yr_wrap">
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="billing_address" required  class="stic-field full_width billing_address" modifier="underbar"  placeholder="Billing address" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="number" maxlength="4" name="cvv" required class="stic-field full_width cvv" modifier="underbar"  placeholder="CVV" float></ons-input>
+                  </div>
+               </form>
+            </div>
+            <!--wrap-->
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="saveCard()" >
+               <span class="cc_action trn">SAVE</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="addressbook_list.html">
+         <ons-page id="addressbook_list" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="stic-page-name center">
+                  <span class="trn">Address Book</span>
+               </div>
+            </ons-toolbar>
+            <ons-list-title modifier="list_title_grey">
+               <span class="trn">Address List</span>
+            </ons-list-title>
+            <div class="address_list_wrap"></div>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="showPage('addressbook.html')" >
+               <span class="trn">ADD NEW ADDRESS</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="addressbook.html">
+         <ons-page id="addressbook" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+<!-- Atualização Master Hub (Endereço por Localização Bairro e Cidade) -->
+				<div class="center">
+                  <spam class="trn">Address</spam>
+               </div>
+            </ons-toolbar>
+            <div class="wrap" style="margin-bottom: 85px;">
+               <form id="frm_addressbook" class="frm_addressbook" method="POST">
+                  <input type="hidden" class="book_id" name="book_id" id="book_id">
+				   <input type="hidden" name="area_id" id="area_id" class="area_id">
+				   <input type="hidden" name="city_id" id="city_id" class="city_id">
+				   <input type="hidden" name="state_id" id="state_id" class="state_id">
+				   
+                  <div class="field_wrap">
+                  <ons-input type="text" id="cep" name="zipcode"  class="stic-field full_width zipcode" modifier="underbar" placeholder="Zip Code" float onblur="pesquisacep(this.value);"></ons-input>
+                  </div>
+				  <div style="padding: 0px 0px 0px 0px; font-size: 10px; margin: -8px 5px 15px 5px; text-align: center; color: darkviolet; font-family: GoogleSans;" class="trn">Digite o CEP para preencher automaticamente o endereco.</div>
+				  <div class="field_wrap stic-date-time2">
+                     <ons-input type="text" id="street" name="street" required  class="stic-field full_width street" modifier="underbar" placeholder="Street" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time3 stic-right">
+                     <ons-input type="text" id="numero" name="numero" required  class="stic-field full_width numero" modifier="underbar" placeholder="Numero" float></ons-input>
+                  </div>
+				   
+                <div class="field_wrap">
+<ons-input type="text" id="area_name" name="area_name" class="stic-field full_width location_area area_name" modifier="chevron"  float onclick="showArea()"></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time5">
+<ons-input type="text" id="city" name="city" class="stic-field full_width location_city city" float modifier="chevron" onclick="showCity()"></ons-input>
+                   </div>
+                   <div class="field_wrap stic-date-time4 stic-right">
+<ons-input type="text" id="state" name="state" class="stic-field full_width location_state state" float modifier="chevron" onclick="showState()"></ons-input>
+                  </div>
+<!-- Fim da atualização -->
+<!-- Atualização Master Hub (Correção de Layout) -->
+                 <!-- <div class="field_wrap country_list_wrap">
+                     
+                        <ons-select id="country_code" name="country_code" >
+                        <option value="basic">Basic</option>
+                        <option value="material">Material</option>
+                        <option value="underbar">Underbar</option>
+                        </ons-select>
+                        
+                  </div>-->
+<!-- Fim da atualização -->
+                  <div class="field_wrap">
+                     <ons-input type="text" name="delivery_instruction"  class="stic-field full_width delivery_instruction" modifier="underbar" placeholder="Delivery instructions" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time5">
+                     <ons-input type="text" name="location_name"  class="stic-field full_width location_name" modifier="underbar" placeholder="Floor/unit/Room #" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time4 stic-right">
+                     <ons-input type="text" name="contact_phone" class="stic-field full_width contact_phone" modifier="underbar" placeholder="Contact number" float onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+<!-- Fim da atualização -->
+                 <div class="field_wrap">
+                     <label class="left">
+                        <ons-checkbox name="as_default" input-id="as_default" class="as_default" value="2" ></ons-checkbox>
+                     </label>
+                     <label for="as_default" class="center">
+                     <span class="trn">Use as default address</span>
+                     </label>  
+                  </div>
+               </form>
+            </div>
+<!-- Atualização Master Hub (Mapa no Catálogo de Endereços) -->
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button grey" onclick="showPage('map_select.html')">
+               <span class="mt3 trn">Select address from map</span>
+            </ons-button>
+<!-- Fim da atualização -->
+            <!--wrap-->
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="saveAddressBook()" >     
+               <span class="addressbook_action">SAVE</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="orders.html">
+         <ons-page id="orders" modifier="grey_background" on-infinite-scroll="infiniteOrders" >
+            <ons-toolbar>
+               <div class="stic-page-name center">
+                  <span class="trn">Orders</span>
+               </div>
+               <!-- 
+                  <div class="right stic-above tohide show_if_login">
+                     <ons-toolbar-button onclick="showSearchBar()">
+                        <ons-icon icon="md-search" size="25px" class="color_green"></ons-icon>
+                     </ons-toolbar-button>        
+                  </div>
+                  
+                  <div class="full_toolbar search_toolbar">
+                   <div class="equal_table full_width">
+                     <div class="col">
+                         <ons-toolbar-button onclick="hideSearchBar()">
+                             <ons-icon icon="md-close" size="15px"></ons-icon>
+                            </ons-toolbar-button>                
+                     </div>
+                     <div class="col" style="width:90%;">
+                       <ons-input type="number" class="full_width" id="search_order_value" modifier="underbar" placeholder="Enter Order ID" float></ons-input>
+                     </div>
+                     <div class="col">     
+                      <ons-toolbar-button onclick="searchOrder()">
+                            <ons-icon icon="md-search" size="25px" class="color_green"></ons-icon>
+                         </ons-toolbar-button>                 
+                     </div>
+                   </div>
+                  </div>
+                  -->
+            </ons-toolbar>
+            <div class="show_if_login">
+               <div class="order_list_wrap" style="margin:10px;">
+                  <ons-list id="infinite_orders" modifier="list_full_width" >    
+                  </ons-list>
+               </div>
+               <div class="make_center loader_orders">
+                  <ons-progress-circular indeterminate></ons-progress-circular>
+               </div>
+            </div>
+            <!--show_if_login-->
+            <div class="show_if_notlogin wrap top100">
+               <p class="small make_center trn" style="margin-top:0;">Get your first order, sign up now!</p>
+               <div class="field_wrap">
+                  <ons-button modifier="green_button" class="full_width" onclick="initSignup()" >     
+                     <span class="trn">SIGN UP</span>
+                  </ons-button>
+               </div>
+               <div class="center_text_line trn">Already have account?</div>
+               <div class="field_wrap">
+                  <ons-button modifier="quiet quiet_green no_shadow" class="full_width button_nopadding" onclick="initLogin()" >     
+                     <span class="trn">LOG IN</span>
+                  </ons-button>
+               </div>
+            </div>
+            <!--show_if_notlogin-->    
+            <div class="show_if_no_order">
+               <div class="no_order_wrap">
+                  <div class="center">
+                     <p class="trn">Make your first order</p>
+<!-- Atualização Master Hub (Correção de Tradução) -->
+                     <p class="small trn">Voce pede e nos entregamos!</p>
+<!-- Fim da atualização -->
+                     <br/>
+                     <ons-button modifier="green_button big_button" onclick="setPageMenu()" >
+                        <span class="trn">lets_go</span>
+                     </ons-button>
+                  </div>
+               </div>
+            </div>
+            <!--show_if_no_order-->
+         </ons-page>
+      </template>
+      <template id="order_details.html">
+         <ons-page id="order_details" modifier="grey_background" on-infinite-scroll="infiniteOrders" >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name"><span class="trn">Receipt</span></div>
+            </ons-toolbar>
+            <div class="order_details_wrap"></div>
+            <div class="order_details_html"></div>
+         </ons-page>
+      </template>
+      <template id="reviews.html">
+         <ons-page id="reviews" modifier="grey_background" on-infinite-scroll="infiniteReview" >
+            <ons-toolbar>
+               <div class="stic-page-name center">
+                  <span class="trn">Reviews</span>
+               </div>
+               <div class="left stic-above" onclick="backToHome()">
+                  <ons-back-button class="stic-back-btn">Back</ons-back-button>
+               </div>
+            </ons-toolbar>
+            <div class="review_wrap" style="margin:10px;">
+               <ons-list id="infinite_reviews" class="stic-list image_loaded" >    
+               </ons-list>
+            </div>
+            <div class="make_center loader_review">
+               <ons-progress-circular indeterminate></ons-progress-circular>
+            </div>
+         </ons-page>
+      </template>
+      <template id="edit_review.html">
+         <ons-page id="edit_review" modifier="white_background" on-infinite-scroll="infiniteReview" >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center">
+                  <span class="trn">EDIT REVIEW</span>
+               </div>
+            </ons-toolbar>
+            <div class="wrap" style="padding-top:30px;">
+               <form id="frm_review" class="frm_review" method="POST">
+                  <input type="hidden" class="review_id" name="review_id" id="review_id">
+                  <div class="field_wrap">
+                     <textarea name="review" required id="review" class="review textarea full_width" rows="17" placeholder=""></textarea>
+                  </div>
+               </form>
+            </div>
+            <!--wrap-->
+            <ons-bottom-toolbar modifier="transparent" >
+               <div class="wrap">
+                  <ons-button modifier="quiet quiet_green no_shadow" class="full_width button_nopadding" onclick="updateReview()" >     
+                     <span class="trn">SAVE</span>
+                  </ons-button>
+               </div>
+            </ons-bottom-toolbar>
+         </ons-page>
+      </template>
+      <template id="info.html">
+         <ons-page id="info" modifier="white_background" >
+            <ons-toolbar modifier="transparent_toolbar">
+               <div class="stic-page-name center">
+                  <span class="trn">About us</span>
+               </div>
+            </ons-toolbar>
+            <div class="wrap info_wrap" style="padding-bottom: 5px;"></div>
+            <div class="info_wrap2"></div>
+         </ons-page>
+      </template>
+      <template id="map.html">
+         <ons-page id="map" modifier="grey_background" >
+            <ons-toolbar modifier="transparent_toolbar">
+               <div class="stic-above left" onclick="showPage('info.html')">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="stic-page-name center">
+                  <span class="trn">Location</span>
+               </div>
+            </ons-toolbar>
+            <input type="hidden" name="map_lat" id="map_lat" class="map_lat" >
+            <input type="hidden" name="map_lng" id="map_lng" class="map_lng" >
+            <ul id="map_instructions" class="hide"></ul>
+            <div class="map_canvas" id="map_canvas"></div>
+            <!--<ons-fab position="bottom right" onclick="getRoute();">     
+               <ons-icon icon="md-car" class="color_green"></ons-icon>     
+               </ons-fab>-->
+            <ons-speed-dial position="bottom right" direction="up">
+               <ons-fab>
+                  <ons-icon icon="md-pin" class="color_green" ></ons-icon>
+               </ons-fab>
+               <ons-speed-dial-item onclick="checkLocation(1);">
+                  <ons-icon icon="md-turning-sign"></ons-icon>
+               </ons-speed-dial-item>
+               <ons-speed-dial-item onclick="checkLocation(3);">
+                  <ons-icon icon="md-car"></ons-icon>
+               </ons-speed-dial-item>
+               <ons-speed-dial-item onclick="setMapCenter();">
+                  <ons-icon icon="md-center-focus-strong"></ons-icon>
+               </ons-speed-dial-item>
+            </ons-speed-dial>
+         </ons-page>
+      </template>
+      <template id="book.html">
+         <ons-page id="book" modifier="white_background" >
+            <ons-toolbar>
+               <div class="left stic-above" onclick="backToHome()">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="stic-page-name center">
+<!-- Atualização Master Hub (Correção de Tradução) -->
+                  <span class="custom_page_title trn">Book a table</span>
+<!-- Fim da atualização -->
+               </div>
+            </ons-toolbar>
+            <ons-list-title modifier="list_title_grey">
+               <span class="trn">Booking Information</span>
+            </ons-list-title>
+            <form id="frm_book" class="frm_book" method="POST">
+               <div class="wrap" style="padding-bottom:0">
+                  <div class="field_wrap">
+                     <ons-input type="number" maxlength="10"  name="number_guest" id="number_guest" required class="stic-field full_width number_guest" modifier="underbar"  placeholder="Number of guest" float></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time">
+                     <ons-input type="text" name="date_booking" required class="stic-field full_width date_booking delivery_date" modifier="underbar" 
+                        placeholder="Date of booking" float  onfocus="showDeliveryDateList()"  ></ons-input>
+                  </div>
+                  <div class="field_wrap stic-date-time stic-right">
+                     <ons-input type="text" name="booking_time" required class="stic-field full_width booking_time delivery_time" 
+                        modifier="underbar"  placeholder="Time" float  onfocus="showDeliveryTime()" ></ons-input>
+                  </div>
+               </div>
+               <!--wrap-->
+               <ons-list-title modifier="list_title_grey">
+                  <span class="trn">Contact information</span>
+               </ons-list-title>
+               <div class="wrap">
+                  <div class="field_wrap">
+                     <ons-input type="text" name="booking_name" required class="stic-field full_width booking_name" modifier="underbar"  placeholder="Name" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="email" name="email" required class="stic-field ull_width email" modifier="underbar"  placeholder="Email address" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="mobile" required class="stic-field full_width mobile contact_phone" modifier="underbar"  placeholder="Contact number" float 
+                        onclick="showPage('enter_phone.html')" onfocus="showPage('enter_phone.html')" ></ons-input>
+                  </div>
+                  <div class="field_wrap">        
+                     <textarea name="booking_notes"  id="booking_notes" class="stic-field booking_notes textarea  textarea--transparent full_width" rows="3" placeholder="Special instructions"></textarea>
+                  </div>
+               </div>
+            </form>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="saveBooking()" >     
+               <span class="trn">SUBMIT</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="booking_ty.html">
+         <ons-page id="booking_ty" modifier="white_background" >
+            <div class="cart_header">
+               <div class="dim_background">
+                  <div class="close_page_wrapper">
+                     <ons-button modifier="quiet" onclick="backToHome(1)">
+                        <ons-icon class="color_white" size="30px" icon="md-close"></ons-icon>
+                     </ons-button>
+                  </div>
+               </div>
+            </div>
+            <!--cart_header-->
+            <div class="wrap2 stic-float-wrap">
+               <div class="make_center" style="margin-top: 30px;">
+                  <h2 class="trn">Thank You!</h2>
+                  <p class="booking_message stic-booking-text"></p>
+                  <ons-icon icon="check-circle" size="85px" class="color_green"></ons-icon>
+               </div>
+            </div>
+            <!--wrap-->
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button hatake-green" onclick="backToHome(1)" >
+               <span class="trn">Back to Home</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="photo.html">
+         <ons-page id="photo" modifier="white_background" >
+            <ons-toolbar modifier="transparent_toolbar">
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center">
+                  <span class="trn">Photos</span>
+               </div>
+            </ons-toolbar>
+            <div class="photo_wrap"></div>
+         </ons-page>
+      </template>
+      <template id="promos.html">
+         <ons-page id="promos" modifier="white_background" >
+            <ons-toolbar modifier="transparent_toolbar">
+               <div class="left">
+                  <ons-toolbar-button onclick="openMenu()">
+                     <ons-icon icon="md-menu" size="25px"></ons-icon>
+                  </ons-toolbar-button>
+               </div>
+               <div class="center">
+                  <span class="trn">PROMO</span>
+               </div>
+            </ons-toolbar>
+            <div class="promo_wrap"></div>
+            <ons-fab position="bottom right" onclick="backToHome();">
+               <ons-icon icon="md-home" class="color_green"></ons-icon>
+            </ons-fab>
+         </ons-page>
+      </template>
+      <template id="notification.html">
+         <ons-page id="notification" modifier="grey_background" on-infinite-scroll="infiniteNotification"  >
+            <ons-toolbar modifier="transparent_toolbar">
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name">      
+                  <span class="trn">Notifications</span>
+               </div>
+               <div class="right clear_notification stic-above">
+                  <ons-toolbar-button onclick="ajaxCall('clearNotification','');">
+                     <span class="stic-clear hatake trn">CLEAR</span>
+                  </ons-toolbar-button>
+               </div>
+            </ons-toolbar>
+            <div class="notification_wrap" style="margin:10px;">
+               <ons-list id="infinite_notification" class="stic-list">    
+               </ons-list>
+            </div>
+            <div class="make_center loader_notification">
+               <ons-progress-circular indeterminate></ons-progress-circular>
+            </div>
+         </ons-page>
+      </template>
+      <template id="booking_history.html" >
+         <ons-page id="booking_history" modifier="grey_background" on-infinite-scroll="infiniteBooking">
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="stic-page-name center">
+                  <span class="trn">Booking History</span>
+               </div>
+            </ons-toolbar>
+            <div class="book_history_wrap" style="margin:15px;">
+               <ons-list id="infinite_bookhistory" modifier="list_full_width"   >    
+               </ons-list>
+            </div>
+            <div class="make_center loader_booking">
+               <ons-progress-circular indeterminate></ons-progress-circular>
+            </div>
+         </ons-page>
+      </template>
+      <template id="dinein_forms.html" >
+         <ons-page id="dinein_forms"  modifier="white_background"  >
+            <ons-toolbar modifier="transparent_toolbar">
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center">     
+               </div>
+            </ons-toolbar>
+            <div class="wrap2" style="padding-top:40px;">
+               <h3 class="trn">Dine in information</h3>
+               <form id="frm_dinein" class="frm_dinein" method="POST">
+                  <div class="field_wrap">
+                     <ons-input type="number" required name="dinein_number_of_guest" class="dinein_number_of_guest" id="dinein_number_of_guest" modifier="transparent" placeholder="Number of guest" ></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" required name="dinein_table_number" class="dinein_table_number" id="dinein_table_number" modifier="transparent" placeholder="Table number" ></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="contact_phone"  required class="full_width contact_phone" modifier="underbar" placeholder="Mobile number" float  onfocus="showPage('enter_phone.html')" onclick="showPage('enter_phone.html')"></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <textarea name="dinein_special_instruction" id="dinein_special_instruction" 
+                        class="dinein_special_instruction textarea textarea--transparent full_width" rows="5" placeholder="Special instructions"></textarea>
+                  </div>
+               </form>
+            </div>
+            <ons-bottom-toolbar modifier="transparent" >
+               <div class="wrap">
+                  <ons-button modifier="green_button" class="full_width button_nopadding" onclick="vDinein()" >     
+                     <span class="pay_now_label"></span>
+                  </ons-button>
+               </div>
+            </ons-bottom-toolbar>
+         </ons-page>
+      </template>
+      <template id="paypal.html" >
+         <ons-page id="paypal"  modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">Paypal</span></div>
+            </ons-toolbar>
+            <div class="wrap2 make_center" style="padding-top:80px;">
+               <h3 class="paypal_total_to_pay"></h3>
+               <div id="paypal-button-container"></div>
+            </div>
+         </ons-page>
+      </template>
+      <template id="select_creditcards.html" >
+         <ons-page id="select_creditcards"  modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name"><span class="trn">Select credit card</span></div>
+            </ons-toolbar>
+            <div class="wrap2">
+               <div class="select_cc_list"></div>
+            </div>
+            <ons-button class="stic-bottom-button grey" onclick="showPage('creditcards.html')" >     
+               <span class="trn">Add Credit Card</span>
+            </ons-button>
+            <ons-button class="stic-bottom-button" onclick="setSelectedCC()" >     
+               <span class="pay_now_label"></span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="stripe.html" >
+         <ons-page id="stripe"  modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">Stripe</span></div>
+            </ons-toolbar>
+            <div class="wrap2" style="padding-top:30px;">
+               <input type="hidden" name="order_id" class="order_id" id="order_id">
+               <form method="post" id="payment-form" onsubmit="return false;">
+                  <p class="trn">Credit or debit card</p>
+                  <div id="card-element"></div>
+                  <p class="trn">Expiry date</p>
+                  <div id="card-expirydate"></div>
+                  <p class="trn">CVC</p>
+                  <div id="card-cvc"></div>
+                  <div id="card-errors" class="error"></div>
+               </form>
+            </div>
+            <!--wrap-->
+            <ons-bottom-toolbar modifier="transparent" >
+               <div class="wrap">
+                  <ons-button modifier="green_button" class="full_width button_nopadding" onclick="payStripe()" >     
+                     <span class="pay_now_label"></span>
+                  </ons-button>
+               </div>
+            </ons-bottom-toolbar>
+         </ons-page>
+      </template>
+      <template id="select_payondelivery.html" >
+         <ons-page id="select_payondelivery"  modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name"><span class="trn">Select card type</span></div>
+            </ons-toolbar>
+            <div class="wrap2">
+               <div class="select_card_type_list"></div>
+            </div>
+            <ons-button class="stic-bottom-button" onclick="setSelectedCards()" >     
+               <span class="pay_now_label"></span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="braintree_form.html" >
+         <ons-page id="braintree_form"  modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">BRAINTREE</span></div>
+            </ons-toolbar>
+            <div class="wrap2" style="padding-top:10px;">
+               <div class="dropin-container" id="dropin-container"></div>
+               <ons-button id="braintee_submit_button" modifier="green_button" class="full_width button_nopadding" >          
+                  <span class="pay_now_label"></span>
+               </ons-button>
+            </div>
+         </ons-page>
+      </template>
+      <template id="verification_mobile.html" >
+         <ons-page id="verification_mobile"  modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">VERIFICATION</span></div>
+            </ons-toolbar>
+            <div class="wrap2" >
+               <form id="frm_verification_mobile" class="frm_verification_mobile" method="POST">
+                  <input type="hidden" name="token" class="token" id="token">
+                  <input type="hidden" name="next_step" class="next_step" id="next_step">
+                  <p class="trn">We have sent verification code to your mobile number</p>
+                  <div class="field_wrap">
+                     <ons-input type="number" name="code" maxlength="6" id="code" required class="full_width" modifier="material" placeholder="Enter code" float></ons-input>
+                  </div>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="full_width" onclick="verificationMobile()" >
+                     <span class="trn">NEXT</span>
+                  </ons-button>
+               </form>
+            </div>
+            <!--wrap-->
+         </ons-page>
+      </template>
+      <template id="verification_email.html" >
+         <ons-page id="verification_email"  modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">VERIFICATION</span></div>
+            </ons-toolbar>
+            <div class="wrap2" >
+               <form id="frm_verification_email" class="frm_verification_email" method="POST">
+                  <input type="hidden" name="token" class="token" id="token">
+                  <input type="hidden" name="next_step" class="next_step" id="next_step">
+                  <p class="trn">We have sent verification code to your email address</p>
+                  <div class="field_wrap">
+                     <ons-input type="number" name="code" maxlength="6" id="code" required class="full_width" modifier="material" placeholder="Enter code" float></ons-input>
+                  </div>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="full_width" onclick="verificationEmail()" >
+                     <span class="trn">NEXT</span>
+                  </ons-button>
+               </form>
+            </div>
+            <!--wrap-->
+         </ons-page>
+      </template>
+      <template id="order_sms_page.html" >
+         <ons-page id="order_sms_page"  modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">VERIFICATION</span></div>
+            </ons-toolbar>
+            <div class="wrap2" >
+               <form id="frm_order_sms" class="frm_order_sms" method="POST">
+                  <input type="hidden" name="order_sms_session" id="order_sms_session" class="order_sms_session">   
+                  <p class="trn">We have sent verification code to your mobile number</p>
+                  <p class="small trn">This merchant has required SMS verification before you can place your order.</p>
+                  <div class="field_wrap">
+                     <ons-input type="number" name="sms_code" maxlength="6" id="sms_code" required class="full_width" modifier="material" placeholder="Enter code" float></ons-input>
+                  </div>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="full_width verify_order_sms" onclick="verifyOrderSMSCODE()" >
+                     <span class="trn">NEXT</span>
+                  </ons-button>
+               </form>
+            </div>
+            <!--wrap-->
+         </ons-page>
+      </template>
+      <template id="dialog_order_history.html">
+         <ons-dialog id="dialog_order_history" cancelable modifier="large_dialog">
+            <ons-page id="dialog_order_history" modifier="white_background" >
+               <input type="hidden" name="order_id" class="order_id" id="order_id">
+               <div class="history_wrap"></div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+      <template id="dialog_mobilecode_list.html">
+         <ons-dialog id="dialog_mobilecode_list" cancelable modifier="large_dialog">
+            <ons-page id="dialog_mobilecode_list" modifier="white_background" >
+               <div class="mobilecode_list"></div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+      <template id="dialog_invalidkey.html">
+         <ons-dialog id="dialog_invalidkey"  modifier="mymedium_dialog">
+            <ons-page id="dialog_invalidkey" modifier="white_background" >
+               <div>
+                  <div class="wrap_green">
+                     <ons-icon icon="md-alert-octagon" size="50px" style="color:#fff;"></ons-icon>
+                  </div>
+                  <div class="content_white">
+                     <h4 class="trn">Invalid merchant keys!</h4>
+                     <p class="trn">Looks like you supplied an invalid merchant keys in your config.js</p>
+                     <ons-button modifier="quiet quiet_green no_shadow" class="" onclick="closeapp()" >
+                        <span class="trn">close app</span>
+                     </ons-button>
+                  </div>
+               </div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+      <template id="dialog_no_net.html">
+         <ons-dialog id="dialog_no_net"  modifier="mymedium_dialog">
+            <ons-page id="dialog_no_net" modifier="black_background" >
+               <div class="net_wrap">
+                  <img src="images/nonet.jpg">
+                  <p class="trn">No internet connection</p>
+               </div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+      <template id="forgot_pass.html" >
+         <ons-page id="forgot_pass"  modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <!-- <div class="center"><span class="trn">FORGOT PASSWORD</span></div> -->
+            </ons-toolbar>
+            <div class="wrap2" >
+               <form id="frm_forgot_pass" class="frm_forgot_pass" method="POST">
+                  <h3 class="trn">Enter your email or username</h3>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="user_email" id="user_email" required class="stic-field full_width user_email" modifier="material" placeholder="Mobile number or email" float></ons-input>
+                  </div>
+                  <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="requestForgotPass()" >
+                     <span class="trn">SUBMIT</span>
+                  </ons-button>
+               </form>
+            </div>
+            <!--wrap-->
+         </ons-page>
+      </template>
+      <template id="map_select.html" >
+         <ons-page id="map_select"  modifier="white_background"  >
+            <ons-toolbar class="transparent">
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+            </ons-toolbar>
+            <input type="hidden" name="selected_lat" id="selected_lat" class="selected_lat">
+            <input type="hidden" name="selected_lng" id="selected_lng" class="selected_lng">
+            <div class="map_canvas2" id="map_canvas2"></div>
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="geoCode()" >     
+               <span class="trn">APPLY</span>
+            </ons-button>
+         </ons-page>
+      </template>
+      <template id="device_id.html" >
+         <ons-page id="device_id"   >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">DEVICE ID</span></div>
+            </ons-toolbar>
+            <div style="min-height: 200px; padding: 1px 0 0 0;">
+               <div class="card card--material">
+                  <div class="card__content card--material__content">
+                     <span class="device_token"></span>
+                  </div>
+               </div>
+            </div>
+         </ons-page>
+      </template>
+      <template id="points_main.html" >
+         <ons-page id="points_main" modifier="white_background"   >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">YOUR POINTS</span></div>
+            </ons-toolbar>
+            <ons-list modifier="list_menu">
+               <ons-list-item modifier="chevron" tappable onclick="showPage('points_earn.html')" >
+                  <div class="center trn">Income Points</div>
+                  <div class="right"><span class="pts_total_earn notification notification__green"></span></div>
+               </ons-list-item>
+               <ons-list-item modifier="chevron" tappable  onclick="showPage('points_expenses.html')" >
+                  <div class="center trn">Expenses Points</div>
+                  <div class="right"><span class="pts_total_expenses notification notification__green"></span></div>
+               </ons-list-item>
+               <ons-list-item modifier="chevron" tappable  onclick="showPage('points_expired.html')" >
+                  <div class="center trn">Expired Points</div>
+                  <div class="right"><span class="pts_total_expired notification notification__green"></span></div>
+               </ons-list-item>
+               <ons-list-item modifier="chevron" tappable  onclick="showPage('points_earn_merchant.html')" >
+                  <div class="center trn">Points Earn by Merchant</div>
+                  <div class="right"><span class="pts_earn_merchant notification notification--material"></span></div>
+               </ons-list-item>
+            </ons-list>
+         </ons-page>
+      </template>
+      <template id="points_earn.html" >
+         <ons-page id="points_earn" modifier="white_background"   >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">Income Points</span></div>
+            </ons-toolbar>
+            <div id="points_earn_list" class="points_earn_list"></div>
+         </ons-page>
+      </template>
+      <template id="points_expenses.html" >
+         <ons-page id="points_expenses" modifier="white_background"   >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">Expenses Points</span></div>
+            </ons-toolbar>
+            <div id="points_expenses_list" class="points_expenses_list"></div>
+         </ons-page>
+      </template>
+      <template id="points_expired.html" >
+         <ons-page id="points_expired" modifier="white_background"   >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">Expired Points</span></div>
+            </ons-toolbar>
+            <div id="points_expired_list" class="points_expired_list"></div>
+         </ons-page>
+      </template>
+      <template id="points_earn_merchant.html" >
+         <ons-page id="points_earn_merchant" modifier="white_background"   >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">Points Earn by Merchant</span></div>
+            </ons-toolbar>
+            <div id="points_earn_merchant_list" class="points_earn_merchant_list"></div>
+         </ons-page>
+      </template>
+      <template id="dialog_error.html">
+         <ons-dialog id="dialog_error"  modifier="mymedium_dialog">
+            <ons-page id="dialog_error" modifier="white_background" >
+               <div>
+                  <div class="wrap_green">
+                     <ons-icon icon="md-alert-octagon" size="50px" style="color:#fff;"></ons-icon>
+                  </div>
+                  <div class="content_white">
+                     <h4 class="trn dialog_error_title"></h4>
+                     <p class="trn dialog_error_msg"></p>
+                     <ons-button modifier="quiet quiet_green no_shadow" class="" onclick="closeapp()" >
+                        <span class="trn">close app</span>
+                     </ons-button>
+                  </div>
+               </div>
+            </ons-page>
+         </ons-dialog>
+      </template>
+      <template id="clear_cart_dialog.html">
+         <ons-alert-dialog id="clear_cart_dialog" modifier="rowfooter" cancelable>
+<!-- Atualização Master Hub (Correção de Tradução) -->
+            <div class="alert-dialog-title clear_cart trn clear_cart">Clear cart?</div>
+            <div class="alert-dialog-content are_you_sure">
+               Are you sure you want to remove all items in your cart?
+            </div>
+            <div class="alert-dialog-footer">
+               <ons-alert-dialog-button onclick="hideDialog('clear_cart_dialog')" class="cancel_cart">Cancel</ons-alert-dialog-button>
+               <ons-alert-dialog-button onclick="clearCart();" class="yes_cart">Yes</ons-alert-dialog-button>
+<!-- Fim da atualização -->
+            </div>
+            <!--dialog_wrapper--> 
+         </ons-alert-dialog>
+      </template>
+      <template id="map_delivery.html">
+         <ons-page id="map_delivery" modifier="white_background"   >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">Point your address in the map</span></div>
+            </ons-toolbar>
+            <form method="POST" id="frm_delivery_location" class="frm_delivery_location">  
+               <input type="hidden" name="selected_lat" id="selected_lat" class="selected_lat">
+               <input type="hidden" name="selected_lng" id="selected_lng" class="selected_lng">
+            </form>
+            <div class="maps_canvas map_delivery"></div>
+            <ons-bottom-toolbar modifier="bottom_toolbar_normal" class="bottom_toolbar_checkout">
+               <div class="wrap">
+                  <ons-button modifier="green_button" class="full_width button_nopadding checkout_action" onclick="setDeliveryLocation()" > 
+                     <span class="trn">CONTINUE</span>
+                  </ons-button>
+               </div>
+            </ons-bottom-toolbar>
+         </ons-page>
+      </template>
+      <template id="search_category.html">
+         <ons-page id="search_category" modifier="white_background" on-infinite-scroll="infiniteCategory">
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="stic-page-name center">
+<!-- Atualização Master Hub (Correção de Tradução) -->
+                  <span class="custom_page_title trn">Search for category</span>
+<!-- Fim da atualização -->
+               </div>
+            </ons-toolbar>
+            <div class="search_wrapper">
+               <div class="inner_wrap">
+                  <ons-row class="stic-grey-bg">
+                     <ons-col class="stic-icon-col" vertical-align="center" >
+                        <ons-icon icon="fa-search" class="hatake"></ons-icon>
+                     </ons-col>
+                     <ons-col vertical-align="center"  >
+                        <ons-search-input id="input_search_category" placeholder="Search for category" ></ons-search-input>
+                     </ons-col>
+                  </ons-row>
+               </div>
+            </div>
+            <div class="search_by_category_result small_resp"></div>
+            <ons-list id="search_by_category_result" modifier="list_small">
+            </ons-list>
+            <div class="stic-carousel-margin">
+               <div id="infinite_category_list"></div>
+            </div>
+         </ons-page>
+      </template>
+      <template id="search_item.html">
+         <ons-page id="search_item" modifier="white_background"   >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name"><span class="trn">Search for item</span></div>
+            </ons-toolbar>
+            <div class="search_wrapper">
+               <div class="inner_wrap">
+                  <ons-row class="stic-grey-bg">
+                     <ons-col class="stic-icon-col" vertical-align="center" >
+                        <ons-icon icon="fa-search" class="hatake"></ons-icon>
+                     </ons-col>
+                     <ons-col vertical-align="center" >
+<!-- Atualização Master Hub (Correção de Tradução) -->
+                        <ons-search-input id="input_search_item" placeholder="Search for item"></ons-search-input>
+<!-- Fim da atualização -->
+                     </ons-col>
+                  </ons-row>
+               </div>
+            </div>
+            <div class="search_by_item_result small_resp"></div>
+            <ons-list id="search_by_item_result" modifier="list_small">
+            </ons-list>
+         </ons-page>
+      </template>
+      <template id="authorize_form.html">
+         <ons-page id="authorize_form" modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">Pay using Authorize.net</span></div>
+            </ons-toolbar>
+            <div class="wrap" style="padding-top:40px;">
+               <form id="frm_authorize" class="frm_authorize" method="POST">
+                  <input type="hidden" name="order_id" class="order_id">
+                  <div class="field_wrap">
+                     <ons-input type="number" maxlength="16" required name="credit_card_number"  class="full_width credit_card_number" modifier="underbar"  placeholder="Credit card number" float></ons-input>
+                  </div>
+                  <div class="field_wrap expiration_month_wrap">         
+                  </div>
+                  <div class="field_wrap expiration_yr_wrap">
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="number" maxlength="4" name="cvv" required class="full_width cvv" modifier="underbar"  placeholder="CVV" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="first_name" required class="full_width first_name" modifier="underbar"
+                        placeholder="First name" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="last_name" required class="full_width last_name" modifier="underbar"
+                        placeholder="Last Name" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="address" required class="full_width address" modifier="underbar"
+                        placeholder="Address" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="city" required class="full_width city" modifier="underbar"
+                        placeholder="City" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="state" required class="full_width state" modifier="underbar"
+                        placeholder="State" float></ons-input>
+                  </div>
+                  <div class="field_wrap">
+                     <ons-input type="text" name="zip_code" required class="full_width zip_code" modifier="underbar"
+                        placeholder="Zip Code" float></ons-input>
+                  </div>
+                  <div class="field_wrap country_list_wrap">
+                     country
+                  </div>
+               </form>
+            </div>
+            <!--wrap-->
+            <ons-bottom-toolbar modifier="transparent" >
+               <div class="wrap">
+                  <ons-button modifier="quiet quiet_green no_shadow" class="full_width button_nopadding" onclick="PayAuthorize()" >     
+                     <span class="cc_action trn">PAY NOW</span>
+                  </ons-button>
+               </div>
+            </ons-bottom-toolbar>
+         </ons-page>
+      </template>
+      <template id="track_order.html">
+         <ons-page id="track_order" modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name"><span class="trn">Track Order</span></div>
+            </ons-toolbar>
+            <input type="hidden" name="track_order_id" class="track_order_id">
+            <ons-list id="history_list" >        
+            </ons-list>
+            <ons-bottom-toolbar modifier="transparent" class="track_bottom_toolbar" >
+               <div class="wrap">
+                  <ons-button modifier="quiet quiet_green no_shadow"
+                     class="full_width button_nopadding" onclick="showTrackinMap();" >     
+                     <span class="cc_action trn">TRACK COURIER</span>
+                  </ons-button>
+               </div>
+            </ons-bottom-toolbar>
+         </ons-page>
+      </template>
+      <template id="tracking_map.html">
+         <ons-page id="tracking_map" modifier="white_background"  >
+            <ons-toolbar class="no_shadow">
+               <div class="left">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center"><span class="trn">TRACK COURIER</span></div>
+               <div class="right">
+                  <ons-toolbar-button onclick="centerTrackMap();">
+                     <ons-icon icon="ion-android-locate" size="28" class="color_green"></ons-icon>
+                  </ons-toolbar-button>
+               </div>
+            </ons-toolbar>
+            <input type="hidden" name="driver_phone" class="driver_phone">
+            <input type="hidden" name="driver_id" class="driver_id">
+            <div class="track_header image_loaded">
+               <ons-row>
+                  <ons-col vertical-align="center" width="18">    
+                  </ons-col>
+                  <ons-col vertical-align="center" width="15">
+                     <ons-button modifier="quiet"  onclick="callDriver();">
+                        <ons-icon class="color_green" size="25px" icon="ion-ios-telephone"></ons-icon>
+                     </ons-button>
+                  </ons-col>
+                  <ons-col vertical-align="center"  >             
+                     <span class="driver-name"></span>
+                  </ons-col>
+                  <ons-col vertical-align="center" width="15" >
+                     <div class="track_loader"></div>
+                  </ons-col>
+               </ons-row>
+               <div class="driver_avatar">
+                  <div>
+                     <div class="pending_el" style="height:50px;width: 50px;color: #ccc;border-radius:50%;margin:auto;" ></div>
+                     <img src="images/avatar.jpg">    
+                  </div>
+               </div>
+            </div>
+            <div class="map_canvas" id="map_canvas" style="height:92%;"></div>
+            <!--  <ons-fab position="bottom right" onclick="" >     
+               <ons-icon icon="ion-android-bicycle"></ons-icon>     
+               </ons-fab>-->  
+         </ons-page>
+      </template>
+      <template id="custom_page.html">
+         <ons-page id="custom_page" modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="stic-page-name center">
+                  <span class="custom_page_title"></span>
+               </div>
+               custom_page_title
+            </ons-toolbar>
+            <div class="search_wrapper">
+               <div class="inner_wrap custom_page_content"></div>
+            </div>
+         </ons-page>
+      </template>
+      <template id="add_review.html">
+         <ons-page id="add_review" modifier="white_background"  >
+            <ons-toolbar>
+               <div class="left stic-above">
+                  <ons-back-button>Back</ons-back-button>
+               </div>
+               <div class="center stic-page-name"><span class="trn">ADD REVIEW</span></div>
+            </ons-toolbar>
+            <div class="wrap">
+               <form id="frm_add_review" class="frm_add_review" method="POST">
+                  <input type="hidden" class="review_order_id" name="review_order_id" id="review_order_id">
+<!-- Atualização Master Hub (Correção de Layout) -->
+                  <div class="field_wrap relative" style="width:280px;">
+                     <ons-icon icon="caret-down" size="20px" class="stic-drop-down"></ons-icon>
+                     <ons-select id="rating" name="rating" required >
+                        <option value="">
+                           <span class="trn rating_title">Please select rating</span>
+                        </option>
+                        <option value="1" class="trn">nota 1</option>
+                        <option value="2" class="trn">nota 2</option>
+                        <option value="3" class="trn">nota 3</option>
+                        <option value="4" class="trn">nota 4</option>
+                        <option value="5" class="trn">nota 5</option>
+<!-- Fim da atualização -->
+                     </ons-select>
+                  </div>
+                  <div class="field_wrap">
+                     <textarea name="review" required id="review" class="review textarea full_width" rows="10" placeholder="Write your comments..."></textarea>
+                  </div>
+               </form>
+            </div>
+            <!--wrap-->
+            <ons-button modifier="quiet quiet_green no_shadow" class="stic-bottom-button" onclick="addReview()" >
+               <span class="trn">Publish Review</span>
+            </ons-button>
+         </ons-page>
+      </template>
+   </body>
+</html>

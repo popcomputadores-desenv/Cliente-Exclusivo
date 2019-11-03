@@ -55,6 +55,170 @@ var empty = function (data) {
    return false;
 }
 
+function createMask(string){
+  console.log(string)
+	return string.replace(/(\d{2})(\d{1})(\d{4})(\d{1})/,"($1) $2 $3-$4");
+}
+
+function destroyMask(string){
+  console.log(string)
+	return string.replace(/(\.|\/|\-|\(|\)|\ )/g,"").substring(0, 11);
+}
+
+function formatarCampo(campoTexto) {
+	var dadosDigitados = campoTexto.value;
+    if (campoTexto.value.length <= 7) {
+        campoTexto.value = mascaraPlaca(campoTexto.value);
+    } else if (campoTexto.value.length <= 11) {
+        campoTexto.value = mascaraCpf(campoTexto.value);
+		validaCPF(dadosDigitados);
+    } else {
+        campoTexto.value = mascaraCnpj(campoTexto.value);
+		validaCNPJ(dadosDigitados);
+    }
+}
+function formatarTelefone(campoTexto) {
+    if (campoTexto.value.length <= 10) {
+        campoTexto.value = mascaraTelefone(campoTexto.value);
+    } else {
+        campoTexto.value = mascaraCelular(campoTexto.value);
+    }
+}
+function formatarUsuario(campoTexto) {
+        campoTexto.value = removeAcento(campoTexto.value);
+}
+function retirarFormatacao(campoTexto) {
+    campoTexto.value = campoTexto.value.replace(/(\.|\/|\-|\(|\)|\ )/g,"");
+}
+function mascaraCpf(valor) {
+    return valor.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/g,"\$1.\$2.\$3\-\$4");
+}
+function mascaraCnpj(valor) {
+    return valor.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/g,"\$1.\$2.\$3\/\$4\-\$5");
+}
+function mascaraTelefone(valor) {
+    return valor.replace(/(\d{2})(\d{4})(\d{4})/g,"(\$1\) \$2\-\$3");
+}
+function mascaraCelular(valor) {
+    return valor.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/g,"(\$1\) \$2\ \$3\-\$4");
+}
+function mascaraPlaca(valor) {
+	var placa = valor.replace(/([A-Za-z]{3})(\d{4})/g,"$1-$2");
+	return placa.toUpperCase();
+}
+function removeAcento(text) {       
+    var usuario = text.toLowerCase();                                                         
+    return usuario.normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+                
+}
+function validaCPF(campoTexto){
+				if(valida_cpf(campoTexto)){
+	//toastMsg(getTrans("Seu CPF está correto!","seu_cpf_esta_correto"));
+				} else {
+	toastMsg(getTrans("Este CPF é Inválido!","este_cpf_e_invalido"));
+					$(".cpf").val("");
+				}
+			}
+function valida_cpf(cpf){
+				  var numeros, digitos, soma, i, resultado, digitos_iguais;
+				  digitos_iguais = 1;
+				  if (cpf.length < 11)
+						return false;
+				  for (i = 0; i < cpf.length - 1; i++)
+						if (cpf.charAt(i) != cpf.charAt(i + 1))
+							  {
+							  digitos_iguais = 0;
+							  break;
+							  }
+				  if (!digitos_iguais)
+						{
+						numeros = cpf.substring(0,9);
+						digitos = cpf.substring(9);
+						soma = 0;
+						for (i = 10; i > 1; i--)
+							  soma += numeros.charAt(10 - i) * i;
+						resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+						if (resultado != digitos.charAt(0))
+							  return false;
+						numeros = cpf.substring(0,10);
+						soma = 0;
+						for (i = 11; i > 1; i--)
+							  soma += numeros.charAt(11 - i) * i;
+						resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+						if (resultado != digitos.charAt(1))
+							  return false;
+						return true;
+						}
+				  else
+						return false;
+}
+
+function validaCNPJ(campoTexto){
+				if(valida_cnpj(campoTexto)){
+	//toastMsg(getTrans("Seu CNPJ está correto!","seu_cnpj_esta_correto"));
+				} else {
+	toastMsg(getTrans("Este CNPJ é Inválido!","este_cnpj_e_invalido"));
+					$(".cnpj").val("");
+				}
+			}
+function valida_cnpj(cnpj) {
+ 
+    cnpj = cnpj.replace(/[^\d]+/g,'');
+ 
+    if(cnpj == '') return false;
+     
+    if (cnpj.length != 14)
+        return false;
+ 
+    // Elimina CNPJs invalidos conhecidos
+    if (cnpj == "00000000000000" || 
+        cnpj == "11111111111111" || 
+        cnpj == "22222222222222" || 
+        cnpj == "33333333333333" || 
+        cnpj == "44444444444444" || 
+        cnpj == "55555555555555" || 
+        cnpj == "66666666666666" || 
+        cnpj == "77777777777777" || 
+        cnpj == "88888888888888" || 
+        cnpj == "99999999999999")
+        return false;
+         
+    // Valida DVs
+    tamanho = cnpj.length - 2
+    numeros = cnpj.substring(0,tamanho);
+    digitos = cnpj.substring(tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    for (i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2)
+            pos = 9;
+    }
+    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(0))
+        return false;
+         
+    tamanho = tamanho + 1;
+    numeros = cnpj.substring(0,tamanho);
+    soma = 0;
+    pos = tamanho - 7;
+    for (i = tamanho; i >= 1; i--) {
+      soma += numeros.charAt(tamanho - i) * pos--;
+      if (pos < 2)
+            pos = 9;
+    }
+    resultado = soma % 11 < 2 ? 0 : 11 - soma % 11;
+    if (resultado != digitos.charAt(1))
+          return false;
+           
+    return true;
+    
+}
+
+$(document).on("keyup", "input[name='mobile_number']", function() {
+		$("input[name='mobile_number_unmask']").val(destroyMask(this.value));
+    this.value = createMask($("input[name='mobile_number_unmask']").val());
+});
 
 document.addEventListener("deviceready", onDeviceReady, false);
 
@@ -141,7 +305,7 @@ ons.ready(function () {
       document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
       $('head').append('<link rel="stylesheet" href="lib/onsen/css/ios.css?ver=1.0" type="text/css" />');
    }
-
+	
    //dialogNoNet();
    //dialogInvalidKey();
    //removeStorage("token");
@@ -629,7 +793,9 @@ document.addEventListener('init', function (event) {
          placeholder(".city", 'City');
          placeholder(".state", 'State');
          placeholder(".zipcode", 'Zip Code');
+         placeholder(".delivery_instruction", 'Delivery instructions');
          placeholder(".location_name", 'Location name');
+		 placeholder(".contact_phone", 'Contact number'); 
 
          var id = page.data.id;
          if (!empty(id)) {
@@ -2260,7 +2426,7 @@ ons.ready(function () {
    $(document).on("keyup", ".numeric_only", function () {
       this.value = this.value.replace(/[^0-9\.]/g, '');
    });
-	
+		
 /** Atualização Master Hub (Endereço por Localização Bairro e Cidade) **/
 	var typingTimer; //identificador de tempo
 	var doneTypingInterval = 1000; //o tempo está em ms, 1 segundo por exemplo
@@ -3800,9 +3966,9 @@ var login = function () {
 var setMobileNuber = function () {
    $(".frm_setphone").validate({
       submitHandler: function (form) {
-         prefix = $(".prefix").val();
-         phone = $(".mobile_number").val();
-         complete_phone = prefix + phone;
+         //prefix = $(".prefix").val();
+         phone = $(".mobile_number_unmask").val();
+         complete_phone = phone;
          popPage();
          $(".contact_phone").val(complete_phone);
       }

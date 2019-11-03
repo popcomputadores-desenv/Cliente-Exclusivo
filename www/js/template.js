@@ -996,12 +996,17 @@ var displayCartDetails = function (datas) {
 
 
 	html += '<ons-list-header modifier="list_title_grey" class="stic-list-title">' + t('Options') + '</ons-list-header>';
-
+	if (selected_services == "coleta" || selected_services == "coleta_retorno" || selected_services == "pre_coleta" || selected_services == "pre_coleta_retorno") {
+	html += '<ons-list-item modifier="longdivider" tappable >';
+	html += '<div class="left">' + t('Transaction Type') + '</div>';
+	html += '<div class="right"><span class="stic-small-upper list-item__subtitle transaction_type_label">' + t(services[selected_services]) + '</span></div>';
+	html += '</ons-list-item>';
+	} else {
 	html += '<ons-list-item modifier="chevron longdivider" tappable onclick="showTransactionList()" >';
 	html += '<div class="left">' + t('Transaction Type') + '</div>';
 	html += '<div class="right"><span class="stic-small-upper list-item__subtitle transaction_type_label">' + t(services[selected_services]) + '</span></div>';
 	html += '</ons-list-item>';
-
+	}
 	html += '<ons-list-item tappable modifier="chevron longdivider" onclick="showDeliveryDateList()" >';
 	html += '<div class="left">' + delivery_date_list_label + '</div>';
 	html += '<div class="right"><span class="stic-small-upper list-item__subtitle delivery_date_label">' + default_delivery_date_pretty + '</span></div>';
