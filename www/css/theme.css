@@ -729,7 +729,7 @@ ons-list-item.stic-menu-3 {
 }
 
 .quantity_wrap .plus ons-button {
-	background: #40C15A;
+	background: #7E0000;
     font-size: 22px;
     color: #fff;
     border-radius: 3px;
@@ -811,7 +811,7 @@ line-height: 48px;
 white-space: pre;
 }
 
-.stic-options-list.address .right span {margin: auto;color: #40C15A;white-space: normal;}
+.stic-options-list.address .right span {margin: auto;color: #7E0000;white-space: normal;}
 .stic-options-list.list-item--chevron:before {
 right: 0;
 }
