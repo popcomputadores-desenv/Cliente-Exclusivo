@@ -23,7 +23,7 @@
     <preference name="fullscreen" value="false" />        
     <preference name="SplashMaintainAspectRatio" value="true"/>
     <preference name="ShowSplashScreenSpinner" value="false" />	           
-    <preference name="StatusBarBackgroundColor" value="#8d0710" />
+    <preference name="StatusBarBackgroundColor" value="#7E0000" />
     <preference name="android-minSdkVersion" value="19" />
     <preference name="android-targetSdkVersion" value="28" />        
     <preference name="phonegap-version" value="cli-8.1.1" />
