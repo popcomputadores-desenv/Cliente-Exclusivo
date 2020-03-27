@@ -58,10 +58,10 @@
 	</gap:plugin>
 		
     <platform name="android">	
-		<config-file parent="/resources" target="./res/values/strings.xml">
+		<!-- <config-file parent="/resources" target="./res/values/strings.xml">
 			<string name="fb_app_id">247951822354120</string>
 			<string name="fb_app_name">Master Hub</string>
-		</config-file>  
+		</config-file> -->  
 		
 		<edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
            <application android:usesCleartextTraffic="true" />
