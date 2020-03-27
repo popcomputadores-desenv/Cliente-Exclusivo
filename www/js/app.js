@@ -69,7 +69,7 @@ function onDeviceReady() {
 		navigator.splashscreen.hide();
 						
 		if(device.platform=="android" || device.platform=="Android" ){
-		   StatusBar.backgroundColorByHexString("#7E0000");
+		   StatusBar.backgroundColorByHexString("#000000");
 		}
 				
 		device_uiid = device.uuid;
