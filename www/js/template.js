@@ -1572,9 +1572,9 @@ displayPromo = function(data){
 		html+='<div class="stic-title">';
 			html+='<ons-icon icon="gift"></ons-icon>';
        		html+='<div class="home-title">';
-	   			html+='<span class="main trn">Offers & vouchers</span>';
+	   			html+='<span class="main trn">'+t('Offers & vouchers')+'</span>';
 	   			html+='<br>';
-           		html+='<span class="min trn">Get more discount with our promos</span>';
+           		html+='<span class="min trn">'+t('Get more discount with our promos')+'</span>';
 	   		html+='</div>';
 		html+='</div>';
 
@@ -2477,11 +2477,11 @@ alreadyRateTask = function(with_return, element, message, avatar , rating){
 	
 	if(with_return){
 		html+='<ons-button modifier="quiet_orange no_shadow" onclick="closeModalRating()">';          
-		  html+='<span class="trn">CLOSE</span>';
+		  html+='<span class="trn">'+t('CLOSE')+'</span>';
 		html+='</ons-button>';	
 	} else {
 		html+='<ons-button modifier="quiet_orange no_shadow" onclick="initModal(false);">';          
-	     html+='<span class="trn">CLOSE</span>';
+	     html+='<span class="trn">'+t('CLOSE')+'</span>';
 	    html+='</ons-button>';	
 	}
 	html+='</p>';
