@@ -19,9 +19,11 @@
                
 	<preference name="orientation" value="portrait" />	
 	<preference name="AutoHideSplashScreen" value="false" />  	
-    <preference name="SplashScreenDelay" value="5000" />    
+    <preference name="SplashScreenDelay" value="10000" />    
     <preference name="fullscreen" value="false" />        
+    <preference name="SplashMaintainAspectRatio" value="true"/>
     <preference name="ShowSplashScreenSpinner" value="false" />	           
+    <preference name="StatusBarBackgroundColor" value="#8d0710" />
     <preference name="android-minSdkVersion" value="19" />
     <preference name="android-targetSdkVersion" value="28" />        
     <preference name="phonegap-version" value="cli-8.1.1" />
@@ -33,6 +35,7 @@
 	<gap:plugin name="cordova-plugin-geolocation" source="npm" spec="1.0.1" />
 	<gap:plugin name="cordova-plugin-network-information" source="npm" />
 	<gap:plugin name="cordova-plugin-device" source="npm" />	
+	<gap:plugin name="cordova-plugin-statusbar" source="npm" />
 	<gap:plugin name="cordova-plugin-media" source="npm" spec="5.0.2" />
 		
 	
