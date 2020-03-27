@@ -15,7 +15,7 @@
 }
 
 :checked + .tabbar__button{
-color:#7E0000
+color:#000000
 }
 
 .tabbar{
@@ -314,11 +314,11 @@ box-shadow: 2px 2px 5px 0px rgba(238,238,238,1);
 
 .button--button_colorgreen,
 .color_green
-{color: #7E0000;}
+{color: #000000;}
 
 .color_green2
 {
-color: #7E0000;
+color: #000000;
 font-size: 10px;
 }
 
@@ -899,7 +899,7 @@ color:#fff;
 .progress-bar--material__primary,
 .fixed_toolbar_orange
 {
-background:#7E0000;
+background:#000000;
 }
 .button--normal_large{
 padding-left: 50px;
@@ -1008,7 +1008,7 @@ width:200px;
 ons-list-item.list-item--list_column .concat_text{width: 100%;}
 
 .page--orange_page__background{
-background:#7E0000;
+background:#000000;
 }
 
 .image_loaded .loaded img.hide{
@@ -1077,7 +1077,7 @@ a.small
 }
 
 .button--quiet_orange{
-background:#7E0000;
+background:#000000;
 }
 
 .bottom_gap{
@@ -1139,7 +1139,7 @@ margin-bottom: -10px;
 .alert-dialog-button,
 .orange_text,
 .list-item--list_style_banner p.orange_text
-{color: #7E0000;}
+{color: #000000;}
 .alert-dialog-button--primal,
 .alert-dialog-content,
 .details_with_logo h5,
@@ -1306,7 +1306,7 @@ font-family: "GoogleSans";
 }
 
 .carousel_small ons-carousel-item.selected{
-border-bottom: 3px solid #7E0000;
+border-bottom: 3px solid #000000;
 }
 
 .grey_line{
