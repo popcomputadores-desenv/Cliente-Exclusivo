@@ -4340,11 +4340,11 @@ var orderAction = function(order_id , show_cancel_order , add_review){
 			  });    
 	  	  	break;
 	  	  	
-	  	  	case 1:
+	  	  /*	case 1:
 	  	  	 ajaxCall('reOrder', "id="+order_id );
-	  	  	break;
+	  	  	break; */
 	  	  	
-	  	  	case 2:
+	  	  	case 1:
 	  	  	  onsenNavigator.pushPage( "track_order.html" ,{
 			  	animation : "none",
 			  	data : { 
@@ -4353,7 +4353,7 @@ var orderAction = function(order_id , show_cancel_order , add_review){
 			  });    
 	  	  	break;
 	  	  	
-	  	  	case 3:
+	  	  	case 2:
 	  	  	   ons.notification.confirm( t("Are you sure?") ,{
 					title: dialog_title,
 					buttonLabels : [ t("Cancel") , t("Ok") ]
@@ -4364,7 +4364,7 @@ var orderAction = function(order_id , show_cancel_order , add_review){
 			   });
 	  	  	break;
 	  	  	
-	  	  	case 4: 
+	  	  	case 3: 
 	  	  	  onsenNavigator.pushPage( "add_review.html" ,{
 			  	animation : "none",
 			  	data : { 
@@ -7742,23 +7742,23 @@ actionSheetOrder = function(order_id, add_review, add_cancel, add_track){
   	   	   });
   	   	  break
   	   	  
-  	   	  case 1:
+  	   	 /* case 1:
   	   	    ajaxCall( "ReOrder" , "id="+ order_id );
-  	   	  break
+  	   	  break */
   	   	  
-  	   	  case 2:
+  	   	  case 1:
   	   	   showPage('add_review.html','none',{
   	   	   	 "order_id": order_id
   	   	   });
   	   	  break
   	   	  
-  	   	  case 3:  	   	      	   	 
+  	   	  case 2:  	   	      	   	 
   	   	    showPage('cancel_order_form.html','none',{
   	   	   	 "order_id": order_id
   	   	   });			   
   	   	  break
   	   	  
-  	   	  case 4:
+  	   	  case 3:
   	   	    showPage('track_order.html','none',{
   	   	   	 "order_id": order_id
   	   	   });
